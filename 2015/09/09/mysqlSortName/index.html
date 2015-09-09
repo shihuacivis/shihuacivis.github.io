@@ -4,12 +4,14 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>Welcome to my life! | shihuacivis&#39; life</title>
+    <title>mysql按中文首字母进行排序 | shihuacivis&#39; life</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="石华">
     
-    <meta name="description" content="决定将过去和未来所学到的东西放到上面。有总结、分享、反思才能不断进步！">
+    <meta name="description" content="用gbk编码进行排序，其中name是用户中文名字段
+1234SELECT * from `tb_member` WHERE 1 ORDER BY CONVERT( `name` USING gbk ) COLLATE gbk_chinese_ci ASC;
+written in 2014/10 本文">
     
     
     
@@ -67,15 +69,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/09/08/first/" title="Welcome to my life!" itemprop="url">Welcome to my life!</a>
+      <a href="/2015/09/09/mysqlSortName/" title="mysql按中文首字母进行排序" itemprop="url">mysql按中文首字母进行排序</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://shihuacivis.github.io" title="石华">石华</a>
     </p>
   <p class="article-time">
-    <time datetime="2015-09-08T14:02:58.000Z" itemprop="datePublished">2015-09-08</time>
-    更新日期:<time datetime="2015-09-08T17:15:26.000Z" itemprop="dateModified">2015-09-09</time>
+    <time datetime="2015-09-09T12:30:06.000Z" itemprop="datePublished">2015-09-09</time>
+    更新日期:<time datetime="2015-09-09T12:39:09.000Z" itemprop="dateModified">2015-09-09</time>
     
   </p>
 </header>
@@ -87,7 +89,9 @@
 		
 		</div>
 		
-		<p>决定将过去和未来所学到的东西放到上面。有总结、分享、反思才能不断进步！</p>
+		<p>用gbk编码进行排序，其中name是用户中文名字段</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">SELECT</span> * <span class="keyword">from</span> <span class="string">`tb_member`</span> </span><br><span class="line"><span class="keyword">WHERE</span> <span class="number">1</span> </span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="keyword">CONVERT</span>( <span class="string">`name`</span> <span class="keyword">USING</span> gbk ) </span><br><span class="line"><span class="keyword">COLLATE</span> gbk_chinese_ci <span class="keyword">ASC</span>;</span></span><br></pre></td></tr></table></figure>
+<p><code>written in 2014/10 本文搬运自LOFTER，让LOFTER纯粹po图！</code></p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -97,7 +101,7 @@
 
 <div class="article-share" id="share">
 
-  <div data-url="http://shihuacivis.github.io/2015/09/08/first/" data-title="Welcome to my life! | shihuacivis&#39; life" data-tsina="shihuacivis" class="share clearfix">
+  <div data-url="http://shihuacivis.github.io/2015/09/09/mysqlSortName/" data-title="mysql按中文首字母进行排序 | shihuacivis&#39; life" data-tsina="shihuacivis" class="share clearfix">
   </div>
 
 </div>
@@ -107,13 +111,21 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2015/09/09/mouseDir/" title="jQuery获取鼠标滑入div的方向">
+ <a href="/2015/09/09/jQueryOn/" title="关于jQuery的on()">
   <strong>PREVIOUS:</strong><br/>
   <span>
-  jQuery获取鼠标滑入div的方向</span>
+  关于jQuery的on()</span>
 </a>
 </div>
 
+
+<div class="next">
+<a href="/2015/09/09/mouseDir/"  title="jQuery获取鼠标滑入div的方向">
+ <strong>NEXT:</strong><br/> 
+ <span>jQuery获取鼠标滑入div的方向
+</span>
+</a>
+</div>
 
 </nav>
 

@@ -4,12 +4,13 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>Welcome to my life! | shihuacivis&#39; life</title>
+    <title>在高级浏览器中获取图片的边缘颜色 | shihuacivis&#39; life</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="石华">
     
-    <meta name="description" content="决定将过去和未来所学到的东西放到上面。有总结、分享、反思才能不断进步！">
+    <meta name="description" content="有一个我很喜欢的网站——网易公开课，记得五月份帮小雪姐做微课视频网站的时候参考过它。有一个效果我很喜欢，就是首页的banner轮播组件的背景会根据图片的颜色改变，让其跟图片的边缘同颜色，这样图片看上去就像自然的延伸到屏幕边缘。很不错。
+当时有想过怎么实现，觉得可能是要后台读取图片，拿到它边缘的颜色，">
     
     
     
@@ -67,15 +68,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/09/08/first/" title="Welcome to my life!" itemprop="url">Welcome to my life!</a>
+      <a href="/2015/09/09/imageColor/" title="在高级浏览器中获取图片的边缘颜色" itemprop="url">在高级浏览器中获取图片的边缘颜色</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://shihuacivis.github.io" title="石华">石华</a>
     </p>
   <p class="article-time">
-    <time datetime="2015-09-08T14:02:58.000Z" itemprop="datePublished">2015-09-08</time>
-    更新日期:<time datetime="2015-09-08T17:15:26.000Z" itemprop="dateModified">2015-09-09</time>
+    <time datetime="2015-09-09T13:27:59.000Z" itemprop="datePublished">2015-09-09</time>
+    更新日期:<time datetime="2015-09-09T16:36:04.000Z" itemprop="dateModified">2015-09-10</time>
     
   </p>
 </header>
@@ -87,7 +88,13 @@
 		
 		</div>
 		
-		<p>决定将过去和未来所学到的东西放到上面。有总结、分享、反思才能不断进步！</p>
+		<p>有一个我很喜欢的网站——<a href="http://open.163.com" target="_blank" rel="external">网易公开课</a>，记得五月份帮小雪姐做微课视频网站的时候参考过它。有一个效果我很喜欢，就是<code>首页的banner轮播组件的背景会根据图片的颜色改变，让其跟图片的边缘同颜色</code>，这样图片看上去就像自然的延伸到屏幕边缘。很不错。</p>
+<p>当时有想过怎么实现，觉得可能是要后台读取图片，拿到它边缘的颜色，然后再告诉前端。这个放在PHP是可以办得到的（吧）。</p>
+<p>后来有看到一个纯前端的解决方案，不过要在高级浏览器中才能用（网易公开课也是全面嫌弃低版本浏览器的）。这里用到canvas中的一个方法。</p>
+<p>解决的思路是做一块隐藏的canvas，在它上面draw上要获取的图，然后用getImageData方法去获得图片边缘的某一点上的RGB信息。这样就能拿到图片边缘的颜色啦。</p>
+<p>核心代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">'myCanvas'</span>);</span><br><span class="line"><span class="keyword">if</span> (canvas.getContext) &#123;</span><br><span class="line">	<span class="keyword">var</span> ctx = canvas.getContext(<span class="string">'2d'</span>);</span><br><span class="line">&#125;</span><br><span class="line">ctx.drawImage(image, <span class="number">0</span>, <span class="number">0</span>, <span class="number">800</span>, <span class="number">600</span>);</span><br><span class="line"><span class="keyword">var</span> imageData = ctx.getImageData(<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>);</span><br></pre></td></tr></table></figure></p>
+<p>imageData是一个数组，imageData[0]、imageData[1]、imageData[2]分别就是其的R、G、B的值啦</p>
+<p><code>written in 2014/10 本文搬运自LOFTER，让LOFTER纯粹po图！</code></p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -97,7 +104,7 @@
 
 <div class="article-share" id="share">
 
-  <div data-url="http://shihuacivis.github.io/2015/09/08/first/" data-title="Welcome to my life! | shihuacivis&#39; life" data-tsina="shihuacivis" class="share clearfix">
+  <div data-url="http://shihuacivis.github.io/2015/09/09/imageColor/" data-title="在高级浏览器中获取图片的边缘颜色 | shihuacivis&#39; life" data-tsina="shihuacivis" class="share clearfix">
   </div>
 
 </div>
@@ -107,13 +114,21 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2015/09/09/mouseDir/" title="jQuery获取鼠标滑入div的方向">
+ <a href="/2015/09/09/jsObject/" title="js中的数据存储">
   <strong>PREVIOUS:</strong><br/>
   <span>
-  jQuery获取鼠标滑入div的方向</span>
+  js中的数据存储</span>
 </a>
 </div>
 
+
+<div class="next">
+<a href="/2015/09/09/jQueryLoadMore/"  title="jQuery实现滚到底部加载更多">
+ <strong>NEXT:</strong><br/> 
+ <span>jQuery实现滚到底部加载更多
+</span>
+</a>
+</div>
 
 </nav>
 

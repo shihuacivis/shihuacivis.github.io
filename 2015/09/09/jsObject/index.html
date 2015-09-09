@@ -1,0 +1,356 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>js中的数据存储 | shihuacivis&#39; life</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="石华">
+    
+    <meta name="description" content="在日常的开发中经常会遇到需要将临时数据混存起来供后期使用的场景，特别是做一些管理系统或者游戏时，都会要处理大量的数据。这时候就需要思考如何使用js来存取数据了。
+利用简单的变量去年五月份刚开始实习的时候，对于js的数据类型理解还只是一知半解。所以基本上是这样解决的：假设页面上我要存取一个用户的名字、">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.jpg" alt="shihuacivis&#39; life" title="shihuacivis&#39; life"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="shihuacivis&#39; life">shihuacivis&#39; life</a></h1>
+				<h2 class="blog-motto">口号：狗头拍牛片，杰艾斯拯救一切！</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="http://shihuacivis.lofter.com">LOFTER</a></li>
+					
+						<li><a href="/archives">存档</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:shihuacivis.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/09/09/jsObject/" title="js中的数据存储" itemprop="url">js中的数据存储</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://shihuacivis.github.io" title="石华">石华</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2015-09-09T13:32:56.000Z" itemprop="datePublished">2015-09-09</time>
+    更新日期:<time datetime="2015-09-09T16:36:16.000Z" itemprop="dateModified">2015-09-10</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#利用简单的变量"><span class="toc-number">1.</span> <span class="toc-text">利用简单的变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数组的运用"><span class="toc-number">2.</span> <span class="toc-text">数组的运用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-_插入基本数据类型"><span class="toc-number">2.1.</span> <span class="toc-text">1. 插入基本数据类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-_插入引用数据类型"><span class="toc-number">2.2.</span> <span class="toc-text">2. 插入引用数据类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-_数组的排序"><span class="toc-number">2.3.</span> <span class="toc-text">3. 数组的排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-_数组的查询和不足"><span class="toc-number">2.4.</span> <span class="toc-text">4. 数组的查询和不足</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#利用object存取数据"><span class="toc-number">3.</span> <span class="toc-text">利用object存取数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关于复制引用类型数据"><span class="toc-number">4.</span> <span class="toc-text">关于复制引用类型数据</span></a></li></ol>
+		</div>
+		
+		<p>在日常的开发中经常会遇到需要将临时数据混存起来供后期使用的场景，特别是做一些管理系统或者游戏时，都会要处理大量的数据。这时候就需要思考如何使用js来存取数据了。</p>
+<h2 id="利用简单的变量">利用简单的变量</h2><p>去年五月份刚开始实习的时候，对于js的数据类型理解还只是一知半解。所以基本上是这样解决的：<br>假设页面上我要存取一个用户的<code>名字</code>、<code>性别</code>、<code>生日</code>,那么我就<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> sName = <span class="string">'shihua'</span>;</span><br><span class="line"><span class="keyword">var</span> nGender = <span class="number">1</span>; <span class="comment">// 是的！我是「gender」党并长期对「sex」党以及「登陆」党表示关心</span></span><br><span class="line"><span class="keyword">var</span> sBirth = <span class="string">'1/19'</span>;</span><br></pre></td></tr></table></figure></p>
+<p>于是，当页面上需要存两个人的数据时，就<code>临时性思维定势</code>的依样画葫芦，再多定义一个变量：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> sName1 = <span class="string">'ayu'</span>;</span><br><span class="line"><span class="keyword">var</span> nGender1 = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">var</span> sBirth1 = <span class="string">'2/19'</span>;</span><br></pre></td></tr></table></figure></p>
+<p><strong>那么问题就来了</strong><br>你会发现这样的变量存取都是1对1的，也就是1个js变量只能存1个用户数据项。<br>如果有30个用户名怎么办，是不是要预先设定30个sName变量呢？<br>又比如，用户数据是ajax动态拉取的，有可能1条也有可能100条，那应该预设多少变量呢？<br>所以这么暴力的方法显然不可取……<br>于是就开始思考有什么方法可以让一个变量存取多条数据，于是我想到数组。</p>
+<h2 id="数组的运用">数组的运用</h2><p>利用数组可以非常简单的管理批量数据的增删改查。于是代码变成了这样：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> aName = [];</span><br></pre></td></tr></table></figure></p>
+<h3 id="1-_插入基本数据类型">1. 插入基本数据类型</h3><p>当要插入一个新用户的名字（基本数据类型）时，就把它的名字push到aName中：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> sName = <span class="string">'test'</span>;</span><br><span class="line">aName.push(sName);</span><br></pre></td></tr></table></figure></p>
+<p><em>那么问题又来了</em><br>这样看似解决了上述动态变量数的问题，但需求中有<code>名字</code>、<code>性别</code>、<code>生日</code>三个类型的变量数据，那是不是要创建三个数组来分别存取呢？<br>试想一下，如果要存取的数据类型有100种而非三种呢，是不是又碰到了和第一步中类似的困境。<br>另外，倘若只有三个数据类型，分别用三个数组存取的话，当你要增、删、改数据时是不是要同时操作三个数据？是不是心很累还容易出错？<br>这个相对暴力思路显然又不可取了。</p>
+<h3 id="2-_插入引用数据类型">2. 插入引用数据类型</h3><p>然后度娘告诉我们，数组不仅可以存取基本数据类型，还可以存取引用类型。<br>另外，引用类型中，一个obeject可以包含多个字段，于是插入新用户数据时就变成这样：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> aUser = []; <span class="comment">// 用这个数组来存</span></span><br><span class="line"><span class="keyword">var</span> sName = <span class="string">'shihua'</span>;</span><br><span class="line"><span class="keyword">var</span> nGender = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">var</span> sBirth = <span class="string">'1/19'</span>;</span><br><span class="line"><span class="keyword">var</span> oUser = &#123;</span><br><span class="line">      <span class="string">'name'</span>: sName</span><br><span class="line">    , <span class="string">'gender'</span>: nGender</span><br><span class="line">    , <span class="string">'birth'</span>: sBirth</span><br><span class="line">    , <span class="string">'age'</span>: <span class="number">23</span></span><br><span class="line">    &#125;</span><br><span class="line">aUser.push(oUser);</span><br></pre></td></tr></table></figure></p>
+<p>于是乎，每个用户的所有信息单独对应一个对象，而所有对象又只存在一个数组对象中……<br>然后就可以轻松做下列操作了：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">aTen = aUser.slice(<span class="number">0</span>, <span class="number">9</span>) <span class="comment">// 获取前十个用户的信息</span></span><br><span class="line">aNew = aUserGA.concat(aUserGB) <span class="comment">// userGA 和 userGB的数组合并为一组</span></span><br></pre></td></tr></table></figure></p>
+<p>数组的api有很多，在此不一一列举。<br>这样看起来似乎以及可以愉快的玩耍了。</p>
+<p><strong>直到有一天产品经理说她想根据用户的年龄进行排序</strong></p>
+<h3 id="3-_数组的排序">3. 数组的排序</h3><p>这个问题其实就是如何根据数组中的对象中的某个属性进行排序。其实js的sort方法很好用，对基本数据类型的排序就不必说了，根据引用类型中的属性值排序的方法如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 递减排序</span></span><br><span class="line"><span class="keyword">var</span> fSortByAgeDESC = <span class="function"><span class="keyword">function</span>(<span class="params">oA, oB</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> +oB[<span class="string">'age'</span>] - +oA[<span class="string">'age'</span>];</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 递减排序</span></span><br><span class="line"><span class="keyword">var</span> fSortByAgeASC = <span class="function"><span class="keyword">function</span>(<span class="params">oA, oB</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> +oA[<span class="string">'age'</span>] - +oB[<span class="string">'age'</span>];</span><br><span class="line">&#125;</span><br><span class="line">aUser.sort(fSortByAgeDESC);</span><br></pre></td></tr></table></figure></p>
+<p><strong>直到有一天产品经理说她想通过用户名查询用户的详细数据</strong></p>
+<h3 id="4-_数组的查询和不足">4. 数组的查询和不足</h3><p>然后你就发现数组似乎只能够通过索引index来访问数据，如aUser[1]来访问数组中第二个对象的数据。<br>如果要实现产品经理的要求，可能就需要for循环一下，寻找符合条件的数组：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> sName = <span class="string">'要找的用户名'</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; aUser.length; i++) &#123;</span><br><span class="line">  <span class="keyword">var</span> o = aUser[i];</span><br><span class="line">  <span class="keyword">if</span> (sName == o[<span class="string">'name'</span>]) &#123;</span><br><span class="line">    <span class="keyword">return</span> o;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="利用object存取数据">利用object存取数据</h2><p>利用上面循环遍历看起来似乎有些麻烦，然后就看到object可以通过object[‘name’]这样方便的取到数据，于是就考虑是不是可以用object来存取数据。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> oUserData = &#123;</span><br><span class="line">  <span class="string">'shihua'</span>: &#123;</span><br><span class="line">      <span class="string">'name'</span>: <span class="string">'shihua'</span></span><br><span class="line">    , <span class="string">'gender'</span>: <span class="number">1</span></span><br><span class="line">    , <span class="string">'birth'</span>: <span class="string">'1/19'</span></span><br><span class="line">    , <span class="string">'age'</span>: <span class="number">23</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> sName = <span class="string">'要找的用户名'</span>;</span><br><span class="line"><span class="keyword">var</span> oData = oUserData[sName]; <span class="comment">// oData 就是要找的数据</span></span><br><span class="line"><span class="keyword">if</span> (<span class="string">'undefined'</span> == <span class="keyword">typeof</span>(oData)) &#123;</span><br><span class="line">  <span class="comment">// 若干数据未定义就说明该用户不存在</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这样看起来是不简单多了，另外当需要循环遍历出所有用户的信息时，可以用for in循环:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> key <span class="keyword">in</span> oUserData) &#123;</span><br><span class="line">  <span class="keyword">var</span> sName = key; <span class="comment">// key就是oUserData中的「键」</span></span><br><span class="line">  <span class="keyword">var</span> oData = oUserData[key]; <span class="comment">// oData就是每个用户的信息</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><em>看起来object比array更适合查询数据。</em></p>
+<blockquote>
+<p>array还是有优势的： </p>
+<ol>
+<li>array可以通过array.length快速获取数组元素的个数，而object中则没有类似的属性值，需要通过别的方法获取，略显麻烦</li>
+<li>当要从数据集合中删除某条元素是，array可以很干净抹掉，而object中的「键」则不易清理</li>
+<li>object中的数据排序方法相对麻烦</li>
+<li>数组数据更易于复制、转移</li>
+</ol>
+</blockquote>
+<hr>
+<blockquote>
+<p> object的优势则主要在于：</p>
+<ol>
+<li>查询方便，根据键即可定位到数据对象</li>
+<li>在一个object中，一个键值只能对于一个数据，因此可以避免数据重复（反过来说如果是用数组存数据时，如果需要确保数据不重复，那么在push数据之前就需要先判断一下数组中是否已经存在）<br><em>因此在项目中，要根据数据的性质来决定使用数组或者object，也可以将两者结合起来，实现更复杂的应用场景</em></li>
+</ol>
+</blockquote>
+<h2 id="关于复制引用类型数据">关于复制引用类型数据</h2><p>经常会遇到需要复制一个array或者object的需求。<br>如果是简单粗暴的 a = b 这样复制那就可能出问题了，你会发现当b中数据发生变化时， a的数据竟然也改变了，这也许并不是你想见到的结果，因为 a = b 这样对引用类型赋值时，a实际上等于b对象的一个内存地址，也就是说，访问a时实际上访问的是b。<br>正确复制引用类型的方法如下：</p>
+<ol>
+<li><p>复制array</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 方法一 简单粗暴循环生成新数组</span></span><br><span class="line"><span class="keyword">var</span> arr = [];</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; aUser.length; i++) &#123;</span><br><span class="line">  arr.push(aUser[i]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 方法二 用concat</span></span><br><span class="line"><span class="keyword">var</span> arr = aUser.concat()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>复制object<br>当object中存的数据为基本数据类型时，可以使用浅拷贝。反之，如果object中有很多层数据时，若使用浅拷贝会发现其子层还是会遇到之前发生的问题</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 循环复制</span></span><br><span class="line"><span class="keyword">var</span> obj = [];</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> key <span class="keyword">in</span> oUserData) &#123;</span><br><span class="line">  obj[key] = oUserData[key];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 深拷贝就是要拓展一个递归的方法，去一层一层遍历，当子层数据类型为object时递归遍历下一次，直至最后一层。网上很多代码的。不贴了……</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://shihuacivis.github.io/2015/09/09/jsObject/" data-title="js中的数据存储 | shihuacivis&#39; life" data-tsina="shihuacivis" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2015/09/09/h5Timer/" title="HTML5应用中的计时器的三种方案">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  HTML5应用中的计时器的三种方案</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2015/09/09/imageColor/"  title="在高级浏览器中获取图片的边缘颜色">
+ <strong>NEXT:</strong><br/> 
+ <span>在高级浏览器中获取图片的边缘颜色
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section class="comment">
+	<div class="ds-thread"></div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#利用简单的变量"><span class="toc-number">1.</span> <span class="toc-text">利用简单的变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数组的运用"><span class="toc-number">2.</span> <span class="toc-text">数组的运用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-_插入基本数据类型"><span class="toc-number">2.1.</span> <span class="toc-text">1. 插入基本数据类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-_插入引用数据类型"><span class="toc-number">2.2.</span> <span class="toc-text">2. 插入引用数据类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-_数组的排序"><span class="toc-number">2.3.</span> <span class="toc-text">3. 数组的排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-_数组的查询和不足"><span class="toc-number">2.4.</span> <span class="toc-text">4. 数组的查询和不足</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#利用object存取数据"><span class="toc-number">3.</span> <span class="toc-text">利用object存取数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关于复制引用类型数据"><span class="toc-number">4.</span> <span class="toc-text">关于复制引用类型数据</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+
+  
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Welcome to my life! <br/>
+			I&#39;m Shihuacivis, from HangZhou.</p>
+	</section>
+	 
+	<div class="social-font clearfix">
+		
+		<a href="http://weibo.com/1863142237" target="_blank" title="weibo"></a>
+		
+		
+		
+		<a href="https://github.com/shihuacivis" target="_blank" title="github"></a>
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2015 
+		
+		<a href="http://shihuacivis.github.io" target="_blank" title="石华">石华</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"shihuacivis"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+  </body>
+</html>

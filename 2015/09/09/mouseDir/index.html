@@ -1,0 +1,318 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>jQuery获取鼠标滑入div的方向 | shihuacivis&#39; life</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="石华">
+    
+    <meta name="description" content="大学时期，人人上曾经有一个疯传的网网站——大软坊。上面有一个很酷的效果，当鼠标划过菜单时，它能识别你是从哪个方向滑入和滑出，并执行不同的动画效果。当时觉得很酷炫，就自己动了下脑筋研究了这个问题。
+思路把div当作一个矩形，用两条对角线将矩形分成四个区域（如下图），那么当鼠标滑入/滑出div的瞬间会触">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.jpg" alt="shihuacivis&#39; life" title="shihuacivis&#39; life"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="shihuacivis&#39; life">shihuacivis&#39; life</a></h1>
+				<h2 class="blog-motto">口号：狗头拍牛片，杰艾斯拯救一切！</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="http://shihuacivis.lofter.com">LOFTER</a></li>
+					
+						<li><a href="/archives">存档</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:shihuacivis.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/09/09/mouseDir/" title="jQuery获取鼠标滑入div的方向" itemprop="url">jQuery获取鼠标滑入div的方向</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://shihuacivis.github.io" title="石华">石华</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2015-09-09T11:57:14.000Z" itemprop="datePublished">2015-09-09</time>
+    更新日期:<time datetime="2015-09-09T12:39:05.000Z" itemprop="dateModified">2015-09-09</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#思路"><span class="toc-number">1.</span> <span class="toc-text">思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实现"><span class="toc-number">2.</span> <span class="toc-text">实现</span></a></li></ol>
+		</div>
+		
+		<p>大学时期，人人上曾经有一个疯传的网网站——<a href="http://app.hustonline.net/major" target="_blank" rel="external">大软坊</a>。<br>上面有一个很酷的效果，当鼠标划过菜单时，它能识别你是从哪个方向滑入和滑出，并执行不同的动画效果。<br>当时觉得很酷炫，就自己动了下脑筋研究了这个问题。</p>
+<h2 id="思路">思路</h2><p>把div当作一个矩形，用两条对角线将矩形分成四个区域（如下图），那么当鼠标滑入/滑出div的<br>瞬间会触发一个mouseenter/mouseleave事件，同时我们可以获取触发该事件时<br>鼠标所在坐标点，那么通过判断这个坐标点落于上面四个区域中的哪一个区域来判别是从上/下/左/右滑出的。<br><img src="/img/2015090901.jpg" alt="cmd-markdown-logo"></p>
+<h2 id="实现">实现</h2><p>这段代码是比较早期写的啦，有很多可以优化的点，先不说了。主要是用jquery的offset()轻松获取相关点的坐标，剩下的就是数学问题了。<br>所以说jQuery大法好啊!<br>线上的DEMO地址:<a href="http://demo.qpdiy.com/sh/mouseDirection/index.html" target="_blank" rel="external">点我看线上demo</a><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'.name'</span>).on(<span class="string">'mouseenter'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> divX = $(<span class="keyword">this</span>).offset().left;   <span class="comment">//div的左上角X坐标</span></span><br><span class="line">  <span class="keyword">var</span> divY = $(<span class="keyword">this</span>).offset().top;    <span class="comment">//div的左上角Y</span></span><br><span class="line">  <span class="keyword">var</span> width = $(<span class="keyword">this</span>).width();</span><br><span class="line">  <span class="keyword">var</span> height = $(<span class="keyword">this</span>).height();</span><br><span class="line">  <span class="keyword">var</span> mX = e.pageX;                   <span class="comment">//鼠标进入div中的点坐标</span></span><br><span class="line">  <span class="keyword">var</span> mY = e.pageY;                   <span class="comment">//鼠标进入div中的点坐标</span></span><br><span class="line">  <span class="keyword">var</span> rx = mX - divX;                 <span class="comment">//相减得出要判断的点的横坐标</span></span><br><span class="line">  <span class="keyword">var</span> ry = mY - divY;                 <span class="comment">//相减得出要判断的点的纵坐标</span></span><br><span class="line">  <span class="keyword">var</span> scale = height/width;           <span class="comment">//对角线1的斜率</span></span><br><span class="line">  tmp = scale * rx;                   <span class="comment">//可以理解为x坐标下对角线上的点...那么 300-tmp就是对角线2上的点</span></span><br><span class="line">  $pic = $(<span class="keyword">this</span>).find(<span class="string">'.pic'</span>);</span><br><span class="line">  $pic.removeAttr(<span class="string">'class'</span>).addClass(<span class="string">'pic'</span>);</span><br><span class="line">  <span class="keyword">if</span>(ry &lt; tmp &amp;&amp; ry &lt; (<span class="number">300</span> - tmp))&#123;</span><br><span class="line">    $(<span class="string">'#im'</span>).html(<span class="string">'上入'</span>);</span><br><span class="line">    $pic.addClass(<span class="string">'from-top'</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span>(ry &lt; (<span class="number">300</span> - tmp) &amp;&amp; ry &gt; tmp)&#123;</span><br><span class="line">    $(<span class="string">'#im'</span>).html(<span class="string">'左入'</span>);</span><br><span class="line">    $pic.addClass(<span class="string">'from-left'</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span>(ry &gt; (<span class="number">300</span> - tmp) &amp;&amp; ry &lt; tmp)&#123;</span><br><span class="line">    $(<span class="string">'#im'</span>).html(<span class="string">'右入'</span>);</span><br><span class="line">    $pic.addClass(<span class="string">'from-right'</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    $(<span class="string">'#im'</span>).html(<span class="string">'下入'</span>);</span><br><span class="line">    $pic.addClass(<span class="string">'from-bottom'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  $pic.css(<span class="string">'z-index'</span>,<span class="number">3</span>);</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p><code>written in 2014/10 本文搬运自LOFTER，让LOFTER纯粹po图！</code></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://shihuacivis.github.io/2015/09/09/mouseDir/" data-title="jQuery获取鼠标滑入div的方向 | shihuacivis&#39; life" data-tsina="shihuacivis" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2015/09/09/mysqlSortName/" title="mysql按中文首字母进行排序">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  mysql按中文首字母进行排序</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2015/09/08/first/"  title="Welcome to my life!">
+ <strong>NEXT:</strong><br/> 
+ <span>Welcome to my life!
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section class="comment">
+	<div class="ds-thread"></div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#思路"><span class="toc-number">1.</span> <span class="toc-text">思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实现"><span class="toc-number">2.</span> <span class="toc-text">实现</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+
+  
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Welcome to my life! <br/>
+			I&#39;m Shihuacivis, from HangZhou.</p>
+	</section>
+	 
+	<div class="social-font clearfix">
+		
+		<a href="http://weibo.com/1863142237" target="_blank" title="weibo"></a>
+		
+		
+		
+		<a href="https://github.com/shihuacivis" target="_blank" title="github"></a>
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2015 
+		
+		<a href="http://shihuacivis.github.io" target="_blank" title="石华">石华</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"shihuacivis"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+  </body>
+</html>

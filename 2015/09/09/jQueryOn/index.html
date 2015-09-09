@@ -4,12 +4,14 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>Welcome to my life! | shihuacivis&#39; life</title>
+    <title>关于jQuery的on() | shihuacivis&#39; life</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="石华">
     
-    <meta name="description" content="决定将过去和未来所学到的东西放到上面。有总结、分享、反思才能不断进步！">
+    <meta name="description" content="回忆一下学习web的2年来的经历，发现w3school简直居功至伟，从html+css，到PHP，再到后来的jQuery，上面的资料的很详细。
+比如jQuery的事件，会发现官方提供了很多的方法，比如：12$(selector).click();$(selector).mouseenter();
+真">
     
     
     
@@ -67,15 +69,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/09/08/first/" title="Welcome to my life!" itemprop="url">Welcome to my life!</a>
+      <a href="/2015/09/09/jQueryOn/" title="关于jQuery的on()" itemprop="url">关于jQuery的on()</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://shihuacivis.github.io" title="石华">石华</a>
     </p>
   <p class="article-time">
-    <time datetime="2015-09-08T14:02:58.000Z" itemprop="datePublished">2015-09-08</time>
-    更新日期:<time datetime="2015-09-08T17:15:26.000Z" itemprop="dateModified">2015-09-09</time>
+    <time datetime="2015-09-09T12:34:10.000Z" itemprop="datePublished">2015-09-09</time>
+    更新日期:<time datetime="2015-09-09T12:43:01.000Z" itemprop="dateModified">2015-09-09</time>
     
   </p>
 </header>
@@ -87,7 +89,16 @@
 		
 		</div>
 		
-		<p>决定将过去和未来所学到的东西放到上面。有总结、分享、反思才能不断进步！</p>
+		<p>回忆一下学习web的2年来的经历，发现w3school简直居功至伟，从html+css，到PHP，再到后来的jQuery，上面的资料的很详细。</p>
+<p>比如jQuery的事件，会发现官方提供了很多的方法，比如：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$(selector).click();</span><br><span class="line">$(selector).mouseenter();</span><br></pre></td></tr></table></figure></p>
+<p>真的是应有尽有。其实在毕业前我都是这么写事件的，直到今年毕业了才换了个更好的写法。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(selector).on(event,childSelector,data,<span class="function"><span class="keyword">function</span>,<span class="title">map</span>)</span></span><br></pre></td></tr></table></figure>
+<p>先说说前面那张直接.事件的写法有什么不足。首先这个方法是直接绑在元素上的。在一种常见应用场景下会遇到问题：比如给一个A类按钮绑定click事件，这个元素在声明事件如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'.A'</span>).click(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">//todo</span></span><br><span class="line">&#125;))</span><br></pre></td></tr></table></figure>
+<p>需要明白一点，当这句js只对执行时所存在的A按钮绑定了这个事件，那么后来动态添上的A按钮就没有这个事件了。<br>那么问题就是要解决：给后来动态生成的元素绑定事件。一种比较粗nao暴can的办法就是在生成元素的时候动态获取它再次绑定事件。<br>这样做一个明显的弊端就是造成代码冗余。解决这个问题一个很好的方法就是改用on来绑定事件了。比如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'body'</span>).on(<span class="string">'click'</span>, <span class="string">'.a'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">//todo</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>首先它可以将事件绑定在父节点上，而这个父节点是一直存在的，且这个方法又可以将事件指向固定子元素执行（可以理解为，当事件是从body的子元素’.a’中冒泡上来时才执行）。所以可以适用于给动态生成的元素绑定事件。它支持多种事件，可以让你的代码更优雅。</p>
+<p><code>written in 2014/10 本文搬运自LOFTER，让LOFTER纯粹po图！</code></p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -97,7 +108,7 @@
 
 <div class="article-share" id="share">
 
-  <div data-url="http://shihuacivis.github.io/2015/09/08/first/" data-title="Welcome to my life! | shihuacivis&#39; life" data-tsina="shihuacivis" class="share clearfix">
+  <div data-url="http://shihuacivis.github.io/2015/09/09/jQueryOn/" data-title="关于jQuery的on() | shihuacivis&#39; life" data-tsina="shihuacivis" class="share clearfix">
   </div>
 
 </div>
@@ -107,13 +118,21 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2015/09/09/mouseDir/" title="jQuery获取鼠标滑入div的方向">
+ <a href="/2015/09/09/jQueryLoadMore/" title="jQuery实现滚到底部加载更多">
   <strong>PREVIOUS:</strong><br/>
   <span>
-  jQuery获取鼠标滑入div的方向</span>
+  jQuery实现滚到底部加载更多</span>
 </a>
 </div>
 
+
+<div class="next">
+<a href="/2015/09/09/mysqlSortName/"  title="mysql按中文首字母进行排序">
+ <strong>NEXT:</strong><br/> 
+ <span>mysql按中文首字母进行排序
+</span>
+</a>
+</div>
 
 </nav>
 
