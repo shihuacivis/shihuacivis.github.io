@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>用cocos2d-js-lite版本制作一个爆款数钱小游戏 | shihuacivis&#39; life</title>
+    <title>用cocos2d-js-lite版本制作一个小游戏——数钱大作战 | shihuacivis&#39; life</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="石华">
@@ -77,15 +77,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/09/18/simpleCCGame/" title="用cocos2d-js-lite版本制作一个爆款数钱小游戏" itemprop="url">用cocos2d-js-lite版本制作一个爆款数钱小游戏</a>
+      <a href="/2015/11/08/simpleCCGame/" title="用cocos2d-js-lite版本制作一个小游戏——数钱大作战" itemprop="url">用cocos2d-js-lite版本制作一个小游戏——数钱大作战</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://shihuacivis.github.io" title="石华">石华</a>
     </p>
   <p class="article-time">
-    <time datetime="2015-09-17T16:14:53.000Z" itemprop="datePublished">2015-09-18</time>
-    更新日期:<time datetime="2015-09-17T16:14:53.000Z" itemprop="dateModified">2015-09-18</time>
+    <time datetime="2015-11-08T12:32:51.000Z" itemprop="datePublished">2015-11-08</time>
+    更新日期:<time datetime="2015-11-08T12:32:51.000Z" itemprop="dateModified">2015-11-08</time>
     
   </p>
 </header>
@@ -94,7 +94,7 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目錄</strong>
-		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#为何要用cocos2d-js-lite"><span class="toc-number">1.</span> <span class="toc-text">为何要用cocos2d-js-lite</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#如何启动游戏"><span class="toc-number">2.</span> <span class="toc-text">如何启动游戏</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#自适应方案"><span class="toc-number">2.1.</span> <span class="toc-text">自适应方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#预加载"><span class="toc-number">2.2.</span> <span class="toc-text">预加载</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#游戏场景_Scene"><span class="toc-number">3.</span> <span class="toc-text">游戏场景 Scene</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#场景分层_Layer"><span class="toc-number">4.</span> <span class="toc-text">场景分层 Layer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#精灵元素_Sprite"><span class="toc-number">5.</span> <span class="toc-text">精灵元素 Sprite</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#生成Sprite"><span class="toc-number">5.1.</span> <span class="toc-text">生成Sprite</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#生成LabelTTF"><span class="toc-number">5.2.</span> <span class="toc-text">生成LabelTTF</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#生成按钮"><span class="toc-number">5.3.</span> <span class="toc-text">生成按钮</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#动作"><span class="toc-number">6.</span> <span class="toc-text">动作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#事件监听和碰撞检测"><span class="toc-number">7.</span> <span class="toc-text">事件监听和碰撞检测</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#播放声音"><span class="toc-number">8.</span> <span class="toc-text">播放声音</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#定时器"><span class="toc-number">9.</span> <span class="toc-text">定时器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#简单总结优缺点"><span class="toc-number">10.</span> <span class="toc-text">简单总结优缺点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#优点"><span class="toc-number">10.1.</span> <span class="toc-text">优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点"><span class="toc-number">10.2.</span> <span class="toc-text">缺点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#demo地址"><span class="toc-number">10.3.</span> <span class="toc-text">demo地址</span></a></li></ol></li></ol>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#为何要用cocos2d-js-lite"><span class="toc-number">1.</span> <span class="toc-text">为何要用cocos2d-js-lite</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#如何启动游戏引擎和开启游戏"><span class="toc-number">2.</span> <span class="toc-text">如何启动游戏引擎和开启游戏</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-如何启动引擎"><span class="toc-number">2.1.</span> <span class="toc-text">1.如何启动引擎</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-如何开启游戏"><span class="toc-number">2.2.</span> <span class="toc-text">2.如何开启游戏</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自适应方案"><span class="toc-number">2.3.</span> <span class="toc-text">自适应方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#预加载"><span class="toc-number">2.4.</span> <span class="toc-text">预加载</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#游戏场景_Scene"><span class="toc-number">3.</span> <span class="toc-text">游戏场景 Scene</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#场景分层_Layer"><span class="toc-number">4.</span> <span class="toc-text">场景分层 Layer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#精灵元素_Sprite"><span class="toc-number">5.</span> <span class="toc-text">精灵元素 Sprite</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#生成Sprite"><span class="toc-number">5.1.</span> <span class="toc-text">生成Sprite</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#生成LabelTTF"><span class="toc-number">5.2.</span> <span class="toc-text">生成LabelTTF</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#生成按钮"><span class="toc-number">5.3.</span> <span class="toc-text">生成按钮</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#动作"><span class="toc-number">6.</span> <span class="toc-text">动作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#事件监听和碰撞检测"><span class="toc-number">7.</span> <span class="toc-text">事件监听和碰撞检测</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#播放声音"><span class="toc-number">8.</span> <span class="toc-text">播放声音</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#定时器"><span class="toc-number">9.</span> <span class="toc-text">定时器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#简单总结优缺点"><span class="toc-number">10.</span> <span class="toc-text">简单总结优缺点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#优点"><span class="toc-number">10.1.</span> <span class="toc-text">优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点"><span class="toc-number">10.2.</span> <span class="toc-text">缺点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#demo地址"><span class="toc-number">10.3.</span> <span class="toc-text">demo地址</span></a></li></ol></li></ol>
 		</div>
 		
 		<p>cocos2d-js-lite是一个cocos2d的轻量化精简版本，只保留了cocos2d-js的一些核心方法。<br>它所包含的特性列表如下：</p>
@@ -107,20 +107,18 @@
 <span class="bullet">+ </span>声音
 <span class="bullet">+ </span>动作
 <span class="bullet">+ </span>菜单和菜单项
-</code></pre><p>与cocos2d-js完整版一个最大的不同就是，lite版把引擎的所有模块都放到一个文件里，这对于一个第一次接触游戏引擎的js开发者来说是一个福音，开发者只需像引入一个jQuery库一样引入一个文件即可。<br><strong>另外lite是基于纯原生js的，所以无须像基于Typescript的<code>白鹭引擎</code>一样要先经过编译才能再浏览器中打开，因此再整个工作流上感觉与传统前端开发更为接近</strong></p>
+</code></pre><p>与cocos2d-js完整版一个最大的不同就是，lite版把引擎的所有模块都放到一个文件里，这对于一个第一次接触游戏引擎的js开发者来说是一个福音，开发者只需像引入一个jQuery库一样引入一个文件即可。</p>
+<p><strong>另外，lite是基于纯原生js的，所以无须像<code>白鹭引擎</code>（基于Typescript）一样要先经过编译才能再浏览器中打开，因此再整个工作流上感觉与传统前端开发更为接近</strong></p>
 <p>从lite版包含的特性来看，它更适合开发轻度的H5游戏。</p>
-<p><em>首先要跳槽一下lite版本不支持的2个实用模块</em></p>
+<p><em>首先要吐槽一下lite版本不支持的2个实用功能</em></p>
 <blockquote>
 <ol>
 <li>不支持位图字体labelBMFont方法</li>
 <li>不支持从plist生成元素（当然传统前端并不知道这有啥用）</li>
 </ol>
 </blockquote>
-<p><em>然后开始简单介绍cocos2d的世界中的元素吧</em></p>
-<p>cocos2d中，view可以看作是一个视窗，即游戏内容的载体（可以比作舞台）。<br>然后在这个载体（舞台）中一级容器就是scene（场景），<br>而场景中有可以分成很多层了，比如前景层、背景层等等，我们称之为Layer，<br>而每一个层中又可以包含很多个『角色』，即sprite、label这些元素。<br>我们把Layer、Sprite等这些元素称之为容器。（类似HTML中的div盒模型）</p>
-<p><em>好戏开场了</em></p>
-<h2 id="为何要用cocos2d-js-lite">为何要用cocos2d-js-lite</h2><p>在使用cocos之前其实我已经用纯原生js + canvas + div + css将游戏制作完成。<br>这至少说明，在不使用游戏引擎的前提下，也可以制作出一款H5游戏。<br>所以首先要明确用这个游戏引擎的意义何在，有没有必要使用引擎。<br>而不是迷迷糊糊就上了贼船。</p>
-<p>而cocos下面几个特性决定了我要用它来提升游戏的开发进度和质量。</p>
+<h2 id="为何要用cocos2d-js-lite">为何要用cocos2d-js-lite</h2><p>首先，在不使用游戏引擎的前提下，也可以用纯原生js + canvas + div + css制作出一款H5游戏。<br>所以要明确用这个游戏引擎的目的。</p>
+<p>cocos下面几个特性可以提升游戏的开发进度和质量。</p>
 <blockquote>
 <ol>
 <li>引擎提供了资源预加载的方法，可以加载多种资源</li>
@@ -128,21 +126,32 @@
 <li>引擎提供了事件的监听和管理</li>
 <li>引擎提供了强大无脑的屏幕自适应方案</li>
 <li>引擎提供了高性能的声音及音效的播放功能</li>
-<li>降低上述几个模块的开发难度的代价仅仅是多加载一个300kb的引擎，成本很低</li>
+<li>引擎本身文件仅300kb，对于H5应用可以接受</li>
 </ol>
 </blockquote>
-<h2 id="如何启动游戏">如何启动游戏</h2><p>首先要知道如何启动游戏。这个版本的引擎的开发人员已经充分照顾到了传统前端人员的开发习惯，将引擎的入口置于html下的onload事件中，非常好接受（不像白鹭引擎和完整版一样分成很多目录看起来很高大上的样子）。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  cc.game.onStart = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (cc.sys.IOS || cc.sys.OS_OSX) &#123;</span><br><span class="line">      cc.view.enableRetina(<span class="literal">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    cc.view.setDesignResolutionSize(<span class="number">750</span>, <span class="number">1334</span>, cc.ResolutionPolicy.EXACT_FIT);</span><br><span class="line">    cc.view.resizeWithBrowserSize(<span class="literal">true</span>);</span><br><span class="line">    <span class="comment">//load resources</span></span><br><span class="line">    cc.LoaderScene.preload(res_list, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;  <span class="comment">// res_list是一个包含资源路径的数组</span></span><br><span class="line">        cc.director.runScene(<span class="keyword">new</span> GameScene());</span><br><span class="line">    &#125;, <span class="keyword">this</span>);</span><br><span class="line">  &#125;;</span><br><span class="line">  cc.game.run(<span class="string">"gameCanvas"</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>当页面加载完毕后，也就是加载cocos2d-js-lite完毕之后，会触发onload事件，这时候我先定义一下游戏启动时要做的事情：</p>
+<p><em>好戏开场了</em></p>
+<p><em>cocos2d的世界中的元素</em></p>
+<p>cocos2d中，主要包含下面四层元素：</p>
+<blockquote>
 <ol>
-<li>检测浏览器环境，如果是ios下则启动retina模式，有助于增强引擎渲染效果（可选项）</li>
-<li>设置屏幕的适配方案</li>
-<li>预加载游戏的资源</li>
+<li>view：可以看作是一个视窗，即游戏内容的载体（可以比作舞台）。</li>
+<li>Scene：舞台中一级容器就是场景。</li>
+<li>Layer：场景中又可以分成很多『层』。</li>
+<li>Sprite：每一个层中又可以包含很多个小的元素(如舞台上的角色）。</li>
 </ol>
-<p>将这些必要的工作定义到游戏的启动事件中（cc.game.onStart），然后通过cc.game.run(‘gameCanvas’)在『gameCanvas』这个画布中启动游戏。</p>
+</blockquote>
+<p>跟HTML中的div盒模型做类比，以上元素的对应关系大致如下：<br>view —— document、window<br>Scene —— html<br>Layer —— body<br>Sprite —— div、p等</p>
+<h2 id="如何启动游戏引擎和开启游戏">如何启动游戏引擎和开启游戏</h2><h3 id="1-如何启动引擎">1.如何启动引擎</h3><p>lite版本中启动引擎的方法非常简单，只需像引入jquery一样在html中引入’cocos2d-js-v3.7-lite.js’文件即可。<br>然后在在body中加入一个canvas元素，然后在游戏配置文件（即根目录下的project.json）的<code>id</code>字段中填入该canvas的id即可。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span> <span class="attribute">src</span>=<span class="value">"cocos2d-js-v3.7-lite.js"</span> <span class="attribute">charset</span>=<span class="value">"UTF-8"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">canvas</span> <span class="attribute">id</span>=<span class="value">"gameCanvas"</span> <span class="attribute">width</span>=<span class="value">"750"</span> <span class="attribute">height</span>=<span class="value">"1334"</span>&gt;</span><span class="tag">&lt;/<span class="title">canvas</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-如何开启游戏">2.如何开启游戏</h3><p>首先看看游戏配置文件（即根目录下的project.json）：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"debugMode"</span>     : <span class="number">1</span>,</span><br><span class="line">    <span class="string">"frameRate"</span>     : <span class="number">60</span>,</span><br><span class="line">    <span class="string">"id"</span>            : <span class="string">"gameCanvas"</span>,</span><br><span class="line">    <span class="string">"renderMode"</span>    : <span class="number">1</span>,</span><br><span class="line">    <span class="string">"showFPS"</span>       : <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"jsList"</span>        : [</span><br><span class="line">      <span class="string">"j/GameScene.js"</span></span><br><span class="line">    , <span class="string">"j/StartScene.js"</span></span><br><span class="line">    , <span class="string">"j/GameControler.js"</span></span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们可以在该文件中设置调试模式、帧数、渲染模式、是否显示FPS信息等等。</p>
+<p>当游戏引擎文件加载完毕后，就可以用下面方法启动游戏了。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cc.game.run();</span><br></pre></td></tr></table></figure></p>
+<p>它首先根游戏的配置文件进行初始化设置，然后加载配置文件的「jsList」中罗列的文件。<br>当这些js文件都加载完毕后，就会触发一个cc.game.onStart事件。<br>所以我们在调用cc.game.run方法前，先要定义cc.game.onStart事件：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">cc.game.onStart = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="comment">// 检测浏览器环境，如果是ios下则启动retina模式，有助于增强引擎渲染效果（可选项）</span></span><br><span class="line">  <span class="keyword">if</span> (cc.sys.IOS || cc.sys.OS_OSX) &#123;</span><br><span class="line">    cc.view.enableRetina(<span class="literal">true</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 设置游戏的预设大小（即设计稿大小）和适配方案</span></span><br><span class="line">  cc.view.setDesignResolutionSize(<span class="number">750</span>, <span class="number">1334</span>, cc.ResolutionPolicy.EXACT_FIT);</span><br><span class="line">  <span class="comment">// 让游戏随着浏览器屏幕大小伸缩变化</span></span><br><span class="line">  cc.view.resizeWithBrowserSize(<span class="literal">true</span>);</span><br><span class="line">  <span class="comment">//加载静态资源，包括图片、声音、字体等资源，res_list是一个包含资源路径的数组</span></span><br><span class="line">  cc.LoaderScene.preload(res_list, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;  </span><br><span class="line">      cc.director.runScene(<span class="keyword">new</span> GameScene());</span><br><span class="line">  &#125;, <span class="keyword">this</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <h3 id="自适应方案">自适应方案</h3><p>引擎提供了屏幕的五种适配方案，我们只需要设置好游戏预设的大小（即设计稿的大小）以及<a href="http://http://www.cocos2d-x.org/docs/manual/framework/html5/v2/resolution-policy-design/zh" target="_blank" rel="external">适配的方案</a>, 引擎就会自动完成游戏适配工作。于此同时我们在游戏中对元素的布局可以完全根据设计稿来1：1的制作，而再也不用自己费心去做适配的计算和处理啦！<br>比如这个游戏的设计稿是iphone6的屏幕大小，然后我选用的适配方案是全拉伸到覆盖屏幕的全部区域<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cc.view.setDesignResolutionSize(<span class="number">750</span>, <span class="number">1334</span>, cc.ResolutionPolicy.EXACT_FIT);</span><br></pre></td></tr></table></figure></p>
 <h3 id="预加载">预加载</h3><p>引擎自带了一个预加载页面，只需要调用cc.LoaderScene.preload即可。</p>
-<p><strong>如果需要自定义加载页面可能需要修改引擎源码。</strong></p>
+<p><strong>如果需要自定义加载页面可能需要修改引擎源码。或者通过cc.Loader.load方法自定义一个加载模块</strong></p>
 <p>当资源加载完毕后，我们可以调用cc.director.runScene()进入某以个场景，如上面代码中的GameScene。</p>
 <h2 id="游戏场景_Scene">游戏场景 Scene</h2><p>在开启一个场景(Scene)前,我们要先定义它，首先用cc.Scene.extend方法返回一个Scene对象，<br>这里的entend类似java等oop语言中的<code>继承</code>的概念……<br>简单的说就是通过这个方法，新生成的这个类就具备了跟<code>原始类</code>（cc.Scene）的属性和方法。同时我们可以对原始类中定义书属性和方法进行<code>重写</code>。<br>比如下面的代码中，我们对onEnter方法进行了重写。<br>onEnter是Scene对象中最重要的方法，当我们切换到某个场景时就会触发这个方法。<br>通常我们习惯在这个时候对Scene进行各种初始化（元素的布局定位和变量设置）。</p>
 <p>但要注意这里不能省去调用this._super()方法，这个方法的含义是去调用父类的<code>构造函数</code>（即cc.Scene的构造函数），将GameScene类<code>实例化</code>，当我们把类实例化之后，才能愉快的调用（访问）它的各个方法和变量。</p>
@@ -158,7 +167,7 @@
 </blockquote>
 <p>这里讲到一个<code>锚点</code>的概念，实际上就是元素布局对齐时的基准点。<br>说到基准点，首先回到HTML和CSS的世界的定位系统，当我们用 <code>绝对定位 + left + top</code> 的组合对div进行定位时，div的锚点（基准点）就是div的左上角啦，而整个世界的定位的坐标系的出发点就是视窗的左上角，这时候我们所定义的left和top值就是div的左上角相对于视窗左上角的距离了。所以按前端习惯的工作流，我们在切设计稿时所测量的距离一般都是元素跟设计稿左上角的距离。</p>
 <p>那么回到cocos的世界，不得不说，cocos的定位系统就是很反前端的，首先这个世界的坐标系默认出发点是左下角，也就是说，当我们要对元素进行布局时，默认的参考点就变成设计稿的左下角了。其次，更坑爹的是，当元素是Sprite时，你要量的距离不是设计稿左下角到元素左下角的距离，而是到元素中点的距离。<br>由于这个锚点会影响到元素的运动和裁切等功能，所以这个设定可能会让习惯了HTML世界开发的前端感到难以接受……</p>
-<p>纯天然的Layer默认是透明的，当我们想创建一个带颜色的Layer时，可以继承一个派生类LayerColor，这样就可以生生成一个带背景色的Layer了。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> bg = <span class="keyword">new</span> cc.LayerColor(cc.color(<span class="number">42</span>, <span class="number">89</span>, <span class="number">132</span>));</span><br><span class="line">bg.setContentSize(<span class="number">100</span>,<span class="number">200</span>);</span><br><span class="line">bg.setPosition(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"><span class="keyword">this</span>.addChild(bg);</span><br></pre></td></tr></table></figure></p>
+<p>纯天然的Layer默认是透明的，当我们想创建一个带颜色的Layer时，可以继承一个Layer的派生类LayerColor，这样就可以生生成一个带背景色的Layer了。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> bg = <span class="keyword">new</span> cc.LayerColor(cc.color(<span class="number">42</span>, <span class="number">89</span>, <span class="number">132</span>));</span><br><span class="line">bg.setContentSize(<span class="number">100</span>,<span class="number">200</span>);</span><br><span class="line">bg.setPosition(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"><span class="keyword">this</span>.addChild(bg);</span><br></pre></td></tr></table></figure></p>
 <p>另外提一下cc.color这个方法，它可以返回一个cocos中默认的颜色数据，所以你用RGB的值（<code>cc.color(R, G, B)</code>）或者十六进制的形式（<code>cc.color(#000000)</code>）都可以生成颜色，非常方便。<br>此外cocos还提供了类似的一些方法，都会返回cocos默认的数据格式，比如：</p>
 <pre><code><span class="number">1</span>. cc.<span class="function"><span class="title">p</span><span class="params">()</span></span> 返回元素定位数据
 <span class="number">2</span>. cc.<span class="function"><span class="title">size</span><span class="params">()</span></span> 返回元素大小数据
@@ -214,7 +223,7 @@
 
 <div class="article-share" id="share">
 
-  <div data-url="http://shihuacivis.github.io/2015/09/18/simpleCCGame/" data-title="用cocos2d-js-lite版本制作一个爆款数钱小游戏 | shihuacivis&#39; life" data-tsina="shihuacivis" class="share clearfix">
+  <div data-url="http://shihuacivis.github.io/2015/11/08/simpleCCGame/" data-title="用cocos2d-js-lite版本制作一个小游戏——数钱大作战 | shihuacivis&#39; life" data-tsina="shihuacivis" class="share clearfix">
   </div>
 
 </div>
@@ -223,19 +232,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/09/18/byeHardCode/" title="告别hardcode">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  告别hardcode</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2015/09/12/css3AudiLogo/"  title="用CSS3画一个奥迪车标">
+<a href="/2015/10/18/20151017_h5selfadaption/"  title="使用rem实现fullpage专题页自适应布局">
  <strong>NEXT:</strong><br/> 
- <span>用CSS3画一个奥迪车标
+ <span>使用rem实现fullpage专题页自适应布局
 </span>
 </a>
 </div>
@@ -252,7 +253,7 @@
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目錄</strong>
-  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#为何要用cocos2d-js-lite"><span class="toc-number">1.</span> <span class="toc-text">为何要用cocos2d-js-lite</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#如何启动游戏"><span class="toc-number">2.</span> <span class="toc-text">如何启动游戏</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#自适应方案"><span class="toc-number">2.1.</span> <span class="toc-text">自适应方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#预加载"><span class="toc-number">2.2.</span> <span class="toc-text">预加载</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#游戏场景_Scene"><span class="toc-number">3.</span> <span class="toc-text">游戏场景 Scene</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#场景分层_Layer"><span class="toc-number">4.</span> <span class="toc-text">场景分层 Layer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#精灵元素_Sprite"><span class="toc-number">5.</span> <span class="toc-text">精灵元素 Sprite</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#生成Sprite"><span class="toc-number">5.1.</span> <span class="toc-text">生成Sprite</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#生成LabelTTF"><span class="toc-number">5.2.</span> <span class="toc-text">生成LabelTTF</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#生成按钮"><span class="toc-number">5.3.</span> <span class="toc-text">生成按钮</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#动作"><span class="toc-number">6.</span> <span class="toc-text">动作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#事件监听和碰撞检测"><span class="toc-number">7.</span> <span class="toc-text">事件监听和碰撞检测</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#播放声音"><span class="toc-number">8.</span> <span class="toc-text">播放声音</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#定时器"><span class="toc-number">9.</span> <span class="toc-text">定时器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#简单总结优缺点"><span class="toc-number">10.</span> <span class="toc-text">简单总结优缺点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#优点"><span class="toc-number">10.1.</span> <span class="toc-text">优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点"><span class="toc-number">10.2.</span> <span class="toc-text">缺点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#demo地址"><span class="toc-number">10.3.</span> <span class="toc-text">demo地址</span></a></li></ol></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#为何要用cocos2d-js-lite"><span class="toc-number">1.</span> <span class="toc-text">为何要用cocos2d-js-lite</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#如何启动游戏引擎和开启游戏"><span class="toc-number">2.</span> <span class="toc-text">如何启动游戏引擎和开启游戏</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-如何启动引擎"><span class="toc-number">2.1.</span> <span class="toc-text">1.如何启动引擎</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-如何开启游戏"><span class="toc-number">2.2.</span> <span class="toc-text">2.如何开启游戏</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自适应方案"><span class="toc-number">2.3.</span> <span class="toc-text">自适应方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#预加载"><span class="toc-number">2.4.</span> <span class="toc-text">预加载</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#游戏场景_Scene"><span class="toc-number">3.</span> <span class="toc-text">游戏场景 Scene</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#场景分层_Layer"><span class="toc-number">4.</span> <span class="toc-text">场景分层 Layer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#精灵元素_Sprite"><span class="toc-number">5.</span> <span class="toc-text">精灵元素 Sprite</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#生成Sprite"><span class="toc-number">5.1.</span> <span class="toc-text">生成Sprite</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#生成LabelTTF"><span class="toc-number">5.2.</span> <span class="toc-text">生成LabelTTF</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#生成按钮"><span class="toc-number">5.3.</span> <span class="toc-text">生成按钮</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#动作"><span class="toc-number">6.</span> <span class="toc-text">动作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#事件监听和碰撞检测"><span class="toc-number">7.</span> <span class="toc-text">事件监听和碰撞检测</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#播放声音"><span class="toc-number">8.</span> <span class="toc-text">播放声音</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#定时器"><span class="toc-number">9.</span> <span class="toc-text">定时器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#简单总结优缺点"><span class="toc-number">10.</span> <span class="toc-text">简单总结优缺点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#优点"><span class="toc-number">10.1.</span> <span class="toc-text">优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点"><span class="toc-number">10.2.</span> <span class="toc-text">缺点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#demo地址"><span class="toc-number">10.3.</span> <span class="toc-text">demo地址</span></a></li></ol></li></ol>
   </div>
 
 <div id="asidepart">
