@@ -361,11 +361,14 @@ body {
   font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; }
 
 * {
-  -webkit-tap-highlight-color: transparent;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none; }
+  -webkit-tap-highlight-color: transparent; }
+
+.particles-js {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0; }
 
 ul.nav,
 ul.post-list {
