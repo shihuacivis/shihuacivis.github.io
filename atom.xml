@@ -4,7 +4,7 @@
   <subtitle><![CDATA[西斗门路前端手艺人]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.shihua.im/"/>
-  <updated>2016-01-05T14:35:40.000Z</updated>
+  <updated>2016-01-06T16:26:39.000Z</updated>
   <id>http://www.shihua.im/</id>
   
   <author>
@@ -15,12 +15,35 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title><![CDATA[设计一个轻量级的HTML5棋牌游戏框架]]></title>
+    <title><![CDATA[初识HTML5音频播放api——webaudio]]></title>
+    <link href="http://www.shihua.im/2016/01/07/20160106_webaudio/"/>
+    <id>http://www.shihua.im/2016/01/07/20160106_webaudio/</id>
+    <published>2016-01-07T15:00:00.000Z</published>
+    <updated>2016-01-06T16:26:39.000Z</updated>
+    <content type="html"><![CDATA[<p>HTML5除了提供一个最基础的audio标签之外，还额外提供了一个更高性能的音频播放api——webaudio。<br>可以用来实现如果用audio标签难以实现的高频、重叠的音效，如枪击游戏中的枪击声。</p>
+<a id="more"></a>
+<h2 id="初步分析">初步分析</h2><p>在webaudio中，<br>我们可以创建一个<code>AudioContext</code>对象<br><code>AudioContext</code>中的<code>decodeAudioData</code>允许我们将<code>arrayBufer</code>格式的二进制流解码成为浏览器所支持的音频数据流。<br>此外，<code>AudioContext</code>还可以创建<code>AudioBufferSourceNode</code>对象，它包含了父类<code>AudioNode</code>中的属性和方法，即包括了我们需要用到的音频数据流的读取play方法。可以用来播放音频数据流。</p>
+<p>利用webaudio播放音乐一般需要下面几步：</p>
+<h2 id="1-加载音频文件读取为arrayBuffer格式的二进制流">1.加载音频文件读取为arrayBuffer格式的二进制流</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> request = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line">  request.open(<span class="string">'GET'</span>, url, <span class="literal">true</span>);</span><br><span class="line">  request.responseType = <span class="string">'arraybuffer'</span>;</span><br><span class="line">  request.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> arrayBuffer = request.response；</span><br><span class="line">    <span class="comment">// todo 去往下一步</span></span><br><span class="line">  &#125;;</span><br><span class="line">  request.send();</span><br></pre></td></tr></table></figure>
+<h2 id="2-将arrayBuffer格式的二进制流读出成音频数据流">2.将arrayBuffer格式的二进制流读出成音频数据流</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> context = <span class="keyword">new</span> (<span class="built_in">window</span>.AudioContext || <span class="built_in">window</span>.webkitAudioContext || <span class="built_in">window</span>.mozAudioContext)();</span><br><span class="line">  context.decodeAudioData(request.response, <span class="function"><span class="keyword">function</span>(<span class="params">buffer</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 去往下一步</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="3-创建AudioBufferSourceNode，播放音频数据流">3.创建AudioBufferSourceNode，播放音频数据流</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> audio = context.createBufferSource(); <span class="comment">// 创建AudioBufferSourceNode</span></span><br><span class="line">audio.buffer = buffer; <span class="comment">// 设置数据流</span></span><br><span class="line">audio.connect(destination); <span class="comment">// 将AudioBufferSourceNode『部署』到播放终端上</span></span><br><span class="line"><span class="comment">// 下面三个方法都是执行播放动作，由于不同时期的webaudio的api差异很大，所以调用方法有所不同</span></span><br><span class="line"><span class="keyword">if</span> (audio.start) &#123;</span><br><span class="line">  audio.start(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (audio[<span class="string">'noteGrainOn'</span>]) &#123;</span><br><span class="line">  <span class="keyword">var</span> duration = audio.buffer.duration;</span><br><span class="line">  audio[<span class="string">'noteGrainOn'</span>](<span class="number">0</span>, <span class="number">0</span>, duration);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  audio[<span class="string">'noteOn'</span>](<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a href="http://demo.shihua.im/webaudio-demo/" target="_blank" rel="external">webaudio的demo地址</a></p>
+<p><a href="https://github.com/shihuacivis/webaudio-demo" target="_blank" rel="external">github地址</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>HTML5除了提供一个最基础的audio标签之外，还额外提供了一个更高性能的音频播放api——webaudio。<br>可以用来实现如果用audio标签难以实现的高频、重叠的音效，如枪击游戏中的枪击声。</p>]]>
+    
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[构思一个轻量级的HTML5棋牌游戏框架]]></title>
     <link href="http://www.shihua.im/2016/01/05/20160105_framework/"/>
     <id>http://www.shihua.im/2016/01/05/20160105_framework/</id>
     <published>2016-01-05T13:00:00.000Z</published>
-    <updated>2016-01-05T14:35:40.000Z</updated>
-    <content type="html"><![CDATA[<p>我在思考如何设计一个通用的HTML5棋牌游戏框架<br>希望能够通过这套框架，降低游戏的开发复杂度，提高效率<br><a id="more"></a></p>
+    <updated>2016-01-06T16:27:25.000Z</updated>
+    <content type="html"><![CDATA[<p>我在思考如何构思一个通用的HTML5棋牌游戏框架<br>希望能够通过这套框架，降低游戏的开发复杂度，提高效率<br><a id="more"></a></p>
 <p>有下面几个简单目标：</p>
 <ul>
 <li>1.游戏引擎基于目前所使用的cocos2d-js-lite，但未来可能要替换成别的，甚至用纯HTML开发</li>
@@ -115,7 +138,7 @@
 <p><strong>完事具备，就差一个程序猿了</strong></p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p>我在思考如何设计一个通用的HTML5棋牌游戏框架<br>希望能够通过这套框架，降低游戏的开发复杂度，提高效率<br>]]>
+    <![CDATA[<p>我在思考如何构思一个通用的HTML5棋牌游戏框架<br>希望能够通过这套框架，降低游戏的开发复杂度，提高效率<br>]]>
     
     </summary>
     
@@ -924,23 +947,6 @@
 ]]></content>
     <summary type="html">
     <![CDATA[<p>在日常的开发中经常会遇到需要将临时数据混存起来供后期使用的场景，特别是做一些管理系统或者游戏时，都会要处理大量的数据。这时候就需要思考如何使用js来存取数据了。</p>]]>
-    
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[在微信浏览器中Audio自动播放的方法]]></title>
-    <link href="http://www.shihua.im/2015/09/09/20150910_autoplayInWechat/"/>
-    <id>http://www.shihua.im/2015/09/09/20150910_autoplayInWechat/</id>
-    <published>2015-09-08T16:00:00.000Z</published>
-    <updated>2015-12-20T06:27:47.000Z</updated>
-    <content type="html"><![CDATA[<p>As we knew, ios为了安全性屏蔽了audio标签的autoplay属性，需要由其它事件触发调用才能播放声音。<br>那么，浏览器中能触发的事件就很多了。最早我们的实现方式是当用户第一次touch屏幕时去吃饭audio.play() 方法。<br>后来发现这个方法有缺陷：假如用户不去点屏幕，那么声音就不会播放了。</p>
-<a id="more"></a>
-<p>一个比较灵活的方法，就是去监听页面上的某张图片的onload事件，然后去触发play()方法，就可以实现autoplay的效果了。<br>因为在H5的页面中，我们往往需要预加载多张图片之后才显示页面，正好可以顺带触发play方法，一举两得。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">img.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  audio.play();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>As we knew, ios为了安全性屏蔽了audio标签的autoplay属性，需要由其它事件触发调用才能播放声音。<br>那么，浏览器中能触发的事件就很多了。最早我们的实现方式是当用户第一次touch屏幕时去吃饭audio.play() 方法。<br>后来发现这个方法有缺陷：假如用户不去点屏幕，那么声音就不会播放了。</p>]]>
     
     </summary>
     
