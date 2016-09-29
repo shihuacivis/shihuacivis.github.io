@@ -4,7 +4,7 @@
   <subtitle><![CDATA[西斗门路前端手艺人]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.shihua.im/"/>
-  <updated>2016-06-28T12:33:10.000Z</updated>
+  <updated>2016-09-29T02:40:33.000Z</updated>
   <id>http://www.shihua.im/</id>
   
   <author>
@@ -15,11 +15,27 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[Typescript中实现观察者模式的事件管理器]]></title>
+    <link href="http://www.shihua.im/2016/09/29/20160929_tsSubPub/"/>
+    <id>http://www.shihua.im/2016/09/29/20160929_tsSubPub/</id>
+    <published>2016-09-29T01:00:00.000Z</published>
+    <updated>2016-09-29T02:40:33.000Z</updated>
+    <content type="html"><![CDATA[<p>观察者模式的事件管理器可以让游戏中各模块间的功能调用以事件响应的方式相对独立开来，使得各模块间的功能相对更加独立。TS中的实现方法与JS类似，只是某些语法略有不同。<br><a id="more"></a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">​<span class="comment">/**</span><br><span class="line"> *</span><br><span class="line"> * @shihua</span><br><span class="line"> * 2016.08.29</span><br><span class="line"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">EventManager</span> </span>&#123;</span><br><span class="line">  private static _listeners = &#123;&#125;;</span><br><span class="line">  private static guid: number = <span class="number">1</span>; <span class="comment">// 识别方法的唯一标识</span></span><br><span class="line">  <span class="comment">// 订阅事件</span></span><br><span class="line">  public static sub(type: string,fn): <span class="keyword">void</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="keyword">this</span>._listeners[type] === <span class="string">'undefined'</span>) &#123;</span><br><span class="line">      <span class="keyword">this</span>._listeners[type] = [];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> fn === <span class="string">'function'</span>) &#123;</span><br><span class="line">      <span class="keyword">this</span>._listeners[type].push(fn);</span><br><span class="line">      fn.guid = <span class="keyword">this</span>.guid;</span><br><span class="line">      <span class="keyword">this</span>.guid++;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//取消订阅事件</span></span><br><span class="line">  public static unsub(type: string, fn): <span class="keyword">void</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> arrayEvent = <span class="keyword">this</span>._listeners[type];</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> type === <span class="string">'string'</span> &amp;&amp; arrayEvent <span class="keyword">instanceof</span> <span class="built_in">Array</span>) &#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">typeof</span> fn === <span class="string">'function'</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>,length = arrayEvent.length; i &lt; length; i += <span class="number">1</span>) &#123;</span><br><span class="line">          <span class="keyword">if</span> (arrayEvent[i].guid === fn.guid) &#123;</span><br><span class="line">            <span class="comment">// 通过guid识别function</span></span><br><span class="line">            <span class="keyword">this</span>._listeners[type].splice(i,<span class="number">1</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">delete</span> <span class="keyword">this</span>._listeners[type];</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//发布事件</span></span><br><span class="line">  public static pub(type: string, ...data: any[]): <span class="keyword">void</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> arrayEvent = <span class="keyword">this</span>._listeners[type];</span><br><span class="line">    <span class="keyword">var</span> handlerArgs = <span class="built_in">Array</span>.prototype.slice.call(<span class="built_in">arguments</span>, <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">if</span> (arrayEvent <span class="keyword">instanceof</span> <span class="built_in">Array</span>) &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>,length = arrayEvent.length; i &lt; length; i += <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">typeof</span> arrayEvent[i] === <span class="string">'function'</span>) &#123;</span><br><span class="line">          arrayEvent[i].apply(<span class="keyword">this</span>, handlerArgs);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>观察者模式的事件管理器可以让游戏中各模块间的功能调用以事件响应的方式相对独立开来，使得各模块间的功能相对更加独立。TS中的实现方法与JS类似，只是某些语法略有不同。<br>]]>
+    
+    </summary>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[使用Fis3自动构建前端项目快速上手]]></title>
     <link href="http://www.shihua.im/2016/06/28/20160628_fis3/"/>
     <id>http://www.shihua.im/2016/06/28/20160628_fis3/</id>
     <published>2016-06-28T12:00:00.000Z</published>
-    <updated>2016-06-28T12:33:10.000Z</updated>
+    <updated>2016-09-29T01:30:53.000Z</updated>
     <content type="html"><![CDATA[<p>fis3配置快速开始指南，实现编译SASS(SCSS)，压缩JS、CSS、图片，PC端合雪碧图，移动端自动转换REM值，开发时浏览器自动同步的功能，一份代码编译适应多个环境等功能，满足日产活动项目的需求。<br><a id="more"></a></p>
 <h3 id="1-_安装node-js环境">1. 安装node.js环境</h3><h3 id="2-_由于npm网速不理想，_建议安装cnpm，_详细方法：https://npm-taobao-org/">2. 由于npm网速不理想， 建议安装cnpm， 详细方法：<a href="https://npm.taobao.org/" target="_blank" rel="external">https://npm.taobao.org/</a></h3><blockquote>
 <p>a.打开命令行（开始菜单搜索cmd）, 输入：<br><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g cnpm --registry=https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure></p>
@@ -29,7 +45,7 @@
 <p>a. 安装fis3环境， 命令行执行：<br><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cnpm install -g fis3</span><br></pre></td></tr></table></figure></p>
 <p>b. 由于fis3抽风般的默认使用绝对路径，所以需要安装相对路径插件fis3-hook-relative，命令行执行：<br><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cnpm install -g fis3-hook-relative</span><br></pre></td></tr></table></figure></p>
 <p>c. 选装sass/less编译环境，推荐使用sass环境，命令行执行：<br><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cnpm install -g fis-parser-node-sass</span><br></pre></td></tr></table></figure></p>
-<p>d. 安装px2rem插件，以后在css文件中只需要按设计稿上的px值1:1编码。命令行执行：<br><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cnpm install -g cfis-postprocessor-px2<span class="comment">rem</span></span><br></pre></td></tr></table></figure></p>
+<p>d. 安装px2rem插件，以后在css文件中只需要按设计稿上的px值1:1编码。命令行执行：<br><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cnpm install -g fis-postprocessor-px2<span class="comment">rem</span></span><br></pre></td></tr></table></figure></p>
 <p>e. 安装文件合并插件，命令行执行：<br><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cnpm install -g fis3-postpackager-loader</span><br></pre></td></tr></table></figure></p>
 </blockquote>
 <h3 id="4-_fis-conf-js配置">4. fis-conf.js配置</h3><p>项目一般我们的项目分为pc端和移动端两种，因此fis分两种配置，在PC端上，当我们打包正式包时，会自动合成雪碧图，而在移动端上则不会合图，但会自动将css的px转成rem以实现自适应布局。若有特殊项目则可以自行修改配置文件fis-conf.js。</p>
@@ -54,7 +70,7 @@
 </blockquote>
 <h3 id="9-如果在线上遇到强缓存的情况，可以将配置文件中TEST_USE_HASH或FORMAL_USE_HASH置为true，开启文件指纹功能。">9.如果在线上遇到强缓存的情况，可以将配置文件中TEST_USE_HASH或FORMAL_USE_HASH置为true，开启文件指纹功能。</h3><h3 id="10-使用rem自适应布局方案时，需要注意下面几点：">10.使用rem自适应布局方案时，需要注意下面几点：</h3><blockquote>
 <p>a. 编写css时，当遇到如1px边框，固定px大小的字体这种不需要使用rem自适应大小的属性时，在属性后面加<code>/*px*/</code>，详情参考<a href="https://github.com/songsiqi/px2rem" target="_blank" rel="external">https://github.com/songsiqi/px2rem</a><br>  <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class">.selector</span> <span class="rules">&#123;</span><br><span class="line">  <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">150px</span></span></span>;</span><br><span class="line">  <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">64px</span></span></span>; <span class="comment">/*px*/</span></span><br><span class="line">  <span class="rule"><span class="attribute">font-size</span>:<span class="value"> <span class="number">28px</span></span></span>; <span class="comment">/*px*/</span></span><br><span class="line">  <span class="rule"><span class="attribute">border</span>:<span class="value"> <span class="number">1px</span> solid <span class="hexcolor">#ddd</span></span></span>; <span class="comment">/*no*/</span></span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure></p>
-<p> b. 请在CSS中加入默认字体大小：<br>  <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 默认是iphone6 */</span></span><br><span class="line"><span class="tag">html</span><span class="rules">&#123; <span class="rule"><span class="attribute">font-size</span>:<span class="value"> <span class="number">50px</span></span></span>; &#125;</span></span><br><span class="line"><span class="at_rule">@<span class="keyword">media</span> screen and (max-width:<span class="number">359px</span>) and (orientation:portrait) </span>&#123;</span><br><span class="line">    <span class="tag">html</span> <span class="rules">&#123; <span class="rule"><span class="attribute">font-size</span>:<span class="value"> <span class="number">46.667px</span></span></span>; &#125;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* 常见的安卓机 */</span></span><br><span class="line"><span class="at_rule">@<span class="keyword">media</span> screen and (min-width:<span class="number">360px</span>) and (max-width:<span class="number">374px</span>) and (orientation:portrait) </span>&#123;</span><br><span class="line">    <span class="tag">html</span> <span class="rules">&#123; <span class="rule"><span class="attribute">font-size</span>:<span class="value"> <span class="number">48px</span></span></span>; &#125;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* 某些冷门的安卓机 如nexus4 */</span></span><br><span class="line"><span class="at_rule">@<span class="keyword">media</span> screen and (min-width:<span class="number">384px</span>) and (max-width:<span class="number">399px</span>) and (orientation:portrait) </span>&#123;</span><br><span class="line">    <span class="tag">html</span> <span class="rules">&#123; <span class="rule"><span class="attribute">font-size</span>:<span class="value"> <span class="number">51.333px</span></span></span>; &#125;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* 某些冷门的安卓机 如nexus6 */</span></span><br><span class="line"><span class="at_rule">@<span class="keyword">media</span> screen and (min-width:<span class="number">400px</span>) and (max-width:<span class="number">413px</span>) and (orientation:portrait) </span>&#123;</span><br><span class="line">    <span class="tag">html</span> <span class="rules">&#123; <span class="rule"><span class="attribute">font-size</span>:<span class="value"> <span class="number">53.333px</span></span></span>; &#125;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* iphone6 plus */</span></span><br><span class="line"><span class="at_rule">@<span class="keyword">media</span> screen and (min-width:<span class="number">414px</span>) and (max-width:<span class="number">431px</span>) and (orientation:portrait)</span>&#123;</span><br><span class="line">    <span class="tag">html</span> <span class="rules">&#123; <span class="rule"><span class="attribute">font-size</span>:<span class="value"> <span class="number">55.2px</span></span></span>; &#125;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* 以下是其它设备 */</span></span><br><span class="line"><span class="at_rule">@<span class="keyword">media</span> screen and (min-width:<span class="number">432px</span>) and (max-width:<span class="number">479px</span>) and (orientation:portrait)</span>&#123;</span><br><span class="line">    <span class="tag">html</span> <span class="rules">&#123; <span class="rule"><span class="attribute">font-size</span>:<span class="value"> <span class="number">57.6px</span></span></span>; &#125;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="at_rule">@<span class="keyword">media</span> screen and (min-width:<span class="number">480px</span>)and (max-width:<span class="number">639px</span>) and (orientation:portrait)</span>&#123;</span><br><span class="line">   <span class="tag">html</span><span class="rules">&#123; <span class="rule"><span class="attribute">font-size</span>:<span class="value"> <span class="number">64px</span></span></span>;&#125;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="at_rule">@<span class="keyword">media</span> screen and (min-width:<span class="number">640px</span>) and (orientation:portrait)</span>&#123;</span><br><span class="line">   <span class="tag">html</span><span class="rules">&#123; <span class="rule"><span class="attribute">font-size</span>:<span class="value"> <span class="number">85.333px</span></span></span>;&#125;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p> b. 请在CSS中加入默认字体大小：(竖屏情况下)<br>  <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 默认是iphone6 */</span></span><br><span class="line"><span class="tag">html</span><span class="rules">&#123; <span class="rule"><span class="attribute">font-size</span>:<span class="value"> <span class="number">50px</span></span></span>; &#125;</span></span><br><span class="line"><span class="at_rule">@<span class="keyword">media</span> screen and (max-width:<span class="number">359px</span>) and (orientation:portrait) </span>&#123;</span><br><span class="line">    <span class="tag">html</span> <span class="rules">&#123; <span class="rule"><span class="attribute">font-size</span>:<span class="value"> <span class="number">46.667px</span></span></span>; &#125;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* 常见的安卓机 */</span></span><br><span class="line"><span class="at_rule">@<span class="keyword">media</span> screen and (min-width:<span class="number">360px</span>) and (max-width:<span class="number">374px</span>) and (orientation:portrait) </span>&#123;</span><br><span class="line">    <span class="tag">html</span> <span class="rules">&#123; <span class="rule"><span class="attribute">font-size</span>:<span class="value"> <span class="number">48px</span></span></span>; &#125;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* 某些冷门的安卓机 如nexus4 */</span></span><br><span class="line"><span class="at_rule">@<span class="keyword">media</span> screen and (min-width:<span class="number">384px</span>) and (max-width:<span class="number">399px</span>) and (orientation:portrait) </span>&#123;</span><br><span class="line">    <span class="tag">html</span> <span class="rules">&#123; <span class="rule"><span class="attribute">font-size</span>:<span class="value"> <span class="number">51.333px</span></span></span>; &#125;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* 某些冷门的安卓机 如nexus6 */</span></span><br><span class="line"><span class="at_rule">@<span class="keyword">media</span> screen and (min-width:<span class="number">400px</span>) and (max-width:<span class="number">413px</span>) and (orientation:portrait) </span>&#123;</span><br><span class="line">    <span class="tag">html</span> <span class="rules">&#123; <span class="rule"><span class="attribute">font-size</span>:<span class="value"> <span class="number">53.333px</span></span></span>; &#125;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* iphone6 plus */</span></span><br><span class="line"><span class="at_rule">@<span class="keyword">media</span> screen and (min-width:<span class="number">414px</span>) and (max-width:<span class="number">431px</span>) and (orientation:portrait)</span>&#123;</span><br><span class="line">    <span class="tag">html</span> <span class="rules">&#123; <span class="rule"><span class="attribute">font-size</span>:<span class="value"> <span class="number">55.2px</span></span></span>; &#125;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* 以下是其它设备 */</span></span><br><span class="line"><span class="at_rule">@<span class="keyword">media</span> screen and (min-width:<span class="number">432px</span>) and (max-width:<span class="number">479px</span>) and (orientation:portrait)</span>&#123;</span><br><span class="line">    <span class="tag">html</span> <span class="rules">&#123; <span class="rule"><span class="attribute">font-size</span>:<span class="value"> <span class="number">57.6px</span></span></span>; &#125;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="at_rule">@<span class="keyword">media</span> screen and (min-width:<span class="number">480px</span>)and (max-width:<span class="number">639px</span>) and (orientation:portrait)</span>&#123;</span><br><span class="line">   <span class="tag">html</span><span class="rules">&#123; <span class="rule"><span class="attribute">font-size</span>:<span class="value"> <span class="number">64px</span></span></span>;&#125;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="at_rule">@<span class="keyword">media</span> screen and (min-width:<span class="number">640px</span>) and (orientation:portrait)</span>&#123;</span><br><span class="line">   <span class="tag">html</span><span class="rules">&#123; <span class="rule"><span class="attribute">font-size</span>:<span class="value"> <span class="number">85.333px</span></span></span>;&#125;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>c. viewport通常设置为1即可。<br>  <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">meta</span> <span class="attribute">name</span>=<span class="value">"viewport"</span> <span class="attribute">content</span>=<span class="value">"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
 <p>d.动态适配rem的值<br> (1) 若项目页面带滚动条，只需要根据宽度进行自适应的：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">_initRem</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> pxUnit = <span class="number">100</span>;     <span class="comment">// 在px2rem中预设rem的值 即 1rem = ? px</span></span><br><span class="line">  <span class="keyword">var</span> designWid = <span class="number">750</span>;  <span class="comment">// 设计稿宽度</span></span><br><span class="line">  <span class="keyword">var</span> winWid = <span class="built_in">document</span>.body.clientWidth;</span><br><span class="line">  <span class="keyword">var</span> winHei = <span class="built_in">document</span>.body.clientHeight;</span><br><span class="line">  <span class="keyword">var</span> bl = winWid / designWid;</span><br><span class="line">  <span class="built_in">document</span>.querySelector(<span class="string">'html'</span>).style.fontSize = (bl * pxUnit) + <span class="string">'px'</span>;</span><br><span class="line">&#125;</span><br><span class="line">_initRem();</span><br></pre></td></tr></table></figure></p>
 <p> (2) 若项目是单屏页面，吴滚动条时，还需要根据屏幕的宽高比例进行自适应：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">_initRem</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> pxUnit = <span class="number">100</span>;     <span class="comment">// 在px2rem中预设rem的值 即 1rem = ? px</span></span><br><span class="line">  <span class="keyword">var</span> designWid = <span class="number">750</span>;  <span class="comment">// 设计稿宽度</span></span><br><span class="line">  <span class="keyword">var</span> designHei = <span class="number">1206</span>; <span class="comment">// 设计稿高度</span></span><br><span class="line">  <span class="keyword">var</span> winWid = <span class="built_in">document</span>.body.clientWidth;</span><br><span class="line">  <span class="keyword">var</span> winHei = <span class="built_in">document</span>.body.clientHeight;</span><br><span class="line">  <span class="keyword">var</span> bl = winHei / winWid &lt; (designHei / designWid) ? winHei / designHei : winWid / designWid;</span><br><span class="line">  <span class="built_in">document</span>.querySelector(<span class="string">'html'</span>).style.fontSize = (bl * pxUnit) + <span class="string">'px'</span>;</span><br><span class="line">&#125;</span><br><span class="line">_initRem();</span><br></pre></td></tr></table></figure></p>
@@ -68,49 +84,13 @@
   </entry>
   
   <entry>
-    <title><![CDATA[老司机开过的那些车]]></title>
-    <link href="http://www.shihua.im/2016/02/26/20160226_car/"/>
-    <id>http://www.shihua.im/2016/02/26/20160226_car/</id>
-    <published>2016-02-26T09:00:00.000Z</published>
-    <updated>2016-02-25T17:32:52.000Z</updated>
-    <content type="html"><![CDATA[<p>今天又喝了港式奶茶，真的是一喝一个准，又失眠了，趁还没有睡意来随便扯扯吧。<br>我的这个博客基本上都在扯一些正经枯燥的技术。<br>今天就破一次例，来谈谈自己作为一个老司机开过的一些车的感受。<br><a id="more"></a></p>
-<p>我从小就非常喜欢车，路上的车从轿车到大客车都基本会有兴趣去了解。</p>
-<p>终于熬到了18岁，11年1月第一次在驾校摸到了真车的方向盘……</p>
-<p>那是每个驾驶员必修的一课——倒桩。那时候车子是一辆长城的皮卡。</p>
-<p>然而真车比极品飞车里的车难开多了，各种东倒西歪……</p>
-<p>接着马上就春节放假了，爸爸兴致勃勃的答应春节里带我去一个空旷的工业区里面学开车。</p>
-<p>那就是我出了驾校开的第一辆车……一辆国产的轻卡！！！<br>妈蛋转向完全靠臂力，档位也是反的，而且车长超过5米！<br>不过，也许也是因为从小就爱车的缘故，上手非常的快，两三天之后我已经可以轻易的把这个轻卡倒车入库了。</p>
-<p>由于我农用车开得非常出色，所以那个寒假爸爸送我去机场的时候竟然大胆的让我开上了高速（那时候我连科目一都还没考……无证驾驶不宜提倡！！！还好我们那边高速车少），当然这次开的就不是农用车了。第二辆上手的车就是07款的日产颐达了，这也是后来我开最多的车子之一，从农用车到家轿的第一感受就是方向盘太轻了！自动挡太舒服了！加速也非常的轻巧，非常好开。但是底盘很软，过烂路是要减速的，不然就呵呵了。胎噪真的很大，跑高速的时候，120公里3000转巡航，胎噪、风噪很明显。后来改了米其林轮胎之后，60公里左右走好的柏油路静音大有改善，不过方向盘就变沉了不少。日产那个巨省油的1.6L发动机给我留下的深刻的印象。</p>
-<p>接着一次偶然的机会，老爸让我开了一下90年代的三菱帕杰罗。小时候觉得这个车非常的威猛，不过由于我只是在公路上简单的体会了一下，并没有能感受它最强悍的四驱。首先这个车很重，方向也很沉，而且还是手动挡，那时候还是新手，开这个车感觉压力很大，跟10多年后的颐达比，我还是喜欢后者。</p>
-<p>11年暑假开了一下表姐新买的凯越，这个车子方向盘太细了，回馈不是很喜欢。底盘会感觉稳一些，感觉和驾校的爱丽舍差不多，没有颐达好开。后来大四的时候我还和大学室友租了这个去自驾游，感觉还是蛮好用的，是一个物有所值的家用车。</p>
-<p>然后是长城的某几款SUV，都是手动挡的，开启了没有什么特别是性格，跟凯越差不多的感觉，只是一个实用的车，没有太多特色。</p>
-<p>之后是一辆跟了我很长时间的日产骊威，隔音比颐达烂不少，底盘滤震也很差，不过胜在恰到好处的车身高度，视野很好，车子很轻巧，方向盘很轻，开起来不累，不过对于新手可能摸不清自己到底打了多少方向。非常的省油，从我家高速去南宁距离100km，这个车来回一趟居然只用了100块的油，当时油价还是8块呢，日产这个巨省油的发动机又立功了……</p>
-<p>然后是一辆超级超级家用的车——丰田卡罗拉1.8的，也是没有太多性格的车子，丰田的4AT调的比日产的要高明一些，另外排量也大一些，所以在超车的时候会更有信心，方向盘也没有日产那么轻，所以对于新手来说会更加好掌控。</p>
-<p>我拿到驾驶证后开的第一辆车是一辆98年的雅阁……由于老爸的影响，我从小就对本田雅阁有着深厚的感情……2.0，手动挡，那个动力换做今日真的就优点弱了，低速的时候会感觉车子有一些些肉，跟驾校的车子差不多，不过由于动力还是有些优势的吧，1档升2档感觉比教练车舒服多了，能明显感觉车子的底盘过烂路时要安稳许多，另外那个发动机拉到高转时声音还是很好听的……</p>
-<p>接着是全国第一次高速免费，我们全家一起自驾去北海，当时开的是小改款的蒙迪欧2.0T GTDI200，那是我开的第一辆有自动大灯的车子……妈蛋大晚上差点不知道怎么开灯……动力实在是太猛了，底盘非常的稳，时速160分分钟的事，跑高速再合适不过了……但是这个车油耗非常的感人……另外双离合，市区跟车的确能感受到会慢半拍接合的过程。</p>
-<p>大三暑假开了一段时间的标致207，这个车非常的小，满载的时候非常的感人……这个车动力不是特别出色，那个4AT变速箱也是出了名的SB，开车不斯文的话很容易被顿挫折磨。但是小车真的非常有乐趣，那时候我开着它去大化的七百弄山路转，真的非常有信息，指哪打哪。另外停车很不错，基本上一把就进去了。</p>
-<p>09款雅阁2.4L我也开过几次，可能由于我开的这辆大修过的原因，感觉动力好像被阉割了一样，油门下去了，转速上去了，声音起来了，但是速度并不见得马上飞起来……主管感受并没有那辆蒙迪欧听话，而且感觉车身很大，停车要多留神一些……胎压不太够的时候，这辆车还是非常舒服的……</p>
-<p>昂科威2.0T四驱版本，这个车给人一种胖胖的感觉，底盘很厚实，方向很实，给人的感觉很好，隔音非常的好，不过由于车身重且大，提速并不是特别快，另外停车还是不太方便。过弯的时候侧倾还是很明显的。空间也还好，没有想象中那么大。</p>
-<p>昂科威1.5T前驱版本，这个车的行驶品质其实跟2.0T差不多，很稳，很舒服。就是1.5T的动力，松开油门会感觉窜一些，没有2.0T的来的那么自然，另外加速效果也自然不如后者，但动力还是够用的。</p>
-<p>93年丰田皇冠，这是我开过底盘最舒服的一台车，底盘非常的舒服，高级，另外3.0 V6的发动机，油门印下去时那种敲小鼓的声音真的很有意思，因吹丝挺！很好的一台车啊，可惜要报废了。</p>
-<p>09款福特嘉年华，我两年左右没开过手动挡的车了，这台车有着非常浓厚的驾驶乐趣，转向很轻很好打，档位也很清晰，动力很顺畅，适合快节奏的开。另外这台车6年车龄的时候，全车的内饰都在响，非常感人……</p>
-<p>至于我自己的车？我最近也在思考我到底需要一台怎样的车子？我觉得乐趣还是要排在首位的，空间家用排在其次把。</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>今天又喝了港式奶茶，真的是一喝一个准，又失眠了，趁还没有睡意来随便扯扯吧。<br>我的这个博客基本上都在扯一些正经枯燥的技术。<br>今天就破一次例，来谈谈自己作为一个老司机开过的一些车的感受。<br>]]>
-    
-    </summary>
-    
-  </entry>
-  
-  <entry>
     <title><![CDATA[微信H5中video常见的问题]]></title>
     <link href="http://www.shihua.im/2016/02/23/20160223_wechatVideo/"/>
     <id>http://www.shihua.im/2016/02/23/20160223_wechatVideo/</id>
     <published>2016-02-23T09:00:00.000Z</published>
-    <updated>2016-02-23T08:56:18.000Z</updated>
-    <content type="html"><![CDATA[<p>最近帮朋友看了微信H5播放video，实现类似吴亦凡参军H5的效果。在X5引擎中遇到了全屏播放、自动播放等几个问题。<br><a id="more"></a></p>
-<h2 id="1-视频全屏播放">1.视频全屏播放</h2><p>我的思路是用一个宽高均为100%的容器<code>.video-wrap</code>来包住<code>video</code>，再让<code>video</code>的高度等于容器的高度，进而实现全屏。</p>
+    <updated>2016-09-29T01:43:05.000Z</updated>
+    <content type="html"><![CDATA[<p>微信H5播放video，实现类似吴亦凡参军H5的效果。在X5引擎中遇到了全屏播放、自动播放等几个问题。<br><a id="more"></a></p>
+<h2 id="1-视频全屏播放">1.视频全屏播放</h2><p>思路是用一个宽高均为100%的容器<code>.video-wrap</code>来包住<code>video</code>，再让<code>video</code>的高度等于容器的高度，进而实现全屏。</p>
 <p>不过这里遇到了2个问题：</p>
 <ul>
 <li>在ios上，微信会默认调用原生的播放器来全屏播放视频，会出现白色的菜单和进度条，影响全屏的体验。</li>
@@ -126,7 +106,7 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">document</span>.querySelector(<span class="string">'#video'</span>).addEventListener(<span class="string">'ended'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">evt</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">document</span>.querySelector(<span class="string">'.video-wrap'</span>).innerHTML(<span class="string">''</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p>最近帮朋友看了微信H5播放video，实现类似吴亦凡参军H5的效果。在X5引擎中遇到了全屏播放、自动播放等几个问题。<br>]]>
+    <![CDATA[<p>微信H5播放video，实现类似吴亦凡参军H5的效果。在X5引擎中遇到了全屏播放、自动播放等几个问题。<br>]]>
     
     </summary>
     
@@ -203,113 +183,6 @@
   </entry>
   
   <entry>
-    <title><![CDATA[构思一个轻量级的HTML5棋牌游戏框架]]></title>
-    <link href="http://www.shihua.im/2016/01/05/20160105_framework/"/>
-    <id>http://www.shihua.im/2016/01/05/20160105_framework/</id>
-    <published>2016-01-05T13:00:00.000Z</published>
-    <updated>2016-01-06T16:27:25.000Z</updated>
-    <content type="html"><![CDATA[<p>我在思考如何构思一个通用的HTML5棋牌游戏框架<br>希望能够通过这套框架，降低游戏的开发复杂度，提高效率<br><a id="more"></a></p>
-<p>有下面几个简单目标：</p>
-<ul>
-<li>1.游戏引擎基于目前所使用的cocos2d-js-lite，但未来可能要替换成别的，甚至用纯HTML开发</li>
-<li>2.游戏界面能够基于配置开发，不需要有太重界面的构建代码</li>
-<li>3.组件化开发，希望游戏像拼装积木一样简单，在一定范围内自由增减</li>
-<li>4.只做游戏的核心玩法部分，至于房间列表、商城、个人中心等等这些个性化的功能部分交给HTML去做吧。整个混合式H5游戏开发，听起来就高大上。</li>
-</ul>
-<p>为了将来能够替换掉引擎，所以首先要先隔离引擎。<br>就像汽车只提供方向盘和档案，至于里面用的是DSG还是AT、是涡轮增压还是自然吸气不用去管。<br>简而言之就是封装引擎底层方法，构建一套独立于引擎的游戏模型。</p>
-<p>根据之前斗地主开发的经验<br>这个框架需要实现下面几大功能：</p>
-<blockquote>
-<ul>
-<li>界面渲染模块<ul>
-<li>场景（底层容器）</li>
-<li>容器（分层）</li>
-<li>元素（静态）</li>
-<li>按钮（动态）</li>
-<li>动画</li>
-</ul>
-</li>
-<li>界面通用组件<ul>
-<li>背景</li>
-<li>卡牌</li>
-<li>出牌区域</li>
-<li>手牌区域</li>
-<li>菜单</li>
-<li>动画交互区域</li>
-<li>触控区域</li>
-</ul>
-</li>
-<li>游戏通用功能<ul>
-<li>卡牌排序</li>
-<li>发布/订阅事件管理器</li>
-</ul>
-</li>
-<li>环境适配功能<ul>
-<li>资源加载管理</li>
-<li>屏幕自适应</li>
-<li>声音引擎</li>
-</ul>
-</li>
-</ul>
-</blockquote>
-<h2 id="全局变量">全局变量</h2><blockquote>
-<ul>
-<li>卡牌种类和尺寸</li>
-</ul>
-</blockquote>
-<h2 id="界面渲染模块">界面渲染模块</h2><h3 id="场景生成器">场景生成器</h3><p>作为游戏的父容器，并定义游戏中包含哪些容器层</p>
-<h3 id="容器分层">容器分层</h3><p>通过配置项定义游戏模型，将场景分层，常见的如背景层、卡牌层、菜单层、动画层、交互层。<br>参照css的思维,预设一下参数,用于生成场景层:</p>
-<blockquote>
-<ul>
-<li>尺寸宽高  width height</li>
-<li>背景图片  background</li>
-<li>是否显示  display</li>
-<li>布局位置  position (left top)   </li>
-<li>父容器id  #id</li>
-<li>显示层级  z-index</li>
-</ul>
-</blockquote>
-<p>容器还会有一个children list列表，里面会包含容器层内所有的元素</p>
-<h3 id="元素">元素</h3><p>一般用于生成某张图片对应的元素:</p>
-<blockquote>
-<ul>
-<li>尺寸宽高  width height</li>
-<li>背景图片  background</li>
-<li>图片位置  spirte position雪碧图位置</li>
-<li>是否显示  display</li>
-<li>布局位置  position (left top)   </li>
-<li>父容器id  #id</li>
-<li>显示层级  z-index</li>
-</ul>
-</blockquote>
-<p>元素除了自身的属性，还会包含一些动画及其执行方法。</p>
-<h3 id="动画">动画</h3><p>定义卡牌游戏中常见的几种动画：move、fadein、fadeout……<br>由于不同引擎对动画的支持不一样，所以动画这块可以自己进行封装，不做太多统一。</p>
-<h3 id="按钮">按钮</h3><p>按钮基本上跟元素一致，但是会多了几个属性：</p>
-<blockquote>
-<ul>
-<li>disabled样式</li>
-<li>active样式</li>
-<li>点击事件的回调</li>
-</ul>
-</blockquote>
-<h2 id="界面通用组件">界面通用组件</h2><h3 id="背景">背景</h3><h3 id="卡牌">卡牌</h3><p>基于<code>元素</code>，根据配置生成不同大小、花色的卡牌，包含牌的升起和降下动画</p>
-<h3 id="出牌区域">出牌区域</h3><p>可设定出牌区域的大小、位置、每行显示的卡牌数、排列方向</p>
-<h3 id="手牌区域">手牌区域</h3><p>手牌区域大小、位置、发牌动画、控制其中的卡牌升起降下的方法</p>
-<h3 id="菜单">菜单</h3><p>将按钮组合起来，布局到界面上</p>
-<h2 id="环境适配功能">环境适配功能</h2><h3 id="资源加载管理">资源加载管理</h3><p>配置项的设计，便于合图、和加载读取</p>
-<h3 id="屏幕自适应">屏幕自适应</h3><p>cocos2d-js中倒是相对粗暴一些</p>
-<h3 id="声音引擎">声音引擎</h3><p>音效的配置项设计</p>
-<h2 id="游戏通用功能">游戏通用功能</h2><h3 id="卡牌排序">卡牌排序</h3><p>基本现成了</p>
-<h3 id="发布/订阅事件管理器">发布/订阅事件管理器</h3><p>基本现成了</p>
-<p><strong>完事具备，就差一个程序猿了</strong></p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>我在思考如何构思一个通用的HTML5棋牌游戏框架<br>希望能够通过这套框架，降低游戏的开发复杂度，提高效率<br>]]>
-    
-    </summary>
-    
-  </entry>
-  
-  <entry>
     <title><![CDATA[在Iframe子窗口调用父级窗口方法]]></title>
     <link href="http://www.shihua.im/2016/01/05/20160105_iframe/"/>
     <id>http://www.shihua.im/2016/01/05/20160105_iframe/</id>
@@ -366,7 +239,7 @@
     <link href="http://www.shihua.im/2015/12/29/20151229_arrayBuffer/"/>
     <id>http://www.shihua.im/2015/12/29/20151229_arrayBuffer/</id>
     <published>2015-12-29T12:00:00.000Z</published>
-    <updated>2016-01-05T14:41:43.000Z</updated>
+    <updated>2016-09-29T01:42:03.000Z</updated>
     <content type="html"><![CDATA[<ul>
 <li><code>Blob</code>是现代浏览器中提供的能够装载二进制流（文件）的容器对象。</li>
 <li><code>ArrayBuffer</code>是能够装载<code>Blob</code>（二进制流）数据的原始缓冲区，<code>ArrayBuffer</code>不能直接通过js读写。</li>
@@ -374,7 +247,7 @@
 </ul>
 <p>所以我对三者的理解是： <code>Blob</code> &lt;-&gt; <code>ArrayBuffer</code> &lt;-&gt; <code>TypeArray</code> &lt;—-&gt; <code>Array</code><br>由于<code>TypeArray</code>和<code>Array</code>有些相似，因此往往我会选择在<code>TypeArray</code>这层做处理。<br>下面是<code>TypeArray</code>、<code>ArrayBuffer</code>和<code>Blob</code>之间相互转换的方法。</p>
 <a id="more"></a>
-<h2 id="Blob_to_ArrayBuffer_（二进制流转ArrayBuffer）">Blob to ArrayBuffer （二进制流转ArrayBuffer）</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* websocket的情况下二进制流的获取 */</span></span><br><span class="line"><span class="keyword">var</span> svip = <span class="string">'websocket'</span>;</span><br><span class="line"><span class="keyword">var</span> ws = <span class="keyword">new</span> WebSocket(svip);</span><br><span class="line">ws.onmessage = <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line"><span class="keyword">var</span> message = e.data;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> blob = message;</span><br><span class="line"><span class="keyword">var</span> fileReader = <span class="keyword">new</span> FileReader();</span><br><span class="line">fileReader.onload  = <span class="function"><span class="keyword">function</span>(<span class="params">progressEvent</span>) </span>&#123;</span><br><span class="line">  arrayBuffer = <span class="keyword">this</span>.result; <span class="comment">// arrayBuffer即为blob对应的arrayBuffer</span></span><br><span class="line">&#125;;</span><br><span class="line">fileReader.readAsArrayBuffer(message);</span><br></pre></td></tr></table></figure>
+<h2 id="websocket接收arrayBuffer">websocket接收arrayBuffer</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* websocket的情况下二进制流的获取 */</span></span><br><span class="line"><span class="keyword">var</span> svip = <span class="string">'ws://127.0.0.1:8080'</span>;</span><br><span class="line"><span class="keyword">var</span> ws = <span class="keyword">new</span> WebSocket(svip);</span><br><span class="line">ws.binaryType = <span class="string">'arraybuffer'</span></span><br><span class="line">ws.onmessage = <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> message = e.data;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="ArrayBuffer_to_Blob_（ArrayBuffer转Blob）">ArrayBuffer to Blob （ArrayBuffer转Blob）</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> ab = <span class="keyword">new</span> <span class="built_in">ArrayBuffer</span>(<span class="number">32</span>);</span><br><span class="line"><span class="keyword">var</span> blob = <span class="keyword">new</span> Blob([ab]); <span class="comment">// 注意必须包裹[]</span></span><br></pre></td></tr></table></figure>
 <h2 id="ArrayBuffer_to_Uint8_（ArrayBuffer转Uint8数组）">ArrayBuffer to Uint8 （ArrayBuffer转Uint8数组）</h2><p>Uint8数组可以直观的看到ArrayBuffer中每个字节（1字节 == 8位）的值。一般我们要将ArrayBuffer转成Uint类型数组后才能对其中的字节进行存取操作。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> ab = arrayBuffer; <span class="comment">// arrayBuffer为要转换的值</span></span><br><span class="line"><span class="keyword">var</span> u8 = <span class="keyword">new</span> <span class="built_in">Uint8Array</span>(ab);</span><br></pre></td></tr></table></figure>
@@ -396,108 +269,6 @@
 <li><code>TypeArray</code>是<code>ArrayBuffer</code>的一种类数组的视图对象，可以将<code>ArrayBuffer</code>按不同字节数读取成类似数组形式的数据类型，从而可以向读写数组元素一样，实现对<code>ArrayBuffer</code>数据的读写。常见的<code>TypeArray</code>包括<code>Uint8Array</code>,<code>Uint16Array</code>,<code>Uint32Array</code>等。<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray">点这里查看所有的TypedArray</a></li>
 </ul>
 <p>所以我对三者的理解是： <code>Blob</code> &lt;-&gt; <code>ArrayBuffer</code> &lt;-&gt; <code>TypeArray</code> &lt;—-&gt; <code>Array</code><br>由于<code>TypeArray</code>和<code>Array</code>有些相似，因此往往我会选择在<code>TypeArray</code>这层做处理。<br>下面是<code>TypeArray</code>、<code>ArrayBuffer</code>和<code>Blob</code>之间相互转换的方法。</p>]]>
-    
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[初识arrayBuffer和typeArray]]></title>
-    <link href="http://www.shihua.im/2015/12/21/20151221_typearray/"/>
-    <id>http://www.shihua.im/2015/12/21/20151221_typearray/</id>
-    <published>2015-12-20T16:00:00.000Z</published>
-    <updated>2015-12-21T16:48:10.000Z</updated>
-    <content type="html"><![CDATA[<p>之前很少接触到这么冷门的知识点，直到最近有一个项目，需要前端通过websocket与服务端连接，服务端直接向前端发二进制的数据包，我才知道js还有这么arrayBuffer和typeArray这两货。我们可以用他们来解析服务端发来的二进制包。</p>
-<a id="more"></a>
-<h2 id="知识回顾">知识回顾</h2><p>本来以为从事前端就再也不会接触进制、字节等这些晦涩的概念。</p>
-<p>没想到苍天饶过谁……</p>
-<h3 id="二进制包的相关概念">二进制包的相关概念</h3><p>一般服务端会事先跟我们约定好发来的二进制包的格式，我们称之为<code>协议</code></p>
-<p>首先，一般一条二进制包数据会包含多个<code>字节</code>，光凭字节串我们是不能解析出里面的数据含义的。</p>
-<p><strong>协议</strong>的作用在于约定了二进制包的数据格式。我们通过协议可以知道二进制串中，从第几个字节到第几个字节表示什么类型数据，从而得出其准确的值。</p>
-<p>回归正题，我们先了解一下如何从websocket中读取二进制数据。</p>
-<h2 id="如何读取二进制数据">如何读取二进制数据</h2><p><strong>二进制数据是不能直接像其它js的基本数据类型一样直接通过等号获得和显示的。</strong></p>
-<p>我们需要用到<code>FileReader</code>对象的<code>readAsArrayBuffer</code>方法读出其中的所有字节并将其转换成js能读取的arrayBuffer数据对象。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ws.onmessage = <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> message = e.data;</span><br><span class="line">  blob = message;</span><br><span class="line">  <span class="keyword">var</span> fileReader     = <span class="keyword">new</span> FileReader();</span><br><span class="line">  fileReader.onload  = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="comment">// this.result为读取到的二进制包内容</span></span><br><span class="line">      arrayBufferNew = <span class="keyword">this</span>.result;</span><br><span class="line">  &#125;;</span><br><span class="line">  fileReader.readAsArrayBuffer(blob);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>ArrayBuffer会在内存中新建一块缓冲区域，用于装载原始的数据包，<br>我们可以理解成，它创建了一个缓冲数组，然后把原始数据包的每个<code>字节</code>的值单独存放于一个数组元素中，但这个数组并不能直接进行读取。<br>我们还需要新建一个<code>TypeArray</code>对象，来读取这个缓冲区域的数据。</p>
-<p><code>TypeArray</code>包含下面几种类型。</p>
-<table>
-<thead>
-<tr>
-<th>类型</th>
-<th style="text-align:center">大小</th>
-<th style="text-align:right">描述</th>
-<th style="text-align:right">C语言中的等效类型</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Int8Array</td>
-<td style="text-align:center">1</td>
-<td style="text-align:right">8-bit</td>
-<td style="text-align:right">signed char</td>
-</tr>
-<tr>
-<td>Uint8Array</td>
-<td style="text-align:center">1</td>
-<td style="text-align:right">8-bit</td>
-<td style="text-align:right">unsigned char</td>
-</tr>
-<tr>
-<td>Int16Array</td>
-<td style="text-align:center">2</td>
-<td style="text-align:right">16-bit</td>
-<td style="text-align:right">short</td>
-</tr>
-<tr>
-<td>Uint16Array</td>
-<td style="text-align:center">2</td>
-<td style="text-align:right">16-bit</td>
-<td style="text-align:right">unsigned short</td>
-</tr>
-<tr>
-<td>Int32Array</td>
-<td style="text-align:center">4</td>
-<td style="text-align:right">32-bit</td>
-<td style="text-align:right">int</td>
-</tr>
-<tr>
-<td>Uint32Array</td>
-<td style="text-align:center">4</td>
-<td style="text-align:right">32-bit</td>
-<td style="text-align:right">unsigned int</td>
-</tr>
-<tr>
-<td>Float32Array</td>
-<td style="text-align:center">4</td>
-<td style="text-align:right">32-bit</td>
-<td style="text-align:right">float</td>
-</tr>
-<tr>
-<td>Float64Array</td>
-<td style="text-align:center">8</td>
-<td style="text-align:right">64-bit</td>
-<td style="text-align:right">double</td>
-</tr>
-</tbody>
-</table>
-<p><strong>重点来了</strong></p>
-<p>以一个例子为例,首先协议体如下：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">char</span> flag;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">short</span> id;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> num;</span><br></pre></td></tr></table></figure>
-<p>当我们收到如下面这个字节包时:</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x01</span>  <span class="number">0x02</span>   <span class="number">0x03</span>   <span class="number">0x04</span>   <span class="number">0xFF</span>   <span class="number">0xDD</span>   <span class="number">0x4c</span> <span class="number">0x8f</span></span><br></pre></td></tr></table></figure>
-<p>我们知道，一个字节占8位，那么我们可以用Uint8Array读取占1字节的数据，可以用Uint16Array读取占2字节的数据。</p>
-<p>那么我们可以用Uint8Array来显示数据的每个字节的内容：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">arrayBufferNew = <span class="keyword">this</span>.result;</span><br><span class="line">arr  = <span class="keyword">new</span> <span class="built_in">Uint8Array</span>(arrayBufferNew);</span><br><span class="line"><span class="built_in">console</span>.log(arr);</span><br></pre></td></tr></table></figure></p>
-<p>根据协议体，我们知道前2个字节即为flag（char型占2字节），第3-4个字节是id（short型占2字节），而后4个字节则为num（int型占4字节）。</p>
-<p>那么读取数据的过程如下： </p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">fileReader.onload  = <span class="function"><span class="keyword">function</span>(<span class="params">progressEvent</span>) </span>&#123;</span><br><span class="line">  arrayBufferNew = <span class="keyword">this</span>.result;</span><br><span class="line">   <span class="comment">// 从第1个字节索引开始读取1个Uint16Array（即16位，2字节）</span></span><br><span class="line">  cFlag  = <span class="keyword">new</span> <span class="built_in">Uint16Array</span>(arrayBufferNew, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">  <span class="comment">// 从第3个字节索引开始读取1个Uint16Array（即16位，2字节）</span></span><br><span class="line">  sID = <span class="keyword">new</span> <span class="built_in">Uint16Array</span>(arrayBufferNew, <span class="number">2</span>, <span class="number">1</span>);</span><br><span class="line">  <span class="comment">// 从第5个字节索引开始读取1个Uint32Array（即32位，4字节）</span></span><br><span class="line">  nNum  = <span class="keyword">new</span> <span class="built_in">Uint32Array</span>(arrayBufferNew, <span class="number">4</span>, <span class="number">1</span>);</span><br><span class="line">  <span class="built_in">console</span>.log(cFlag[<span class="number">0</span>],sID[<span class="number">0</span>],nNum[<span class="number">0</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>以上我们就完成了一条协议数据的读取。</p>
-<h2 id="字符串和arrayBuffer的转换">字符串和arrayBuffer的转换</h2><p>如何快速对字符串和arrayBuffer进行转换：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ab2str</span>(<span class="params">buf</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">String</span>.fromCharCode.apply(<span class="literal">null</span>, <span class="keyword">new</span> <span class="built_in">Uint16Array</span>(buf));</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">str2ab</span>(<span class="params">str</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> buf = <span class="keyword">new</span> <span class="built_in">ArrayBuffer</span>(str.length * <span class="number">2</span>); <span class="comment">// 2 bytes for each char</span></span><br><span class="line">  <span class="keyword">var</span> bufView = <span class="keyword">new</span> <span class="built_in">Uint16Array</span>(buf);</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, strLen = str.length; i &lt; strLen; i++) &#123;</span><br><span class="line">    bufView[i] = str.charCodeAt(i);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> buf;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>然后，我们就可以将生成的arrayBuffer转成Blob对象（即二进制流），发送给后台：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> ab = str2ab(<span class="string">'test'</span>);</span><br><span class="line"><span class="keyword">var</span> blob = <span class="keyword">new</span> Blob([ab]);</span><br></pre></td></tr></table></figure></p>
-<p>当然，一般我们在做websocket通讯时还会对数据进行加密，我自己目前也正深陷加密的无底洞中……等从洞里爬出来再总结一下加密相关的内容……</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>之前很少接触到这么冷门的知识点，直到最近有一个项目，需要前端通过websocket与服务端连接，服务端直接向前端发二进制的数据包，我才知道js还有这么arrayBuffer和typeArray这两货。我们可以用他们来解析服务端发来的二进制包。</p>]]>
     
     </summary>
     
@@ -699,11 +470,11 @@
   </entry>
   
   <entry>
-    <title><![CDATA[此处功能日后必改，不要写死]]></title>
+    <title><![CDATA[精简代码]]></title>
     <link href="http://www.shihua.im/2015/11/18/20150918_codeBeter/"/>
     <id>http://www.shihua.im/2015/11/18/20150918_codeBeter/</id>
     <published>2015-11-17T16:00:00.000Z</published>
-    <updated>2015-12-20T08:54:40.000Z</updated>
+    <updated>2016-09-29T01:36:59.000Z</updated>
     <content type="html"><![CDATA[<p>最近有一张神图，大意是产品说『此处功能日后必改，不要写死』</p>
 <p>间接的吐槽了产品狗就是喜欢糊逼改需求，因此我们的代码千万不能写成hardcode。</p>
 <p>也许你曾经听过hardcode，有的人用它来形容很难懂的代码，很形象，你的代码很硬，所以不能适应变化。</p>
@@ -948,11 +719,11 @@
   </entry>
   
   <entry>
-    <title><![CDATA[移动端自定义Input光标太大的问题]]></title>
+    <title><![CDATA[移动端透明Input光标太大的问题]]></title>
     <link href="http://www.shihua.im/2015/09/16/20151116_h5InputStyle/"/>
     <id>http://www.shihua.im/2015/09/16/20151116_h5InputStyle/</id>
     <published>2015-09-15T16:00:00.000Z</published>
-    <updated>2015-12-20T08:59:34.000Z</updated>
+    <updated>2016-09-29T01:37:20.000Z</updated>
     <content type="html"><![CDATA[<p>input的特殊之处在于它有预设的行高，背景，边框等属性。<br>当我们要做一个完全自定义背景的输入框时，我们首先要把它所有的默认背景、边框、背景都去掉，然后将背景设置成我们想要的效果。</p>
 <p>这样在chorme的模拟模式下看似乎很完美了，但在实际的移动设备上，我们会发现这样设置的input被focus时，光标非常的高，几乎沾满了一行。这显然不是我们想要的效果。</p>
 <a id="more"></a>
@@ -963,6 +734,61 @@
     <![CDATA[<p>input的特殊之处在于它有预设的行高，背景，边框等属性。<br>当我们要做一个完全自定义背景的输入框时，我们首先要把它所有的默认背景、边框、背景都去掉，然后将背景设置成我们想要的效果。</p>
 <p>这样在chorme的模拟模式下看似乎很完美了，但在实际的移动设备上，我们会发现这样设置的input被focus时，光标非常的高，几乎沾满了一行。这显然不是我们想要的效果。</p>]]>
     
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[移动端判断浏览器是横竖屏方向]]></title>
+    <link href="http://www.shihua.im/2015/09/16/20151116_oritentation/"/>
+    <id>http://www.shihua.im/2015/09/16/20151116_oritentation/</id>
+    <published>2015-09-15T16:00:00.000Z</published>
+    <updated>2015-12-20T08:59:55.000Z</updated>
+    <content type="html"><![CDATA[<p>有时候，我们做一些H5特效页或游戏时，只做了竖屏状态下的设计和实现，此时我们并不希望用户以横屏状态打开，因此我们要在页面加载之初判断手机的横竖屏方向，做相应的处理。<br>在现代浏览器中，我们可以通过window.oritentation判断屏幕的横竖屏方向，当：window.oritentation = 0 或者 180 时，则手机为竖屏状态，反之则为横屏。</p>
+<a id="more"></a>
+<p>然而，在一些不支持window.oritentation属性的环境下，我们可以判断window的width和height来判断手机的横竖屏状态（通常状态下，竖屏时屏幕高度大于屏幕宽度）</p>
+<p>在下面的代码中，还定义了一个_initScreenDir = 0的初始方向，当屏幕从横屏转为竖屏时，通过监听orientationchange的方法，如果不支持该事件的情况下，则监听resize事件，会自动刷新页面以保证页面的初始化操作正常（如页面布局，rem的设置等等）。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">_initScreenDir = <span class="number">0</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">_onorientationchange</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line">  $el = $(<span class="string">"#tips"</span>);</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">window</span>.orientation == <span class="number">0</span> || <span class="built_in">window</span>.orientation == <span class="number">180</span>) &#123;</span><br><span class="line">    $el.hide();</span><br><span class="line">    _initScreenDir == <span class="number">1</span> &amp;&amp; (<span class="built_in">window</span>.location.reload());</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">window</span>.orientation == <span class="number">90</span> || <span class="built_in">window</span>.orientation == -<span class="number">90</span>) &#123;</span><br><span class="line">    $el.show();</span><br><span class="line">    _initScreenDir = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">var</span> width = $(<span class="built_in">window</span>).width();</span><br><span class="line">  <span class="keyword">var</span> height = $(<span class="built_in">window</span>).height();</span><br><span class="line">  <span class="keyword">if</span>(width &lt; height)&#123;</span><br><span class="line">    $el.hide();</span><br><span class="line">    _initScreenDir == <span class="number">1</span> &amp;&amp; (<span class="built_in">window</span>.location.reload());</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    $el.show();</span><br><span class="line">    _initScreenDir = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">_onorientationchange();</span><br><span class="line"><span class="built_in">window</span>.addEventListener(<span class="string">"onorientationchange"</span> <span class="keyword">in</span> <span class="built_in">window</span> ? <span class="string">"orientationchange"</span> : <span class="string">"resize"</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;_onorientationchange(e);&#125;, <span class="literal">false</span>);</span><br></pre></td></tr></table></figure>]]></content>
+    <summary type="html">
+    <![CDATA[<p>有时候，我们做一些H5特效页或游戏时，只做了竖屏状态下的设计和实现，此时我们并不希望用户以横屏状态打开，因此我们要在页面加载之初判断手机的横竖屏方向，做相应的处理。<br>在现代浏览器中，我们可以通过window.oritentation判断屏幕的横竖屏方向，当：window.oritentation = 0 或者 180 时，则手机为竖屏状态，反之则为横屏。</p>]]>
+    
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Js实现基于发布/订阅机制的事件管理器（观察者模式）]]></title>
+    <link href="http://www.shihua.im/2015/09/10/20150910_subPub/"/>
+    <id>http://www.shihua.im/2015/09/10/20150910_subPub/</id>
+    <published>2015-09-09T16:00:00.000Z</published>
+    <updated>2016-09-29T01:35:55.000Z</updated>
+    <content type="html"><![CDATA[<p>处理事件是web前端开发中出现最频繁的业务之一。在处理这类业务时，我们通常的思路就是基本是这样的：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'btn'</span>).on(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    a.show();</span><br><span class="line">    b.hide();</span><br><span class="line">    c.hide();</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>btn发生点击事件（事件触发）， 然后去分别执行a、b、c模块下的对应事件。这样是没有什么大问题的。<br>但设想一下下面3种情况：</p>
+<ol>
+<li>假如程序很大，很多模块，btn的这个事件要去触发100个模块下对应的不同的事件……</li>
+<li>今天btn可能只触发3个模块的方法，假如明天业务调整还要去触发d模块的功能……</li>
+<li>当btn触发时，c模块处于忙碌中不能响应，那势必btn与c模块要有业务上的交集，所以写btn的开发者可能还要去了解c模块的运行逻辑……</li>
+</ol>
+<h2 id="为什么需要发布/订阅">为什么需要发布/订阅</h2><p>那么这个情况下就适合使用发布/订阅机制（pub/sub）进行事件管理。<br>发布/订阅也被称之为观察者模式。我要用观察者模式于事件管理中主要是为了满足以下诉求：<br>我希望模块与模块之间更加的独立。A模块不需要知道B模块中具体的执行逻辑，它只要知道我触发了btn事件，你B模块能知道我触发了并做你自己该做的事就可以了。<br>以此来首先确保我开发A模块时不需要了解我应该调用B模块的那个函数方法。另外，将来加入B模块、C模块时，A模块基本不用进行太多业务调整。</p>
+<h2 id="实现思路">实现思路</h2><p>宏观来看，观察者模式其实有点类似于一个管理者，它手上有一份名单，知道谁谁谁订阅了事件A，当事件A发生之后只需要通知这个管理者，管理者就会杜泽去通知订阅了事件A的受众，而受众和事件的触发者之间不需要了解彼此。<br>那么我们就需要完成以下几个功能：</p>
+<ol>
+<li>存取订阅关系的数据（Data）</li>
+<li>订阅事件（sub）</li>
+<li>发布事件（pub）</li>
+<li>取消订阅（unsub）</li>
+</ol>
+<p>首先，订阅关系基本上是 ‘事件 —— 订阅者队列’ 这样的对应形式。<br>其次，在js中订阅者实际上想知道发生的某件事件，然后要去执行方法，因此事件对应的队列的存的都是要去执行function<br>因此我们可以考虑将订阅者（function）存于一个数组中，然后利用js的object的键值特性保存这些队列。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">oList = &#123;</span><br><span class="line">  <span class="string">'事件A'</span>: [functionA, functionB]</span><br><span class="line">, <span class="string">'事件B'</span>: [functionC, functionD]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这样看来就很好理解了：</p>
+<ol>
+<li>订阅事件（sub）：将对应事件的数组中push一个要执行的function（<code>引用类型</code>，实际上是指向function的内存地址）</li>
+<li>发布事件（pub）：把对应数组中的function都执行一遍</li>
+<li>取消订阅（unsub）： 将对应的function从数组中移除</li>
+</ol>
+<h2 id="jQuery实现">jQuery实现</h2><p>如果环境中有jQuery，那么实现观察者模式的方法很简单，我们可以将订阅关系数据存到$({}) 这个jQuery对象中，赋予其trigger、on、off方法。用trigger、on方法可以轻松实现上述发布和订阅的功能。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">+<span class="function"><span class="keyword">function</span>(<span class="params">$</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 订阅一个事件管理器对象</span></span><br><span class="line">  <span class="built_in">window</span>.EventCenter = &#123;</span><br><span class="line">    o: $(&#123;&#125;)</span><br><span class="line">  , sub: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> self = <span class="keyword">this</span>;</span><br><span class="line">      self.o.on.apply(self.o, <span class="built_in">arguments</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  , unsub: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> self = <span class="keyword">this</span>;</span><br><span class="line">      self.o.off.apply(self.o, <span class="built_in">arguments</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  , pub: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> self = <span class="keyword">this</span>;</span><br><span class="line">      self.o.trigger.apply(self.o, <span class="built_in">arguments</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;(jQuery);</span><br></pre></td></tr></table></figure></p>
+<h2 id="原生js实现">原生js实现</h2><p>原生js中由于没有封装on、off这两个实用的方法，因此实现起来相对要费力一些。<br>特别在取消订阅这个功能上回发现一个历史性的深坑：<br>最早的时候我实现unsub的思路是去遍历数组，判断数组元素（function）是否与所选的function相等……<br>那么问题就来了，如何判断function相同（等）……<br>网上有大神说将function硬转成字符串判断，这种做法在一定情况下是可行的，但是并不是100%准确。<br>所以这个问题搁置了大半年。<br>直到最近我用jQuery的实现版本发现并没有出现function判断不准的问题，于是我潜心研究了一下jQuery的实现思路……<br>发现它相当聪（wei）明(suo)的引入了一个guid的概念（global unique id）,通过guid来识别方法，当一个function AAA订阅一个事件时，它会悄悄的在AAA里”种”下一个guid属性，它的值是唯一的，后期jQuery都是通过这个guid来识别方法，而不是硬转字符串的方法（stupid）<br>所以，这个问题解决了……<br><strong>所以说jQuery大法好啊！</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> EventManager = &#123;</span><br><span class="line">  _listeners: &#123;&#125;</span><br><span class="line">, guid: <span class="number">1</span></span><br><span class="line">, sub: <span class="function"><span class="keyword">function</span>(<span class="params">type, fn</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="keyword">this</span>._listeners[type] === <span class="string">"undefined"</span>) &#123;</span><br><span class="line">      <span class="keyword">this</span>._listeners[type] = [];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> fn === <span class="string">"function"</span>) &#123;</span><br><span class="line">      <span class="keyword">this</span>._listeners[type].push(fn);</span><br><span class="line">      fn.guid = <span class="keyword">this</span>.guid;</span><br><span class="line">      <span class="keyword">this</span>.guid++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">  &#125;</span><br><span class="line">, pub: <span class="function"><span class="keyword">function</span>(<span class="params">type, data</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> arrayEvent = <span class="keyword">this</span>._listeners[type];</span><br><span class="line">    <span class="keyword">var</span> args = <span class="built_in">Array</span>.prototype.slice.call(<span class="built_in">arguments</span>, <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">if</span> (arrayEvent <span class="keyword">instanceof</span> <span class="built_in">Array</span>) &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">var</span> i=<span class="number">0</span>, length=arrayEvent.length; i &lt; length; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">typeof</span> arrayEvent[i] === <span class="string">"function"</span>) &#123;</span><br><span class="line">          arrayEvent[i].apply(<span class="keyword">this</span>, args);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">  &#125;</span><br><span class="line">, unsub: <span class="function"><span class="keyword">function</span>(<span class="params">type, fn</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> arrayEvent = <span class="keyword">this</span>._listeners[type];</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> type === <span class="string">"string"</span> &amp;&amp; arrayEvent <span class="keyword">instanceof</span> <span class="built_in">Array</span>) &#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">typeof</span> fn === <span class="string">"function"</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> i=<span class="number">0</span>, length=arrayEvent.length; i &lt; length; i+=<span class="number">1</span>)&#123;</span><br><span class="line">          <span class="keyword">if</span> (arrayEvent[i].guid === fn.guid) &#123;</span><br><span class="line">            <span class="comment">// 通过guid识别function</span></span><br><span class="line">            <span class="keyword">this</span>._listeners[type].splice(i, <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">delete</span> <span class="keyword">this</span>._listeners[type];</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>]]></content>
+    <summary type="html">
+    <![CDATA[<p>处理事件是web前端开发中出现最频繁的业务之一。在处理这类业务时，我们通常的思路就是基本是这样的：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class=]]>
     </summary>
     
   </entry>
