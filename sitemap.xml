@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.shihua.im/about/index.html</loc>
+    <lastmod>2016-10-19T16:27:13.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://www.shihua.im/2016/10/19/20161019_hins/</loc>
     <lastmod>2016-10-19T16:23:39.000Z</lastmod>
   </url>
@@ -14,11 +19,6 @@
   <url>
     <loc>http://www.shihua.im/2016/09/29/20160929_tsSubPub/</loc>
     <lastmod>2016-09-29T02:40:33.000Z</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://www.shihua.im/about/index.html</loc>
-    <lastmod>2016-09-29T02:32:21.000Z</lastmod>
   </url>
   
   <url>
