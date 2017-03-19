@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title><![CDATA[shihuacivis' life]]></title>
+  <title><![CDATA[wah's life]]></title>
   <subtitle><![CDATA[西斗门路前端手艺人]]></subtitle>
   <link href="/atom.xml" rel="self"/>
-  <link href="http://www.shihua.im/"/>
-  <updated>2016-12-17T15:11:17.000Z</updated>
-  <id>http://www.shihua.im/</id>
+  <link href="http://shiwah.me/"/>
+  <updated>2017-03-19T10:18:20.000Z</updated>
+  <id>http://shiwah.me/</id>
   
   <author>
     <name><![CDATA[石华]]></name>
@@ -15,9 +15,47 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[DOM元素的尺寸和位置]]></title>
+    <link href="http://shiwah.me/2017/03/19/20190319_domSizePos/"/>
+    <id>http://shiwah.me/2017/03/19/20190319_domSizePos/</id>
+    <published>2017-03-19T10:00:00.000Z</published>
+    <updated>2017-03-19T10:18:20.000Z</updated>
+    <content type="html"><![CDATA[<p>总结一些高级浏览器或移动端获取DOM元素的尺寸和位置的属性的区别及常用方法<br><a id="more"></a></p>
+<h2 id="DOM元素的尺寸">DOM元素的尺寸</h2><h3 id="box-sizing对属性的影响">box-sizing对属性的影响</h3><p>box-sizing的属性值会直接影响盒模型的尺寸计算。一般常用的box-sizing值有几个:</p>
+<blockquote>
+<p><code>content-box</code>： （默认值）标准盒模型。width = 内容的宽度，height = 内容的高度。宽度和高度都不包含内容的边框（border）和内边距（padding）<br><code>border-box</code>：width 和 height 属性包括内容，填充和边框，但不包括边距。<br><code>padding-box</code>: 只有火狐支持了，不展开研究</p>
+</blockquote>
+<p>以下面的代码为例。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"boderBox"</span> <span class="attribute">style</span>=<span class="value">"width: 200px;height: 100px;box-sizing: border-box;border: 5px solid #123456; margin: 20px 10px; padding: 7px;"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"contentBox"</span> <span class="attribute">style</span>=<span class="value">"width: 200px;height: 100px;box-sizing: content-box;border: 5px solid #654321; margin: 20px 10px; padding: 7px;"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$boderBox = <span class="built_in">document</span>.querySelector(<span class="string">'#boderBox'</span>);</span><br><span class="line">$contentBox = <span class="built_in">document</span>.querySelector(<span class="string">'#contentBox'</span>);</span><br><span class="line"><span class="built_in">console</span>.info(<span class="string">'offsetWidth'</span>, $boderBox.offsetWidth); <span class="comment">// 200</span></span><br><span class="line"><span class="built_in">console</span>.info(<span class="string">'offsetWidth'</span>, $contentBox.offsetWidth); <span class="comment">// 224</span></span><br></pre></td></tr></table></figure>
+<p>可见<code>border-box</code>和<code>content-box</code>获取到的offsetWidth值是不同的。<code>content-box</code>的<br>计算方法：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">offsetWidth = <span class="number">200</span>(内容宽度) + <span class="number">5</span> * <span class="number">2</span>(左右border宽度) + <span class="number">7</span> * <span class="number">2</span> (左右padding值)</span><br></pre></td></tr></table></figure></p>
+<p>###不同属性值的含义</p>
+<p>再来看看不同属性值所指代的含义：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">  <span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"contentBox"</span> <span class="attribute">style</span>=<span class="value">"width: 200px;height: 100px;box-sizing: content-box;border: 5px solid #654321; margin: 20px 10px; padding: 7px;"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">style</span>=<span class="value">"width: 250px;height: 50px;background: green"</span>&gt;</span>aaa<span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">```javascript</span><br><span class="line">  $contentBox = document.querySelector('#contentBox');</span><br><span class="line"></span><br><span class="line">  console.info('offsetWidth', '200（不含溢出的内容width）+ 7 * 2(内边距) + 5 * 2(边框)', $contentBox.offsetWidth); // 224</span><br><span class="line"></span><br><span class="line">  console.info('clientWidth', '200（不含溢出的内容width）+ 7 * 2 （内边距）- 滚动条宽度（if overflow-y == "scroll"）', $contentBox.clientWidth); // 214</span><br><span class="line">  </span><br><span class="line">  console.info('scrollWidth', '250(内容实际宽度) + 7（内边距）', $contentBox.scrollWidth); // 257</span><br></pre></td></tr></table></figure>
+<p>这里需要注意，当父容器加上<code>overflow-y: scroll</code>属性后，clientwidth会再减去15px的滚动条宽度(因不同系统不同浏览器而异)。同理<code>overflow-x: scroll</code>后高度也会减去15px(因不同系统不同浏览器而异)。</p>
+<p>因此这三种属性可以理解为：</p>
+<blockquote>
+<p><code>offsetWidth</code>： 元素在页面布局中实际所占的宽度<br><code>clientWidth</code>： 元素边框内部可视区域（不含溢出部分）的宽度<br><code>scrollWidth</code>: 元素内容实际宽度（含溢出）</p>
+</blockquote>
+<h2 id="元素的位置">元素的位置</h2><p>一般主要使用三个属性值： </p>
+<blockquote>
+<p><code>offsetLeft</code>： 元素外框相对于offsetParent的位置（父容器的offsetLeft为起点）<br><code>clientLeft</code>： 元素内框（border内）对于外框的宽度，即边框border的宽度<br><code>scrollLeft</code>: 元素滚动到的位置</p>
+</blockquote>
+<p>so一般使用<code>offsetLeft</code>和<code>offsetTop</code>获取元素的位置。<br>需要注意，当元素父容器有css定位时（position）,offsetParent返回一个指向最近的（closest，指包含层级上的最近）包含该元素的定位元素。如果没有定位的元素，则 offsetParent 为最近的 table 元素对象或根元素（标准模式下为 html；quirks 模式下为 body）。当元素的 style.display 设置为 “none” 时，offsetParent 返回 null。offsetParent 很有用，因为 offsetTop 和 offsetLeft 都是相对于其内边距边界的。</p>
+<h3 id="getBoundingClientRect">getBoundingClientRect</h3><p>可用于返回改元素相对于视口的位置。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">  <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"demo"</span> <span class="attribute">style</span>=<span class="value">"position: absolute;left: 70px;margin-left: 100px;border:  5px solid green;width: 100%"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"boderBox"</span> <span class="attribute">style</span>=<span class="value">"position: absolute; top:100px;left:100px; width: 200px;height: 100px;border:  10px solid #ccc"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">```javascript</span><br><span class="line">  $boderBox = document.querySelector('#boderBox');</span><br><span class="line">  var rectObject = $boderBox.getBoundingClientRect();</span><br><span class="line"></span><br><span class="line">  console.info('offsetLeft', '相对于父容器的位置', $boderBox.offsetLeft); // 100</span><br><span class="line">  console.info('rect-left', '相对于浏览器视口左上角的位置', rectObject.left); // 275</span><br></pre></td></tr></table></figure>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>总结一些高级浏览器或移动端获取DOM元素的尺寸和位置的属性的区别及常用方法<br>]]>
+    
+    </summary>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[《断点》之外的张敬轩]]></title>
-    <link href="http://www.shihua.im/2016/10/23/20161023_hins/"/>
-    <id>http://www.shihua.im/2016/10/23/20161023_hins/</id>
+    <link href="http://shiwah.me/2016/10/23/20161023_hins/"/>
+    <id>http://shiwah.me/2016/10/23/20161023_hins/</id>
     <published>2016-10-23T06:00:00.000Z</published>
     <updated>2016-12-17T15:11:17.000Z</updated>
     <content type="html"><![CDATA[<p>很多朋友对张敬轩的印象仍然停留在十多年前那首《断点》上，这首歌红遍大江南北的KTV神曲和另外一首烂大街的《吻的太逼真》也曾让我一直把张敬轩归类为『唱了几首口水歌的男歌手』。直到有一天在知乎上被安利了『港乐&amp;张敬轩 交响音乐会』后，才开始发觉轩仔是深藏的宝藏，越听越喜欢。虽然轩仔的大多数作品并没有《断点》这么红，但《断点》绝不是最好的张敬轩。细心的歌迷可能会发现，轩仔早年的的唱法和曲风跟09年之后的简直判若两人。这是因为轩仔在2009年师从刘家昌先生后，唱功的稳定性有了很大的提升，加上近年出演舞台剧的经历和总监Jonny Yim的得力帮助，使得轩仔突然就开嗓了，live实力大增，让许多歌迷都不禁发出『现场版比录音室版更好听』的感叹。当然，一首好的作品除了一把能打动人好声音之外，还要有它的灵魂——歌词，粤语歌坛中不乏优秀的填词人，今天就给大家安利轩仔的10首词曲俱佳的作品。</p>
@@ -59,8 +97,8 @@
   
   <entry>
     <title><![CDATA[Typescript中实现观察者模式的事件管理器]]></title>
-    <link href="http://www.shihua.im/2016/09/29/20160929_tsSubPub/"/>
-    <id>http://www.shihua.im/2016/09/29/20160929_tsSubPub/</id>
+    <link href="http://shiwah.me/2016/09/29/20160929_tsSubPub/"/>
+    <id>http://shiwah.me/2016/09/29/20160929_tsSubPub/</id>
     <published>2016-09-29T01:00:00.000Z</published>
     <updated>2016-09-29T02:40:33.000Z</updated>
     <content type="html"><![CDATA[<p>观察者模式的事件管理器可以让游戏中各模块间的功能调用以事件响应的方式相对独立开来，使得各模块间的功能相对更加独立。TS中的实现方法与JS类似，只是某些语法略有不同。<br><a id="more"></a></p>
@@ -75,8 +113,8 @@
   
   <entry>
     <title><![CDATA[使用Fis3自动构建前端项目快速上手]]></title>
-    <link href="http://www.shihua.im/2016/06/28/20160628_fis3/"/>
-    <id>http://www.shihua.im/2016/06/28/20160628_fis3/</id>
+    <link href="http://shiwah.me/2016/06/28/20160628_fis3/"/>
+    <id>http://shiwah.me/2016/06/28/20160628_fis3/</id>
     <published>2016-06-28T12:00:00.000Z</published>
     <updated>2016-09-29T01:30:53.000Z</updated>
     <content type="html"><![CDATA[<p>fis3配置快速开始指南，实现编译SASS(SCSS)，压缩JS、CSS、图片，PC端合雪碧图，移动端自动转换REM值，开发时浏览器自动同步的功能，一份代码编译适应多个环境等功能，满足日产活动项目的需求。<br><a id="more"></a></p>
@@ -128,8 +166,8 @@
   
   <entry>
     <title><![CDATA[微信H5中video常见的问题]]></title>
-    <link href="http://www.shihua.im/2016/02/23/20160223_wechatVideo/"/>
-    <id>http://www.shihua.im/2016/02/23/20160223_wechatVideo/</id>
+    <link href="http://shiwah.me/2016/02/23/20160223_wechatVideo/"/>
+    <id>http://shiwah.me/2016/02/23/20160223_wechatVideo/</id>
     <published>2016-02-23T09:00:00.000Z</published>
     <updated>2016-09-29T01:43:05.000Z</updated>
     <content type="html"><![CDATA[<p>微信H5播放video，实现类似吴亦凡参军H5的效果。在X5引擎中遇到了全屏播放、自动播放等几个问题。<br><a id="more"></a></p>
@@ -157,8 +195,8 @@
   
   <entry>
     <title><![CDATA[《JavaScript设计模式》读书笔记-工厂模式]]></title>
-    <link href="http://www.shihua.im/2016/01/11/20160111_factoryMode/"/>
-    <id>http://www.shihua.im/2016/01/11/20160111_factoryMode/</id>
+    <link href="http://shiwah.me/2016/01/11/20160111_factoryMode/"/>
+    <id>http://shiwah.me/2016/01/11/20160111_factoryMode/</id>
     <published>2016-01-11T15:00:00.000Z</published>
     <updated>2016-01-11T14:56:15.000Z</updated>
     <content type="html"><![CDATA[<p>最近总感觉写的代码没有头绪，很混乱，有时候自己也弄不清楚为什么要这样写。<br>于是买了一本张容铭写的《JavaScript设计模式》来读读。<br>希望可以梳理和加深对JS代码的理解。<br>今天先来理解一下工厂模式。包括<code>简单工厂模式</code>、<code>工厂方法模式</code>、<code>抽象工厂模式</code><br><a id="more"></a></p>
@@ -179,8 +217,8 @@
   
   <entry>
     <title><![CDATA[prototype.function与this.function的区别]]></title>
-    <link href="http://www.shihua.im/2016/01/08/20160108_prototype/"/>
-    <id>http://www.shihua.im/2016/01/08/20160108_prototype/</id>
+    <link href="http://shiwah.me/2016/01/08/20160108_prototype/"/>
+    <id>http://shiwah.me/2016/01/08/20160108_prototype/</id>
     <published>2016-01-07T17:00:00.000Z</published>
     <updated>2016-01-07T17:00:10.000Z</updated>
     <content type="html"><![CDATA[<p>当我们在用javascript中的function做面向对象开发时，可能会有这样的疑惑，<br>prototype.function与this.function都可以定义对象的方法，那二者有何区别呢？<br><a id="more"></a></p>
@@ -203,11 +241,11 @@
   </entry>
   
   <entry>
-    <title><![CDATA[初识HTML5音频播放api——webaudio]]></title>
-    <link href="http://www.shihua.im/2016/01/07/20160106_webaudio/"/>
-    <id>http://www.shihua.im/2016/01/07/20160106_webaudio/</id>
+    <title><![CDATA[Webaudio]]></title>
+    <link href="http://shiwah.me/2016/01/07/20160106_webaudio/"/>
+    <id>http://shiwah.me/2016/01/07/20160106_webaudio/</id>
     <published>2016-01-07T15:00:00.000Z</published>
-    <updated>2016-01-06T16:26:39.000Z</updated>
+    <updated>2017-03-19T10:23:39.000Z</updated>
     <content type="html"><![CDATA[<p>HTML5除了提供一个最基础的audio标签之外，还额外提供了一个更高性能的音频播放api——webaudio。<br>可以用来实现如果用audio标签难以实现的高频、重叠的音效，如枪击游戏中的枪击声。</p>
 <a id="more"></a>
 <h2 id="初步分析">初步分析</h2><p>在webaudio中，<br>我们可以创建一个<code>AudioContext</code>对象<br><code>AudioContext</code>中的<code>decodeAudioData</code>允许我们将<code>arrayBufer</code>格式的二进制流解码成为浏览器所支持的音频数据流。<br>此外，<code>AudioContext</code>还可以创建<code>AudioBufferSourceNode</code>对象，它包含了父类<code>AudioNode</code>中的属性和方法，即包括了我们需要用到的音频数据流的读取play方法。可以用来播放音频数据流。</p>
@@ -215,7 +253,6 @@
 <h2 id="1-加载音频文件读取为arrayBuffer格式的二进制流">1.加载音频文件读取为arrayBuffer格式的二进制流</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> request = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line">  request.open(<span class="string">'GET'</span>, url, <span class="literal">true</span>);</span><br><span class="line">  request.responseType = <span class="string">'arraybuffer'</span>;</span><br><span class="line">  request.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> arrayBuffer = request.response；</span><br><span class="line">    <span class="comment">// todo 去往下一步</span></span><br><span class="line">  &#125;;</span><br><span class="line">  request.send();</span><br></pre></td></tr></table></figure>
 <h2 id="2-将arrayBuffer格式的二进制流读出成音频数据流">2.将arrayBuffer格式的二进制流读出成音频数据流</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> context = <span class="keyword">new</span> (<span class="built_in">window</span>.AudioContext || <span class="built_in">window</span>.webkitAudioContext || <span class="built_in">window</span>.mozAudioContext)();</span><br><span class="line">  context.decodeAudioData(request.response, <span class="function"><span class="keyword">function</span>(<span class="params">buffer</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 去往下一步</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <h2 id="3-创建AudioBufferSourceNode，播放音频数据流">3.创建AudioBufferSourceNode，播放音频数据流</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> audio = context.createBufferSource(); <span class="comment">// 创建AudioBufferSourceNode</span></span><br><span class="line">audio.buffer = buffer; <span class="comment">// 设置数据流</span></span><br><span class="line">audio.connect(destination); <span class="comment">// 将AudioBufferSourceNode『部署』到播放终端上</span></span><br><span class="line"><span class="comment">// 下面三个方法都是执行播放动作，由于不同时期的webaudio的api差异很大，所以调用方法有所不同</span></span><br><span class="line"><span class="keyword">if</span> (audio.start) &#123;</span><br><span class="line">  audio.start(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (audio[<span class="string">'noteGrainOn'</span>]) &#123;</span><br><span class="line">  <span class="keyword">var</span> duration = audio.buffer.duration;</span><br><span class="line">  audio[<span class="string">'noteGrainOn'</span>](<span class="number">0</span>, <span class="number">0</span>, duration);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  audio[<span class="string">'noteOn'</span>](<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><a href="http://demo.shihua.im/webaudio-demo/" target="_blank" rel="external">webaudio的demo地址</a></p>
 <p><a href="https://github.com/shihuacivis/webaudio-demo" target="_blank" rel="external">github地址</a></p>
 ]]></content>
     <summary type="html">
@@ -227,8 +264,8 @@
   
   <entry>
     <title><![CDATA[在Iframe子窗口调用父级窗口方法]]></title>
-    <link href="http://www.shihua.im/2016/01/05/20160105_iframe/"/>
-    <id>http://www.shihua.im/2016/01/05/20160105_iframe/</id>
+    <link href="http://shiwah.me/2016/01/05/20160105_iframe/"/>
+    <id>http://shiwah.me/2016/01/05/20160105_iframe/</id>
     <published>2016-01-05T12:00:00.000Z</published>
     <updated>2016-01-05T13:02:21.000Z</updated>
     <content type="html"><![CDATA[<p>iframe子窗口调用父级窗口方法分为两种情况，跨越及同域调用</p>
@@ -252,8 +289,8 @@
   
   <entry>
     <title><![CDATA[js在浏览器端对二进制流进行AES加密和解密]]></title>
-    <link href="http://www.shihua.im/2015/12/29/20151229_aes/"/>
-    <id>http://www.shihua.im/2015/12/29/20151229_aes/</id>
+    <link href="http://shiwah.me/2015/12/29/20151229_aes/"/>
+    <id>http://shiwah.me/2015/12/29/20151229_aes/</id>
     <published>2015-12-29T13:00:00.000Z</published>
     <updated>2015-12-29T13:34:57.000Z</updated>
     <content type="html"><![CDATA[<p>最近有一个项目，需要前端通过websocket与服务端连接，服务端直接向前端发二进制的数据协议包，但是这个协议包的内容是经过AES加密的，需要前端来解密。</p>
@@ -279,8 +316,8 @@
   
   <entry>
     <title><![CDATA[TypeArray、ArrayBuffer、Blob的相互转换]]></title>
-    <link href="http://www.shihua.im/2015/12/29/20151229_arrayBuffer/"/>
-    <id>http://www.shihua.im/2015/12/29/20151229_arrayBuffer/</id>
+    <link href="http://shiwah.me/2015/12/29/20151229_arrayBuffer/"/>
+    <id>http://shiwah.me/2015/12/29/20151229_arrayBuffer/</id>
     <published>2015-12-29T12:00:00.000Z</published>
     <updated>2016-09-29T03:13:14.000Z</updated>
     <content type="html"><![CDATA[<ul>
@@ -320,8 +357,8 @@
   
   <entry>
     <title><![CDATA[关于Rem自适应布局方案的思考]]></title>
-    <link href="http://www.shihua.im/2015/12/20/20151220_rem/"/>
-    <id>http://www.shihua.im/2015/12/20/20151220_rem/</id>
+    <link href="http://shiwah.me/2015/12/20/20151220_rem/"/>
+    <id>http://shiwah.me/2015/12/20/20151220_rem/</id>
     <published>2015-12-19T16:00:00.000Z</published>
     <updated>2015-12-21T14:35:26.000Z</updated>
     <content type="html"><![CDATA[<p>最近大半年都在做cocos2d-js方面的项目，所以越来越少接触HTML的业务了，但最近机缘巧合要做一个关于rem分享，之前自己也看网上的一些方法，做了一些rem自适应的case。<br>这次又去对比了一下其它人（厂）的用法，对rem有了新的理解。</p>
@@ -375,8 +412,8 @@
   
   <entry>
     <title><![CDATA[用Cocos2d-Js-lite快速开发H5游戏]]></title>
-    <link href="http://www.shihua.im/2015/12/01/20151220_cocos2dGame/"/>
-    <id>http://www.shihua.im/2015/12/01/20151220_cocos2dGame/</id>
+    <link href="http://shiwah.me/2015/12/01/20151220_cocos2dGame/"/>
+    <id>http://shiwah.me/2015/12/01/20151220_cocos2dGame/</id>
     <published>2015-11-30T16:00:00.000Z</published>
     <updated>2015-12-20T14:31:59.000Z</updated>
     <content type="html"><![CDATA[<p>cocos2d-js-lite是一个cocos2d的轻量化精简版本，只保留了cocos2d-js的一些核心方法。<br>它所包含的特性列表如下：</p>
@@ -514,11 +551,11 @@
   </entry>
   
   <entry>
-    <title><![CDATA[精简代码]]></title>
-    <link href="http://www.shihua.im/2015/11/18/20150918_codeBeter/"/>
-    <id>http://www.shihua.im/2015/11/18/20150918_codeBeter/</id>
+    <title><![CDATA[设计模式在代码中的一些运用]]></title>
+    <link href="http://shiwah.me/2015/11/18/20150918_codeBeter/"/>
+    <id>http://shiwah.me/2015/11/18/20150918_codeBeter/</id>
     <published>2015-11-17T16:00:00.000Z</published>
-    <updated>2016-09-29T01:36:59.000Z</updated>
+    <updated>2017-03-19T10:24:03.000Z</updated>
     <content type="html"><![CDATA[<p>最近有一张神图，大意是产品说『此处功能日后必改，不要写死』</p>
 <p>间接的吐槽了产品狗就是喜欢糊逼改需求，因此我们的代码千万不能写成hardcode。</p>
 <p>也许你曾经听过hardcode，有的人用它来形容很难懂的代码，很形象，你的代码很硬，所以不能适应变化。</p>
@@ -588,8 +625,8 @@
   
   <entry>
     <title><![CDATA[判断页面是否在移动端中打开]]></title>
-    <link href="http://www.shihua.im/2015/11/16/20151116_checkIsMobile/"/>
-    <id>http://www.shihua.im/2015/11/16/20151116_checkIsMobile/</id>
+    <link href="http://shiwah.me/2015/11/16/20151116_checkIsMobile/"/>
+    <id>http://shiwah.me/2015/11/16/20151116_checkIsMobile/</id>
     <published>2015-11-15T16:00:00.000Z</published>
     <updated>2015-12-20T06:29:05.000Z</updated>
     <content type="html"><![CDATA[<p>在现代浏览器中，我们可以通过判断window的navigator对象的userAgent取到客户端的信息，从而判断是否是移动端，判断脚本如下：</p>
@@ -607,8 +644,8 @@
   
   <entry>
     <title><![CDATA[Cocos2d-Js-Lite自定义预加载页面]]></title>
-    <link href="http://www.shihua.im/2015/11/15/20151220_preload/"/>
-    <id>http://www.shihua.im/2015/11/15/20151220_preload/</id>
+    <link href="http://shiwah.me/2015/11/15/20151220_preload/"/>
+    <id>http://shiwah.me/2015/11/15/20151220_preload/</id>
     <published>2015-11-14T16:00:00.000Z</published>
     <updated>2015-12-20T09:02:36.000Z</updated>
     <content type="html"><![CDATA[<p>用cocos2d-js-lite开发H5游戏非常的方便，然后引擎本身提供的preload模块个性化支持非常的差，必须修改引擎的源码才可以进行定制。</p>
@@ -628,8 +665,8 @@
   
   <entry>
     <title><![CDATA[用CSS3画一个奥迪车标]]></title>
-    <link href="http://www.shihua.im/2015/10/30/20151030_css3AudiLogo/"/>
-    <id>http://www.shihua.im/2015/10/30/20151030_css3AudiLogo/</id>
+    <link href="http://shiwah.me/2015/10/30/20151030_css3AudiLogo/"/>
+    <id>http://shiwah.me/2015/10/30/20151030_css3AudiLogo/</id>
     <published>2015-10-29T16:00:00.000Z</published>
     <updated>2015-12-20T06:41:26.000Z</updated>
     <content type="html"><![CDATA[<p>又要到周末啦，今天下班路上突然脑洞大开，作为一个有『汽车情怀』的前端，竟然没有做过汽车相关专题的玩意，于是就想到了做一个车标LOGO。</p>
@@ -708,8 +745,8 @@
   
   <entry>
     <title><![CDATA[HTML5中计时器的三种方案]]></title>
-    <link href="http://www.shihua.im/2015/10/11/20151111_h5Timer/"/>
-    <id>http://www.shihua.im/2015/10/11/20151111_h5Timer/</id>
+    <link href="http://shiwah.me/2015/10/11/20151111_h5Timer/"/>
+    <id>http://shiwah.me/2015/10/11/20151111_h5Timer/</id>
     <published>2015-10-10T16:00:00.000Z</published>
     <updated>2015-12-20T09:00:18.000Z</updated>
     <content type="html"><![CDATA[<p>在做HTML5游戏或者单页应用时我们常常需要使用到计时器模块，比如游戏中的倒计时功能。</p>
@@ -734,8 +771,8 @@
   
   <entry>
     <title><![CDATA[Js中的function小记]]></title>
-    <link href="http://www.shihua.im/2015/10/11/20151011_jsprototype/"/>
-    <id>http://www.shihua.im/2015/10/11/20151011_jsprototype/</id>
+    <link href="http://shiwah.me/2015/10/11/20151011_jsprototype/"/>
+    <id>http://shiwah.me/2015/10/11/20151011_jsprototype/</id>
     <published>2015-10-10T16:00:00.000Z</published>
     <updated>2015-12-20T06:28:29.000Z</updated>
     <content type="html"><![CDATA[<p>最近参加了一个js方面的培训，讲师用两天时间给我们回顾和剖析了function的种种，的确有所收获，小记于此。</p>
@@ -764,8 +801,8 @@
   
   <entry>
     <title><![CDATA[移动端透明Input光标太大的问题]]></title>
-    <link href="http://www.shihua.im/2015/09/16/20151116_h5InputStyle/"/>
-    <id>http://www.shihua.im/2015/09/16/20151116_h5InputStyle/</id>
+    <link href="http://shiwah.me/2015/09/16/20151116_h5InputStyle/"/>
+    <id>http://shiwah.me/2015/09/16/20151116_h5InputStyle/</id>
     <published>2015-09-15T16:00:00.000Z</published>
     <updated>2016-09-29T01:37:20.000Z</updated>
     <content type="html"><![CDATA[<p>input的特殊之处在于它有预设的行高，背景，边框等属性。<br>当我们要做一个完全自定义背景的输入框时，我们首先要把它所有的默认背景、边框、背景都去掉，然后将背景设置成我们想要的效果。</p>
@@ -777,24 +814,6 @@
     <summary type="html">
     <![CDATA[<p>input的特殊之处在于它有预设的行高，背景，边框等属性。<br>当我们要做一个完全自定义背景的输入框时，我们首先要把它所有的默认背景、边框、背景都去掉，然后将背景设置成我们想要的效果。</p>
 <p>这样在chorme的模拟模式下看似乎很完美了，但在实际的移动设备上，我们会发现这样设置的input被focus时，光标非常的高，几乎沾满了一行。这显然不是我们想要的效果。</p>]]>
-    
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[移动端判断浏览器是横竖屏方向]]></title>
-    <link href="http://www.shihua.im/2015/09/16/20151116_oritentation/"/>
-    <id>http://www.shihua.im/2015/09/16/20151116_oritentation/</id>
-    <published>2015-09-15T16:00:00.000Z</published>
-    <updated>2015-12-20T08:59:55.000Z</updated>
-    <content type="html"><![CDATA[<p>有时候，我们做一些H5特效页或游戏时，只做了竖屏状态下的设计和实现，此时我们并不希望用户以横屏状态打开，因此我们要在页面加载之初判断手机的横竖屏方向，做相应的处理。<br>在现代浏览器中，我们可以通过window.oritentation判断屏幕的横竖屏方向，当：window.oritentation = 0 或者 180 时，则手机为竖屏状态，反之则为横屏。</p>
-<a id="more"></a>
-<p>然而，在一些不支持window.oritentation属性的环境下，我们可以判断window的width和height来判断手机的横竖屏状态（通常状态下，竖屏时屏幕高度大于屏幕宽度）</p>
-<p>在下面的代码中，还定义了一个_initScreenDir = 0的初始方向，当屏幕从横屏转为竖屏时，通过监听orientationchange的方法，如果不支持该事件的情况下，则监听resize事件，会自动刷新页面以保证页面的初始化操作正常（如页面布局，rem的设置等等）。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">_initScreenDir = <span class="number">0</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">_onorientationchange</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line">  $el = $(<span class="string">"#tips"</span>);</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">window</span>.orientation == <span class="number">0</span> || <span class="built_in">window</span>.orientation == <span class="number">180</span>) &#123;</span><br><span class="line">    $el.hide();</span><br><span class="line">    _initScreenDir == <span class="number">1</span> &amp;&amp; (<span class="built_in">window</span>.location.reload());</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">window</span>.orientation == <span class="number">90</span> || <span class="built_in">window</span>.orientation == -<span class="number">90</span>) &#123;</span><br><span class="line">    $el.show();</span><br><span class="line">    _initScreenDir = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">var</span> width = $(<span class="built_in">window</span>).width();</span><br><span class="line">  <span class="keyword">var</span> height = $(<span class="built_in">window</span>).height();</span><br><span class="line">  <span class="keyword">if</span>(width &lt; height)&#123;</span><br><span class="line">    $el.hide();</span><br><span class="line">    _initScreenDir == <span class="number">1</span> &amp;&amp; (<span class="built_in">window</span>.location.reload());</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    $el.show();</span><br><span class="line">    _initScreenDir = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">_onorientationchange();</span><br><span class="line"><span class="built_in">window</span>.addEventListener(<span class="string">"onorientationchange"</span> <span class="keyword">in</span> <span class="built_in">window</span> ? <span class="string">"orientationchange"</span> : <span class="string">"resize"</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;_onorientationchange(e);&#125;, <span class="literal">false</span>);</span><br></pre></td></tr></table></figure>]]></content>
-    <summary type="html">
-    <![CDATA[<p>有时候，我们做一些H5特效页或游戏时，只做了竖屏状态下的设计和实现，此时我们并不希望用户以横屏状态打开，因此我们要在页面加载之初判断手机的横竖屏方向，做相应的处理。<br>在现代浏览器中，我们可以通过window.oritentation判断屏幕的横竖屏方向，当：window.oritentation = 0 或者 180 时，则手机为竖屏状态，反之则为横屏。</p>]]>
     
     </summary>
     
