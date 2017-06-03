@@ -2,8 +2,7 @@
 <p>间接的吐槽了产品狗就是喜欢糊逼改需求，因此我们的代码千万不能写成hardcode。</p>
 <p>也许你曾经听过hardcode，有的人用它来形容很难懂的代码，很形象，你的代码很硬，所以不能适应变化。</p>
 <p>而这里我想说的是一种编码习惯：</p>
-<p><strong>将程序体中要调用的变量直接写死代码中。</strong></p>
-<a id="more"></a>
+<p><strong>将程序体中要调用的变量直接写死代码中。</strong><br><a id="more"></a></p>
 <p>比如我们要计算一个边长是100的正方形面积：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a = <span class="number">100</span> * <span class="number">100</span>;</div></pre></td></tr></table></figure></p>
 <p>因为我们会习惯性的认为100是一个确定的值，我们就直接用数字里表明，而不是一个变量。</p>
 <p>那么这个时候就会带来两个问题：</p>
@@ -53,7 +52,7 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$(<span class="string">'#btn1'</span>).on(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  a = $(<span class="keyword">this</span>).data(<span class="string">'abc'</span>);</div><div class="line">  alert(a);</div><div class="line">&#125;);</div><div class="line"></div><div class="line">$(<span class="string">'#btn2'</span>).on(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  a = $(<span class="keyword">this</span>).data(<span class="string">'abc'</span>);</div><div class="line">  alert(a);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
 <p>刚开始往往会被匿名函数牵着鼻子走，习惯性的把逻辑代码都写在这个匿名function中。<br>而实际上，按照本文的思路，这段匿名函数其实可以抽出来写……</p>
 <h3 id="脑洞大开-CSS也行？"><a href="#脑洞大开-CSS也行？" class="headerlink" title="脑洞大开 CSS也行？"></a>脑洞大开 CSS也行？</h3><p>其实这个是胡扯啦，css这种静态的stylesheet基本上不存在变量这种说法啦~<br>基本上就是你在css里定义了多少，那么页面上就显示多少了。<br>不过直至rem的出现。<br>rem在这里就可以看成是一个预设的变量啦，它的默认值是根元素的font-size。<br>当页面加载后，你可以修个font-size的大小，这时候，所有基于rem设置大小的值都会响应啦。<br>是不是很叼？？？</p>
-</div></article></div></main><footer><div class="paginator"><a href="/2015/12/01/20151220_cocos2dGame/" class="prev">PREV</a><a href="/2015/11/16/20151116_checkIsMobile/" class="next">NEXT</a></div><div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div><script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script><script>var cloudTieConfig = {
+</div></article></div></main><footer><div class="paginator"><a href="/2015/12/01/20151220_cocos2dGame/" class="prev">PREV</a><a href="/2015/11/15/20151220_preload/" class="next">NEXT</a></div><div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div><script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script><script>var cloudTieConfig = {
     url: document.location.href,
     sourceId: "",
     productKey: "73fc09c4a9074b41b145fb564eada364",

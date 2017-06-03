@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://shiwah.me/"/>
-  <updated>2017-03-19T10:18:20.000Z</updated>
+  <updated>2017-06-03T16:30:40.000Z</updated>
   <id>http://shiwah.me/</id>
   
   <author>
@@ -16,13 +16,72 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>DOM元素的尺寸和位置</title>
-    <link href="http://shiwah.me/2017/03/19/20190319_domSizePos/"/>
-    <id>http://shiwah.me/2017/03/19/20190319_domSizePos/</id>
-    <published>2017-03-19T10:00:00.000Z</published>
-    <updated>2017-03-19T10:18:20.000Z</updated>
+    <title>移动端开发玄学研究分析</title>
+    <link href="http://shiwah.me/2017/06/03/20170603_mobileWeb/"/>
+    <id>http://shiwah.me/2017/06/03/20170603_mobileWeb/</id>
+    <published>2017-06-03T06:00:00.000Z</published>
+    <updated>2017-06-03T16:30:40.000Z</updated>
     
-    <content type="html"><![CDATA[<p>总结一些高级浏览器或移动端获取DOM元素的尺寸和位置的属性的区别及常用方法<br><a id="more"></a></p>
+    <content type="html"><![CDATA[<p>移动端领域有太多的未解之谜，<br>往往是3分靠姿势水平，7分靠框架类库<br>剩下的的90分就是我们今天要讲的玄学了</p>
+<a id="more"></a>
+<h2 id="iphone复制文字时内容错误"><a href="#iphone复制文字时内容错误" class="headerlink" title="iphone复制文字时内容错误"></a>iphone复制文字时内容错误</h2><p>比如以下情况,<code>12345</code>前后的标签都设置了<code>user-select:none</code>,但是长按后调用系统复制，会发现复制到的内容是<code>12345长按复制</code><br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">p</span> <span class="attr">style</span>=<span class="string">"user-select:none"</span>&gt;</span>你的抽奖号为：<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">p</span> <span class="attr">style</span>=<span class="string">"user-select:auto"</span>&gt;</span>12345<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">p</span> <span class="attr">style</span>=<span class="string">"user-select:none"</span>&gt;</span>长按复制<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>最简单粗暴的解决办法就是在不影响布局的情况下调换一下标签顺序。。。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">p</span> <span class="attr">style</span>=<span class="string">"user-select:none"</span>&gt;</span>你的抽奖号为：<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">p</span> <span class="attr">style</span>=<span class="string">"user-select:none"</span>&gt;</span>长按复制<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">p</span> <span class="attr">style</span>=<span class="string">"user-select:auto"</span>&gt;</span>12345<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<h2 id="Flex布局"><a href="#Flex布局" class="headerlink" title="Flex布局"></a>Flex布局</h2><p>要在微信端推广的web，现阶段尽量不要用flex布局，要不然800块的安卓及各种老机器会把你教育到怀疑人生。</p>
+<h2 id="自动播放音频"><a href="#自动播放音频" class="headerlink" title="自动播放音频"></a>自动播放音频</h2><p>监听页面上某张图片的加载事件<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">img.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  audio.play();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="自定背景的input光标太长"><a href="#自定背景的input光标太长" class="headerlink" title="自定背景的input光标太长"></a>自定背景的input光标太长</h2><p>需要加上appearance:none这个属性，它的作用是将input默认的属性样式去掉。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.input-wrap</span> <span class="selector-tag">input</span> &#123;</div><div class="line">  <span class="attribute">display</span>: block;</div><div class="line">  <span class="attribute">width</span>: <span class="number">5.06rem</span>;</div><div class="line">  <span class="attribute">height</span>: .<span class="number">96rem</span>;</div><div class="line">  <span class="attribute">margin</span>: <span class="number">0</span> auto;</div><div class="line">  <span class="attribute">border</span>: none;</div><div class="line">  <span class="attribute">background</span>: none;</div><div class="line">  <span class="attribute">color</span>: <span class="number">#602f00</span>;</div><div class="line">  <span class="attribute">vertical-align</span>: middle;</div><div class="line">  <span class="attribute">font-size</span>: .<span class="number">48rem</span>;</div><div class="line">  <span class="attribute">-webkit-appearance</span>:none; <span class="comment">/* Safari 和 Chrome */</span></div><div class="line">  <span class="attribute">appearance</span>:none;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="判断是否是在移动端-微信中打开"><a href="#判断是否是在移动端-微信中打开" class="headerlink" title="判断是否是在移动端/微信中打开"></a>判断是否是在移动端/微信中打开</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span>(<span class="regexp">/iphone|ios|android|mobile/i</span>.test(navigator.userAgent.toLowerCase())) &#123;</div><div class="line">    <span class="comment">// 在移动端打开</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>同理，判断页面是否是在微信中打开</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span>(<span class="regexp">/micromessenger/i</span>.test(navigator.userAgent.toLowerCase())) &#123;</div><div class="line">    <span class="comment">// 微信内置浏览器</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="判断横竖屏"><a href="#判断横竖屏" class="headerlink" title="判断横竖屏"></a>判断横竖屏</h2><p>监听<code>onorientationchange/resize</code>事件来判断屏幕方向发生了改变。<br>然后<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">window</span>.addEventListener(<span class="string">"onorientationchange"</span> <span class="keyword">in</span> <span class="built_in">window</span> ? <span class="string">"orientationchange"</span> : <span class="string">"resize"</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</div><div class="line">  <span class="keyword">if</span> (<span class="built_in">window</span>.orientation == <span class="number">0</span> || <span class="built_in">window</span>.orientation == <span class="number">180</span>) &#123;</div><div class="line">    <span class="comment">// 竖屏</span></div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="comment">// 横屏</span></div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  <span class="comment">// 或者根据屏幕宽度</span></div><div class="line">  <span class="keyword">if</span> (<span class="built_in">document</span>.body.clientWidth &lt; <span class="built_in">document</span>.body.clientHeight) &#123;</div><div class="line">    <span class="comment">// 竖屏</span></div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="comment">// 横屏</span></div><div class="line">  &#125;</div><div class="line">&#125;, <span class="literal">false</span>);</div></pre></td></tr></table></figure></p>
+<h2 id="滚动不流畅"><a href="#滚动不流畅" class="headerlink" title="滚动不流畅"></a>滚动不流畅</h2><p>在滚动的容器中添加以下属性，在IOS中实现弹性滚动<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">-webkit-overflow-scrolling</span> : <span class="selector-tag">touch</span>;</div></pre></td></tr></table></figure></p>
+<p>如若在滚动事件上的绑定，可以在检测兼容性之后，使用<code>passive</code>事件绑定优化性能。<br>因为在移动端会默认先去执行listener，判断里面是否会阻止默认事件（<code>e.preventDefaut()</code>）。如果没有，才会触发默认事件（如这里说的滚动），所以如果我们的事件绑定不想阻止默认事件的话，可以将<code>passive = true</code>，这样浏览器就会无阻塞的执行默认事件了。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">XXX.addEventListener(type, listener, &#123;</div><div class="line">    <span class="attr">capture</span>: <span class="literal">false</span>,</div><div class="line">    <span class="attr">passive</span>: <span class="literal">true</span>,</div><div class="line">    <span class="attr">once</span>: <span class="literal">false</span></div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
+<h2 id="安卓设备，输入框弹出时，屏幕尺寸发生改变"><a href="#安卓设备，输入框弹出时，屏幕尺寸发生改变" class="headerlink" title="安卓设备，输入框弹出时，屏幕尺寸发生改变"></a>安卓设备，输入框弹出时，屏幕尺寸发生改变</h2><p>这个神坑会带来几个常见的问题：</p>
+<ul>
+<li><code>background-size: 100% 100%</code>的全屏背景图变形</li>
+<li><code>position: fixed</code>的元素漂移，当键盘收起后不会恢复原位</li>
+<li><code>position: absolute</code>的根据<code>bottom</code>定位的元素位置不对<br>解决办法：</li>
+<li>媒体查询一下或者JS监测一下，当页面高度低于多少时，设一个足够大或者写死的背景高度</li>
+<li>移动端尽量不用<code>fixed</code></li>
+<li>想要尽量完美就耀用js或者媒体查询了，做一些特殊处理</li>
+</ul>
+<h2 id="某些版本的IOS设备，内容为纯数字的标签样式异常"><a href="#某些版本的IOS设备，内容为纯数字的标签样式异常" class="headerlink" title="某些版本的IOS设备，内容为纯数字的标签样式异常"></a>某些版本的IOS设备，内容为纯数字的标签样式异常</h2><p>在某些版本的IOS设备中，内容为纯数字的标签会会被浏览器解析成电话号码，表现类似于在原标签外包了一层<a></a>标签。<br>这就有可能会对页面样式造成影响。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">span</span>&gt;</span>12345678<span class="tag">&lt;/<span class="name">span</span>&gt;</span>  <span class="comment">&lt;!-- you want it like this --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">span</span>&gt;</span>12345678<span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span> <span class="comment">&lt;!-- in fact  --&gt;</span></div></pre></td></tr></table></figure></p>
+<p>解决办法是头部加标签屏蔽该功能<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">content</span>=<span class="string">"telephone=no"</span> <span class="attr">name</span>=<span class="string">"format-detection"</span>/&gt;</span></div></pre></td></tr></table></figure></p>
+<h2 id="IOS9-3的iphone-5s下，微信内置浏览器屏幕宽度获取异常"><a href="#IOS9-3的iphone-5s下，微信内置浏览器屏幕宽度获取异常" class="headerlink" title="IOS9.3的iphone 5s下，微信内置浏览器屏幕宽度获取异常"></a>IOS9.3的iphone 5s下，微信内置浏览器屏幕宽度获取异常</h2><p>在该版本系统下，DOMContentLoaded时，window.innerWidth获取到的屏幕宽度是980。<br>网上的方法是在meta里加上<code>shrink-to-fit=no</code>，然而似乎不起作用。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span> <span class="attr">content</span>=<span class="string">"width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1, shrink-to-fit=no"</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>目前还是保险起见的换了方法，用clientWitdh获取<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> wid = <span class="built_in">document</span>.body.clientWidth;</div></pre></td></tr></table></figure></p>
+<h2 id="websocket-cocos2d-js开发的游戏在微信中必须触摸屏幕才能接收到消息"><a href="#websocket-cocos2d-js开发的游戏在微信中必须触摸屏幕才能接收到消息" class="headerlink" title="websocket+cocos2d-js开发的游戏在微信中必须触摸屏幕才能接收到消息"></a>websocket+cocos2d-js开发的游戏在微信中必须触摸屏幕才能接收到消息</h2><p>讲真我还没找到这个玄学的原因，后来我改用<code>EGRET</code>引擎重写了客户端就没有这个现象了，服务端和通信模块一点没变……</p>
+<h2 id="video全屏播放"><a href="#video全屏播放" class="headerlink" title="video全屏播放"></a>video全屏播放</h2><p>思路是用一个宽高均为100%的容器<code>.video-wrap</code>来包住<code>video</code>，再让<code>video</code>的高度等于容器的高度，进而实现全屏。</p>
+<p>不过这里遇到了2个问题：</p>
+<ul>
+<li>在ios上，微信会默认调用原生的播放器来全屏播放视频，会出现白色的菜单和进度条，影响全屏的体验。</li>
+<li>在安卓上，微信会调用X5引擎底层播放器组件来播放视频，容器的z-index属性对其无效。此时也会出现菜单，而且最后还会无耻的出现“推荐视频”一栏…… 据说如果播放的是qq.com域名下的视频则不会碰到这个问题。</li>
+</ul>
+<p>在ios中，我们用<code>webkit-playsinline</code>可以让webview使用H5的video直接播放，而不再出现菜单和进度条。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"video-wrap"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">video</span> <span class="attr">id</span>=<span class="string">"video"</span> <span class="attr">height</span>=<span class="string">"100%"</span> <span class="attr">x-webkit-airplay</span>=<span class="string">"true"</span> <span class="attr">webkit-playsinline</span>=<span class="string">"true"</span> <span class="attr">preload</span>=<span class="string">"auto"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">source</span> <span class="attr">src</span>=<span class="string">"res/video.mp4"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">video</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.video-wrap</span> &#123;</div><div class="line">  <span class="attribute">position</span>: absolute;</div><div class="line">  <span class="attribute">z-index</span>: <span class="number">2</span>;</div><div class="line">  <span class="attribute">width</span>: <span class="number">100%</span>;</div><div class="line">  <span class="attribute">height</span>: <span class="number">100%</span>;</div><div class="line">  <span class="attribute">background</span>: <span class="built_in">url</span>(../images/p2/bg.jpg);</div><div class="line">  <span class="attribute">background-size</span>: cover;</div><div class="line">  <span class="comment">/*display: none;*/</span></div><div class="line">&#125;</div><div class="line"><span class="selector-tag">video</span> &#123; <span class="attribute">font-size</span>: <span class="number">100%</span>; <span class="attribute">line-height</span>: <span class="number">0</span>; <span class="attribute">vertical-align</span>: baseline; <span class="attribute">-webkit-user-select</span>: none; <span class="attribute">-moz-user-select</span>: none; <span class="attribute">-ms-user-select</span>: none; <span class="attribute">user-select</span>: none; <span class="attribute">outline</span>: none; &#125;</div></pre></td></tr></table></figure>
+<h2 id="自动（定时）播放视频"><a href="#自动（定时）播放视频" class="headerlink" title="自动（定时）播放视频"></a>自动（定时）播放视频</h2><p>在ios下，我们可以直接调用<code>video</code>的play方法实现视频的播放</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="comment">// 原生</span></div><div class="line">  <span class="built_in">document</span>.querySelector(<span class="string">'#video'</span>).play();</div><div class="line">  <span class="comment">// jQuery</span></div><div class="line">  $(<span class="string">'video'</span>)[<span class="number">0</span>].play();</div><div class="line">&#125;, <span class="number">1000</span>);</div></pre></td></tr></table></figure>
+<p>但在安卓下，由于X5内核绑架了<code>video</code>标签，而且要求视频首次播放时，必须是由用户亲自点击事件触发的才能播放，所以setTimeout不能调用play方法，并且也不能用js去触发click事件……<a href="http://x5.tencent.com/guide?id=2009" target="_blank" rel="external">X5内核视频播放官方问题集</a><br>解决的办法：<br>A.改成用户点击某个按钮后开始播放。<br>B.在游戏开始按钮时，先播放视频然后马上暂停，等到正式要播放视频时，就可以实现跟ios一样的调用方法了。</p>
+<h2 id="监听视频播放完毕"><a href="#监听视频播放完毕" class="headerlink" title="监听视频播放完毕"></a>监听视频播放完毕</h2><p>当视频播放完毕后我们希望它能自动隐藏掉并跳到其他界面。<br>video提供了一个视频播放完毕后的事件<code>ended</code><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">document</span>.querySelector(<span class="string">'#video'</span>).addEventListener(<span class="string">'ended'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">evt</span>) </span>&#123;</div><div class="line">  <span class="built_in">document</span>.querySelector(<span class="string">'.video-wrap'</span>).innerHTML(<span class="string">''</span>);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;移动端领域有太多的未解之谜，&lt;br&gt;往往是3分靠姿势水平，7分靠框架类库&lt;br&gt;剩下的的90分就是我们今天要讲的玄学了&lt;/p&gt;
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>DOM元素的尺寸和位置</title>
+    <link href="http://shiwah.me/2017/03/19/20170319_domSizePos/"/>
+    <id>http://shiwah.me/2017/03/19/20170319_domSizePos/</id>
+    <published>2017-03-19T10:00:00.000Z</published>
+    <updated>2017-06-03T16:13:11.000Z</updated>
+    
+    <content type="html"><![CDATA[<p><code>box-sizing</code> 、<code>offsetWidth</code>、<code>clientWidth</code>、<code>scrollWidth</code>、<code>offsetLeft</code>、<code>clientLeft</code>、<code>scrollLeft</code><br><a id="more"></a></p>
 <h2 id="DOM元素的尺寸"><a href="#DOM元素的尺寸" class="headerlink" title="DOM元素的尺寸"></a>DOM元素的尺寸</h2><h3 id="box-sizing对属性的影响"><a href="#box-sizing对属性的影响" class="headerlink" title="box-sizing对属性的影响"></a>box-sizing对属性的影响</h3><p>box-sizing的属性值会直接影响盒模型的尺寸计算。一般常用的box-sizing值有几个:</p>
 <blockquote>
 <p><code>content-box</code>： （默认值）标准盒模型。width = 内容的宽度，height = 内容的高度。宽度和高度都不包含内容的边框（border）和内边距（padding）<br><code>border-box</code>：width 和 height 属性包括内容，填充和边框，但不包括边距。<br><code>padding-box</code>: 只有火狐支持了，不展开研究</p>
@@ -50,7 +109,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;总结一些高级浏览器或移动端获取DOM元素的尺寸和位置的属性的区别及常用方法&lt;br&gt;
+      &lt;p&gt;&lt;code&gt;box-sizing&lt;/code&gt; 、&lt;code&gt;offsetWidth&lt;/code&gt;、&lt;code&gt;clientWidth&lt;/code&gt;、&lt;code&gt;scrollWidth&lt;/code&gt;、&lt;code&gt;offsetLeft&lt;/code&gt;、&lt;code&gt;clientLeft&lt;/code&gt;、&lt;code&gt;scrollLeft&lt;/code&gt;&lt;br&gt;
     
     </summary>
     
@@ -182,46 +241,13 @@
   </entry>
   
   <entry>
-    <title>微信H5中video常见的问题</title>
-    <link href="http://shiwah.me/2016/02/23/20160223_wechatVideo/"/>
-    <id>http://shiwah.me/2016/02/23/20160223_wechatVideo/</id>
-    <published>2016-02-23T09:00:00.000Z</published>
-    <updated>2016-09-29T01:43:05.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>微信H5播放video，实现类似吴亦凡参军H5的效果。在X5引擎中遇到了全屏播放、自动播放等几个问题。<br><a id="more"></a></p>
-<h2 id="1-视频全屏播放"><a href="#1-视频全屏播放" class="headerlink" title="1.视频全屏播放"></a>1.视频全屏播放</h2><p>思路是用一个宽高均为100%的容器<code>.video-wrap</code>来包住<code>video</code>，再让<code>video</code>的高度等于容器的高度，进而实现全屏。</p>
-<p>不过这里遇到了2个问题：</p>
-<ul>
-<li>在ios上，微信会默认调用原生的播放器来全屏播放视频，会出现白色的菜单和进度条，影响全屏的体验。</li>
-<li>在安卓上，微信会调用X5引擎底层播放器组件来播放视频，容器的z-index属性对其无效。此时也会出现菜单，而且最后还会无耻的出现“推荐视频”一栏…… 据说如果播放的是qq.com域名下的视频则不会碰到这个问题。<a href="http://x5.tencent.com/guide?id=2009" target="_blank" rel="external">X5内核视频播放官方问题集</a></li>
-</ul>
-<p>在ios中，我们用<code>webkit-playsinline</code>可以让webview使用H5的video直接播放，而不再出现菜单和进度条。</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"video-wrap"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">video</span> <span class="attr">id</span>=<span class="string">"video"</span> <span class="attr">height</span>=<span class="string">"100%"</span> <span class="attr">x-webkit-airplay</span>=<span class="string">"true"</span> <span class="attr">webkit-playsinline</span>=<span class="string">"true"</span> <span class="attr">preload</span>=<span class="string">"auto"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">source</span> <span class="attr">src</span>=<span class="string">"res/video.mp4"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">video</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.video-wrap</span> &#123;</div><div class="line">  <span class="attribute">position</span>: absolute;</div><div class="line">  <span class="attribute">z-index</span>: <span class="number">2</span>;</div><div class="line">  <span class="attribute">width</span>: <span class="number">100%</span>;</div><div class="line">  <span class="attribute">height</span>: <span class="number">100%</span>;</div><div class="line">  <span class="attribute">background</span>: <span class="built_in">url</span>(../images/p2/bg.jpg);</div><div class="line">  <span class="attribute">background-size</span>: cover;</div><div class="line">  <span class="comment">/*display: none;*/</span></div><div class="line">&#125;</div><div class="line"><span class="selector-tag">video</span> &#123; <span class="attribute">font-size</span>: <span class="number">100%</span>; <span class="attribute">line-height</span>: <span class="number">0</span>; <span class="attribute">vertical-align</span>: baseline; <span class="attribute">-webkit-user-select</span>: none; <span class="attribute">-moz-user-select</span>: none; <span class="attribute">-ms-user-select</span>: none; <span class="attribute">user-select</span>: none; <span class="attribute">outline</span>: none; &#125;</div></pre></td></tr></table></figure>
-<h2 id="2-自动（定时）播放视频"><a href="#2-自动（定时）播放视频" class="headerlink" title="2.自动（定时）播放视频"></a>2.自动（定时）播放视频</h2><p>在ios下，我们可以直接调用<code>video</code>的play方法实现视频的播放</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="comment">// 原生</span></div><div class="line">  <span class="built_in">document</span>.querySelector(<span class="string">'#video'</span>).play();</div><div class="line">  <span class="comment">// jQuery</span></div><div class="line">  $(<span class="string">'video'</span>)[<span class="number">0</span>].play();</div><div class="line">&#125;, <span class="number">1000</span>);</div></pre></td></tr></table></figure>
-<p>但在安卓下，由于X5内核绑架了<code>video</code>标签，而且要求视频首次播放时，必须是由用户亲自点击事件触发的才能播放，所以setTimeout不能调用play方法，并且也不能用js去触发click事件……<a href="http://x5.tencent.com/guide?id=2009" target="_blank" rel="external">X5内核视频播放官方问题集</a><br>解决的办法：<br>A.改成用户点击某个按钮后开始播放。<br>B.在游戏开始按钮时，先播放视频然后马上暂停，等到正式要播放视频时，就可以实现跟ios一样的调用方法了。</p>
-<h2 id="3-监听视频播放完毕"><a href="#3-监听视频播放完毕" class="headerlink" title="3.监听视频播放完毕"></a>3.监听视频播放完毕</h2><p>当视频播放完毕后我们希望它能自动隐藏掉并跳到其他界面。<br>video提供了一个视频播放完毕后的事件<code>ended</code></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">document</span>.querySelector(<span class="string">'#video'</span>).addEventListener(<span class="string">'ended'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">evt</span>) </span>&#123;</div><div class="line">  <span class="built_in">document</span>.querySelector(<span class="string">'.video-wrap'</span>).innerHTML(<span class="string">''</span>);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;微信H5播放video，实现类似吴亦凡参军H5的效果。在X5引擎中遇到了全屏播放、自动播放等几个问题。&lt;br&gt;
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>《JavaScript设计模式》读书笔记-工厂模式</title>
+    <title>Javascript工厂模式</title>
     <link href="http://shiwah.me/2016/01/11/20160111_factoryMode/"/>
     <id>http://shiwah.me/2016/01/11/20160111_factoryMode/</id>
     <published>2016-01-11T15:00:00.000Z</published>
-    <updated>2016-01-11T14:56:15.000Z</updated>
+    <updated>2017-06-03T16:16:26.000Z</updated>
     
-    <content type="html"><![CDATA[<p>最近总感觉写的代码没有头绪，很混乱，有时候自己也弄不清楚为什么要这样写。<br>于是买了一本张容铭写的《JavaScript设计模式》来读读。<br>希望可以梳理和加深对JS代码的理解。<br>今天先来理解一下工厂模式。包括<code>简单工厂模式</code>、<code>工厂方法模式</code>、<code>抽象工厂模式</code><br><a id="more"></a></p>
+    <content type="html"><![CDATA[<p>最近买了一本张容铭写的《JavaScript设计模式》来读读。<br>希望可以梳理和加深对JS代码的理解。<br>今天先来理解一下工厂模式。包括<code>简单工厂模式</code>、<code>工厂方法模式</code>、<code>抽象工厂模式</code><br><a id="more"></a></p>
 <h2 id="简单工厂模式"><a href="#简单工厂模式" class="headerlink" title="简单工厂模式"></a>简单工厂模式</h2><p><code>简单工厂模式（Simple Factory）又叫静态工厂方法，由一个工厂对象决定创建某种产品对象类的实例。</code><br>以我的理解，这种设计模式的目的是：统一几个对象的创建入口，这样就可以抽取这几个对象创建时的共性（共用代码），同时可以由该工厂方法决定具体创建那个对象。</p>
 <p>比如屏幕中有modal和pop两种弹出窗体，他们在打开前都需要获取window的width和height属性，那么我们可以通过一个openWin方法实现对两者的调用。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> modal = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;</div><div class="line"><span class="keyword">var</span> pop = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;</div><div class="line"><span class="keyword">var</span> openWin = <span class="function"><span class="keyword">function</span>(<span class="params">mode</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> width = <span class="built_in">window</span>.width;</div><div class="line">  <span class="keyword">var</span> height = <span class="built_in">window</span>.height;</div><div class="line">  <span class="keyword">if</span> (<span class="string">'modal'</span> == mode) &#123;</div><div class="line">    <span class="keyword">new</span> model(width, height);</div><div class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">'pop'</span> == mode) &#123;</div><div class="line">    <span class="keyword">new</span> pop(width, height);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -233,7 +259,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;最近总感觉写的代码没有头绪，很混乱，有时候自己也弄不清楚为什么要这样写。&lt;br&gt;于是买了一本张容铭写的《JavaScript设计模式》来读读。&lt;br&gt;希望可以梳理和加深对JS代码的理解。&lt;br&gt;今天先来理解一下工厂模式。包括&lt;code&gt;简单工厂模式&lt;/code&gt;、&lt;code&gt;工厂方法模式&lt;/code&gt;、&lt;code&gt;抽象工厂模式&lt;/code&gt;&lt;br&gt;
+      &lt;p&gt;最近买了一本张容铭写的《JavaScript设计模式》来读读。&lt;br&gt;希望可以梳理和加深对JS代码的理解。&lt;br&gt;今天先来理解一下工厂模式。包括&lt;code&gt;简单工厂模式&lt;/code&gt;、&lt;code&gt;工厂方法模式&lt;/code&gt;、&lt;code&gt;抽象工厂模式&lt;/code&gt;&lt;br&gt;
     
     </summary>
     
@@ -329,10 +355,9 @@
     <link href="http://shiwah.me/2015/12/29/20151229_aes/"/>
     <id>http://shiwah.me/2015/12/29/20151229_aes/</id>
     <published>2015-12-29T13:00:00.000Z</published>
-    <updated>2015-12-29T13:34:57.000Z</updated>
+    <updated>2017-06-03T16:15:01.000Z</updated>
     
-    <content type="html"><![CDATA[<p>最近有一个项目，需要前端通过websocket与服务端连接，服务端直接向前端发二进制的数据协议包，但是这个协议包的内容是经过AES加密的，需要前端来解密。</p>
-<p>网上大部分的AES算法以及DEMO教程（特别是中文社区）都是简单告诉你，JS如何去加密/解密一个字符串。但由于某些不可抗力，我要做的是在<strong>浏览器端</strong>对二进制字节流直接进行加密解密。</p>
+    <content type="html"><![CDATA[<p>最近有一个项目，需要前端通过websocket与服务端连接，服务端直接向前端发二进制的数据协议包，但是这个协议包的内容是经过AES加密的，需要前端来在直接解密二进制流。</p>
 <a id="more"></a>
 <h2 id="开始解密"><a href="#开始解密" class="headerlink" title="开始解密"></a>开始解密</h2><p>简单了解一下所用的的AES加密算法，我们用的是AES的CFB加密方式，服务端会提供给我一个key和iv的二进制字节串。密文也是二进制字节串。</p>
 <p>我用的加密/解密插件: <a href="http://code.google.com/p/crypto-js" target="_blank" rel="external">crypto-js</a></p>
@@ -347,8 +372,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;最近有一个项目，需要前端通过websocket与服务端连接，服务端直接向前端发二进制的数据协议包，但是这个协议包的内容是经过AES加密的，需要前端来解密。&lt;/p&gt;
-&lt;p&gt;网上大部分的AES算法以及DEMO教程（特别是中文社区）都是简单告诉你，JS如何去加密/解密一个字符串。但由于某些不可抗力，我要做的是在&lt;strong&gt;浏览器端&lt;/strong&gt;对二进制字节流直接进行加密解密。&lt;/p&gt;
+      &lt;p&gt;最近有一个项目，需要前端通过websocket与服务端连接，服务端直接向前端发二进制的数据协议包，但是这个协议包的内容是经过AES加密的，需要前端来在直接解密二进制流。&lt;/p&gt;
     
     </summary>
     
@@ -360,15 +384,15 @@
     <link href="http://shiwah.me/2015/12/29/20151229_arrayBuffer/"/>
     <id>http://shiwah.me/2015/12/29/20151229_arrayBuffer/</id>
     <published>2015-12-29T12:00:00.000Z</published>
-    <updated>2016-09-29T03:13:14.000Z</updated>
+    <updated>2017-06-03T16:42:07.000Z</updated>
     
-    <content type="html"><![CDATA[<ul>
+    <content type="html"><![CDATA[<a id="more"></a>
+<ul>
 <li><code>Blob</code>是现代浏览器中提供的能够装载二进制流（文件）的容器对象。</li>
 <li><code>ArrayBuffer</code>是能够装载<code>Blob</code>（二进制流）数据的原始缓冲区，<code>ArrayBuffer</code>不能直接通过js读写。</li>
 <li><code>TypeArray</code>是<code>ArrayBuffer</code>的一种类数组的视图对象，可以将<code>ArrayBuffer</code>按不同字节数读取成类似数组形式的数据类型，从而可以向读写数组元素一样，实现对<code>ArrayBuffer</code>数据的读写。常见的<code>TypeArray</code>包括<code>Uint8Array</code>,<code>Uint16Array</code>,<code>Uint32Array</code>等。<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray" target="_blank" rel="external">点这里查看所有的TypedArray</a></li>
 </ul>
 <p>所以我对三者的理解是： <code>Blob</code> &lt;-&gt; <code>ArrayBuffer</code> &lt;-&gt; <code>TypeArray</code> &lt;—-&gt; <code>Array</code><br>由于<code>TypeArray</code>和<code>Array</code>有些相似，因此往往我会选择在<code>TypeArray</code>这层做处理。<br>下面是<code>TypeArray</code>、<code>ArrayBuffer</code>和<code>Blob</code>之间相互转换的方法。</p>
-<a id="more"></a>
 <h2 id="websocket接收arrayBuffer"><a href="#websocket接收arrayBuffer" class="headerlink" title="websocket接收arrayBuffer"></a>websocket接收arrayBuffer</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* websocket的情况下二进制流的获取 */</span></div><div class="line"><span class="keyword">var</span> svip = <span class="string">'ws://127.0.0.1:8080'</span>;</div><div class="line"><span class="keyword">var</span> ws = <span class="keyword">new</span> WebSocket(svip);</div><div class="line">ws.binaryType = <span class="string">'arraybuffer'</span></div><div class="line">ws.onmessage = <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</div><div class="line">	<span class="keyword">var</span> message = e.data;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h2 id="blob轉arrayBuffer"><a href="#blob轉arrayBuffer" class="headerlink" title="blob轉arrayBuffer"></a>blob轉arrayBuffer</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> bl = <span class="keyword">new</span> Blob(); <span class="comment">// bl是要转换的blob</span></div><div class="line"><span class="keyword">var</span> fr = <span class="keyword">new</span> FileReader();</div><div class="line">fr.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">	<span class="keyword">var</span> ab = <span class="keyword">this</span>.result; <span class="comment">// ab是转换后的结果</span></div><div class="line">&#125;</div><div class="line">fr.readAsArrayBuffer(bl);</div></pre></td></tr></table></figure>
 <h2 id="ArrayBuffer-to-Blob-（ArrayBuffer转Blob）"><a href="#ArrayBuffer-to-Blob-（ArrayBuffer转Blob）" class="headerlink" title="ArrayBuffer to Blob （ArrayBuffer转Blob）"></a>ArrayBuffer to Blob （ArrayBuffer转Blob）</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> ab = <span class="keyword">new</span> <span class="built_in">ArrayBuffer</span>(<span class="number">32</span>);</div><div class="line"><span class="keyword">var</span> blob = <span class="keyword">new</span> Blob([ab]); <span class="comment">// 注意必须包裹[]</span></div></pre></td></tr></table></figure>
@@ -388,12 +412,10 @@
     
     <summary type="html">
     
-      &lt;ul&gt;
+      &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;ul&gt;
 &lt;li&gt;&lt;code&gt;Blob&lt;/code&gt;是现代浏览器中提供的能够装载二进制流（文件）的容器对象。&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;ArrayBuffer&lt;/code&gt;是能够装载&lt;code&gt;Blob&lt;/code&gt;（二进制流）数据的原始缓冲区，&lt;code&gt;ArrayBuffer&lt;/code&gt;不能直接通过js读写。&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;TypeArray&lt;/code&gt;是&lt;code&gt;ArrayBuffer&lt;/code&gt;的一种类数组的视图对象，可以将&lt;code&gt;ArrayBuffer&lt;/code&gt;按不同字节数读取成类似数组形式的数据类型，从而可以向读写数组元素一样，实现对&lt;code&gt;ArrayBuffer&lt;/code&gt;数据的读写。常见的&lt;code&gt;TypeArray&lt;/code&gt;包括&lt;code&gt;Uint8Array&lt;/code&gt;,&lt;code&gt;Uint16Array&lt;/code&gt;,&lt;code&gt;Uint32Array&lt;/code&gt;等。&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;点这里查看所有的TypedArray&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;所以我对三者的理解是： &lt;code&gt;Blob&lt;/code&gt; &amp;lt;-&amp;gt; &lt;code&gt;ArrayBuffer&lt;/code&gt; &amp;lt;-&amp;gt; &lt;code&gt;TypeArray&lt;/code&gt; &amp;lt;—-&amp;gt; &lt;code&gt;Array&lt;/code&gt;&lt;br&gt;由于&lt;code&gt;TypeArray&lt;/code&gt;和&lt;code&gt;Array&lt;/code&gt;有些相似，因此往往我会选择在&lt;code&gt;TypeArray&lt;/code&gt;这层做处理。&lt;br&gt;下面是&lt;code&gt;TypeArray&lt;/code&gt;、&lt;code&gt;ArrayBuffer&lt;/code&gt;和&lt;code&gt;Blob&lt;/code&gt;之间相互转换的方法。&lt;/p&gt;
+&lt;li&gt;&lt;code&gt;ArrayBuffer&lt;/code&gt;是能够装载&lt;code&gt;Blob&lt;/code&gt;（二进制流）数据的原始缓
     
     </summary>
     
@@ -608,14 +630,13 @@
     <link href="http://shiwah.me/2015/11/18/20150918_codeBeter/"/>
     <id>http://shiwah.me/2015/11/18/20150918_codeBeter/</id>
     <published>2015-11-17T16:00:00.000Z</published>
-    <updated>2017-03-19T10:24:03.000Z</updated>
+    <updated>2017-06-03T16:37:00.000Z</updated>
     
     <content type="html"><![CDATA[<p>最近有一张神图，大意是产品说『此处功能日后必改，不要写死』</p>
 <p>间接的吐槽了产品狗就是喜欢糊逼改需求，因此我们的代码千万不能写成hardcode。</p>
 <p>也许你曾经听过hardcode，有的人用它来形容很难懂的代码，很形象，你的代码很硬，所以不能适应变化。</p>
 <p>而这里我想说的是一种编码习惯：</p>
-<p><strong>将程序体中要调用的变量直接写死代码中。</strong></p>
-<a id="more"></a>
+<p><strong>将程序体中要调用的变量直接写死代码中。</strong><br><a id="more"></a></p>
 <p>比如我们要计算一个边长是100的正方形面积：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a = <span class="number">100</span> * <span class="number">100</span>;</div></pre></td></tr></table></figure></p>
 <p>因为我们会习惯性的认为100是一个确定的值，我们就直接用数字里表明，而不是一个变量。</p>
 <p>那么这个时候就会带来两个问题：</p>
@@ -673,30 +694,7 @@
 &lt;p&gt;间接的吐槽了产品狗就是喜欢糊逼改需求，因此我们的代码千万不能写成hardcode。&lt;/p&gt;
 &lt;p&gt;也许你曾经听过hardcode，有的人用它来形容很难懂的代码，很形象，你的代码很硬，所以不能适应变化。&lt;/p&gt;
 &lt;p&gt;而这里我想说的是一种编码习惯：&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;将程序体中要调用的变量直接写死代码中。&lt;/strong&gt;&lt;/p&gt;
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>判断页面是否在移动端中打开</title>
-    <link href="http://shiwah.me/2015/11/16/20151116_checkIsMobile/"/>
-    <id>http://shiwah.me/2015/11/16/20151116_checkIsMobile/</id>
-    <published>2015-11-15T16:00:00.000Z</published>
-    <updated>2015-12-20T06:29:05.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>在现代浏览器中，我们可以通过判断window的navigator对象的userAgent取到客户端的信息，从而判断是否是移动端，判断脚本如下：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span>(<span class="regexp">/iphone|ios|android|mobile/i</span>.test(navigator.userAgent.toLowerCase())) &#123;</div><div class="line">    <span class="comment">// 在移动端打开</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<a id="more"></a>
-<p>同理，判断页面是否是在微信中打开</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span>(<span class="regexp">/micromessenger/i</span>.test(navigator.userAgent.toLowerCase())) &#123;</div><div class="line">    <span class="comment">// 微信内置浏览器</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在现代浏览器中，我们可以通过判断window的navigator对象的userAgent取到客户端的信息，从而判断是否是移动端，判断脚本如下：&lt;/p&gt;
-&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(&lt;span class=&quot;regexp&quot;&gt;/iphone|ios|android|mobile/i&lt;/span&gt;.test(navigator.userAgent.toLowerCase())) &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// 在移动端打开&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;&lt;strong&gt;将程序体中要调用的变量直接写死代码中。&lt;/strong&gt;&lt;br&gt;
     
     </summary>
     
@@ -813,6 +811,40 @@
   </entry>
   
   <entry>
+    <title>js中的面向对象</title>
+    <link href="http://shiwah.me/2015/10/11/20151011_jsprototype/"/>
+    <id>http://shiwah.me/2015/10/11/20151011_jsprototype/</id>
+    <published>2015-10-10T16:00:00.000Z</published>
+    <updated>2017-06-03T16:36:30.000Z</updated>
+    
+    <content type="html"><![CDATA[<a id="more"></a>
+<h2 id="function是js中的一等公民"><a href="#function是js中的一等公民" class="headerlink" title="function是js中的一等公民"></a>function是js中的一等公民</h2><p>我们会发现js中一些基础的对象实质上也是function</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Number</span>)</div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">String</span>)</div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Function</span>)</div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Object</span>)</div></pre></td></tr></table></figure>
+<h2 id="function用于面向对象"><a href="#function用于面向对象" class="headerlink" title="function用于面向对象"></a>function用于面向对象</h2><p>说到对象，我们首先想到要有一个类，然后把类进行实例化得到对象。<br>而function就是我们所要的类（class）了。<br>比如下面这段代码，我们定义了一个Person类，然后传入<code>字面量</code>参数实例化了一个对象——sh。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">opt</span>) </span>&#123;</div><div class="line">	<span class="keyword">this</span>.name = opt.name;</div><div class="line">	<span class="keyword">this</span>.gender = opt.gender;</div><div class="line">	<span class="keyword">this</span>.skill = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> sh = <span class="keyword">new</span> Person(&#123;<span class="attr">name</span>:<span class="string">'shihua'</span>, <span class="attr">gender</span>: <span class="string">'man'</span>&#125;);</div><div class="line"><span class="built_in">console</span>.log(sh);</div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> sh);</div></pre></td></tr></table></figure>
+<p>通过console可以看到新生成的sh其实是一个Object,然而细心的人会发现，它除了我么自己定义的属性方法外，还多了一个<code>__proto__</code>的对象。这个就涉及了function中的一大精华原型链了。</p>
+<h2 id="js中的原型链"><a href="#js中的原型链" class="headerlink" title="js中的原型链"></a>js中的原型链</h2><p>关于js中的原型链网上已经很多详细的解释了，之前也大概知道可以用prototype的方法给对象添加方法，比如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">opt</span>) </span>&#123;</div><div class="line">	<span class="keyword">this</span>.name = opt.name;</div><div class="line">	<span class="keyword">this</span>.gender = opt.gender;</div><div class="line">&#125;</div><div class="line">Person.prototype.skill = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;;</div></pre></td></tr></table></figure>
+<p><em>这样Person就具有skill方法。但其实用下面这种方式定义，也可以达到目的。</em></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">opt</span>) </span>&#123;</div><div class="line">	<span class="keyword">this</span>.name = opt.name;</div><div class="line">	<span class="keyword">this</span>.gender = opt.gender;</div><div class="line">	<span class="keyword">this</span>.skill = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>所以我一直不是特别明白prototype方法的意义。<br>但其实细心的人会发现，用这种方法时，skill所指向的方法的内存地址是不一样的。<br>也就是说，当我们用后一种类时，每创建一个对象，都会在内存中新创建一个skill方法。这样显然是很影响性能的。<br>然而，如果是用prototype添加的skill方法，指向的内存地址则是一致的。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">opt</span>) </span>&#123;</div><div class="line">	<span class="keyword">this</span>.name = opt.name;</div><div class="line">	<span class="keyword">this</span>.gender = opt.gender;</div><div class="line">	<span class="keyword">this</span>.skill = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> a = <span class="keyword">new</span> Person(&#123;<span class="attr">name</span>:<span class="string">'aa'</span>, <span class="attr">gender</span>: <span class="string">'a'</span>&#125;);</div><div class="line"><span class="keyword">var</span> b = <span class="keyword">new</span> Person(&#123;<span class="attr">name</span>:<span class="string">'aa'</span>, <span class="attr">gender</span>: <span class="string">'a'</span>&#125;);</div><div class="line"><span class="built_in">console</span>.log(a.skill === b.skill);</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Human</span>(<span class="params">opt</span>) </span>&#123;</div><div class="line">	<span class="keyword">this</span>.name = opt.name;</div><div class="line">	<span class="keyword">this</span>.gender = opt.gender;</div><div class="line">&#125;</div><div class="line">Human.prototype.skill = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;;</div><div class="line"><span class="keyword">var</span> a1 = <span class="keyword">new</span> Human(&#123;<span class="attr">name</span>:<span class="string">'aa'</span>, <span class="attr">gender</span>: <span class="string">'a'</span>&#125;);</div><div class="line"><span class="keyword">var</span> b1 = <span class="keyword">new</span> Human(&#123;<span class="attr">name</span>:<span class="string">'aa'</span>, <span class="attr">gender</span>: <span class="string">'a'</span>&#125;);</div><div class="line"><span class="built_in">console</span>.log(a1.skill === b1.skill);</div></pre></td></tr></table></figure>
+<p>显然prototype才是更佳的做法。<br>那么就得说到prototype的运作原理了，当我们new一个对象时，会赋予其一个<code>__proto__</code>的属性，用于指向它的基类，使其具有基类的方法的指针，而子类自身实质上是不具有这些方法的。<br>当我们访问子类时，若其本身不具有这个属性和方法，则会根据<code>__proto__</code>向上一级去寻找，若上一级也不具有，则会依此去更上一级搜寻。<br>而prototype就是自主配置<code>__proto__</code>的入口。<br>这样就不会造成内存浪费，而对象方法也更易于被<code>继承</code>。</p>
+<h2 id="js中实现extend"><a href="#js中实现extend" class="headerlink" title="js中实现extend"></a>js中实现extend</h2><p>有时候我们想在某个类的基础上派生出一个新的类，使其具有新的属性方法，同时不影响原有类。在java中我们把这个方法叫extend。在js中，extend的实现方法如下，klass就是我们要的具有extend功能的类</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> klass = <span class="function"><span class="keyword">function</span>(<span class="params">opts</span>) </span>&#123;</div><div class="line">&#125;;</div><div class="line">klass.extend = <span class="function"><span class="keyword">function</span>(<span class="params">opt</span>) </span>&#123;</div><div class="line">	<span class="keyword">var</span> child = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;;</div><div class="line">	<span class="keyword">var</span> F = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">		<span class="keyword">this</span>.constructor = child();</div><div class="line">	&#125;;</div><div class="line">	F.prototype = <span class="keyword">this</span>.prototype;</div><div class="line">	<span class="keyword">var</span> o = <span class="keyword">new</span> F();</div><div class="line">	child.prototype = o;</div><div class="line">	<span class="comment">// 拓展新方法</span></div><div class="line">	<span class="keyword">for</span> (<span class="keyword">var</span> attr <span class="keyword">in</span> opt) &#123;</div><div class="line">		child.prototype[attr] = opt[attr];</div><div class="line">	&#125;</div><div class="line">	child.prototype.__super__ = <span class="keyword">this</span>.prototype;</div><div class="line">	<span class="keyword">return</span> child;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;h2 id=&quot;function是js中的一等公民&quot;&gt;&lt;a href=&quot;#function是js中的一等公民&quot; class=&quot;headerlink&quot; title=&quot;function是js中的一等公民&quot;&gt;&lt;/a&gt;function是js中的一等公民
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
     <title>HTML5中计时器的三种方案</title>
     <link href="http://shiwah.me/2015/10/11/20151111_h5Timer/"/>
     <id>http://shiwah.me/2015/10/11/20151111_h5Timer/</id>
@@ -843,33 +875,43 @@
   </entry>
   
   <entry>
-    <title>js中的function小记</title>
-    <link href="http://shiwah.me/2015/10/11/20151011_jsprototype/"/>
-    <id>http://shiwah.me/2015/10/11/20151011_jsprototype/</id>
-    <published>2015-10-10T16:00:00.000Z</published>
-    <updated>2015-12-20T06:28:29.000Z</updated>
+    <title>js实现基于发布/订阅机制的事件管理器（观察者模式）</title>
+    <link href="http://shiwah.me/2015/09/10/20150910_subPub/"/>
+    <id>http://shiwah.me/2015/09/10/20150910_subPub/</id>
+    <published>2015-09-09T16:00:00.000Z</published>
+    <updated>2017-06-03T16:37:13.000Z</updated>
     
-    <content type="html"><![CDATA[<p>最近参加了一个js方面的培训，讲师用两天时间给我们回顾和剖析了function的种种，的确有所收获，小记于此。</p>
-<a id="more"></a>
-<h2 id="function是js中的一等公民"><a href="#function是js中的一等公民" class="headerlink" title="function是js中的一等公民"></a>function是js中的一等公民</h2><p>我们会发现js中一些基础的对象实质上也是function</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Number</span>)</div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">String</span>)</div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Function</span>)</div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Object</span>)</div></pre></td></tr></table></figure>
-<h2 id="function用于面向对象"><a href="#function用于面向对象" class="headerlink" title="function用于面向对象"></a>function用于面向对象</h2><p>说到对象，我们首先想到要有一个类，然后把类进行实例化得到对象。<br>而function就是我们所要的类（class）了。<br>比如下面这段代码，我们定义了一个Person类，然后传入<code>字面量</code>参数实例化了一个对象——sh。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">opt</span>) </span>&#123;</div><div class="line">	<span class="keyword">this</span>.name = opt.name;</div><div class="line">	<span class="keyword">this</span>.gender = opt.gender;</div><div class="line">	<span class="keyword">this</span>.skill = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> sh = <span class="keyword">new</span> Person(&#123;<span class="attr">name</span>:<span class="string">'shihua'</span>, <span class="attr">gender</span>: <span class="string">'man'</span>&#125;);</div><div class="line"><span class="built_in">console</span>.log(sh);</div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> sh);</div></pre></td></tr></table></figure>
-<p>通过console可以看到新生成的sh其实是一个Object,然而细心的人会发现，它除了我么自己定义的属性方法外，还多了一个<code>__proto__</code>的对象。这个就涉及了function中的一大精华原型链了。</p>
-<h2 id="js中的原型链"><a href="#js中的原型链" class="headerlink" title="js中的原型链"></a>js中的原型链</h2><p>关于js中的原型链网上已经很多详细的解释了，之前也大概知道可以用prototype的方法给对象添加方法，比如：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">opt</span>) </span>&#123;</div><div class="line">	<span class="keyword">this</span>.name = opt.name;</div><div class="line">	<span class="keyword">this</span>.gender = opt.gender;</div><div class="line">&#125;</div><div class="line">Person.prototype.skill = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;;</div></pre></td></tr></table></figure>
-<p><em>这样Person就具有skill方法。但其实用下面这种方式定义，也可以达到目的。</em></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">opt</span>) </span>&#123;</div><div class="line">	<span class="keyword">this</span>.name = opt.name;</div><div class="line">	<span class="keyword">this</span>.gender = opt.gender;</div><div class="line">	<span class="keyword">this</span>.skill = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>所以我一直不是特别明白prototype方法的意义。<br>但其实细心的人会发现，用这种方法时，skill所指向的方法的内存地址是不一样的。<br>也就是说，当我们用后一种类时，每创建一个对象，都会在内存中新创建一个skill方法。这样显然是很影响性能的。<br>然而，如果是用prototype添加的skill方法，指向的内存地址则是一致的。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">opt</span>) </span>&#123;</div><div class="line">	<span class="keyword">this</span>.name = opt.name;</div><div class="line">	<span class="keyword">this</span>.gender = opt.gender;</div><div class="line">	<span class="keyword">this</span>.skill = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> a = <span class="keyword">new</span> Person(&#123;<span class="attr">name</span>:<span class="string">'aa'</span>, <span class="attr">gender</span>: <span class="string">'a'</span>&#125;);</div><div class="line"><span class="keyword">var</span> b = <span class="keyword">new</span> Person(&#123;<span class="attr">name</span>:<span class="string">'aa'</span>, <span class="attr">gender</span>: <span class="string">'a'</span>&#125;);</div><div class="line"><span class="built_in">console</span>.log(a.skill === b.skill);</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Human</span>(<span class="params">opt</span>) </span>&#123;</div><div class="line">	<span class="keyword">this</span>.name = opt.name;</div><div class="line">	<span class="keyword">this</span>.gender = opt.gender;</div><div class="line">&#125;</div><div class="line">Human.prototype.skill = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;;</div><div class="line"><span class="keyword">var</span> a1 = <span class="keyword">new</span> Human(&#123;<span class="attr">name</span>:<span class="string">'aa'</span>, <span class="attr">gender</span>: <span class="string">'a'</span>&#125;);</div><div class="line"><span class="keyword">var</span> b1 = <span class="keyword">new</span> Human(&#123;<span class="attr">name</span>:<span class="string">'aa'</span>, <span class="attr">gender</span>: <span class="string">'a'</span>&#125;);</div><div class="line"><span class="built_in">console</span>.log(a1.skill === b1.skill);</div></pre></td></tr></table></figure>
-<p>显然prototype才是更佳的做法。<br>那么就得说到prototype的运作原理了，当我们new一个对象时，会赋予其一个<code>__proto__</code>的属性，用于指向它的基类，使其具有基类的方法的指针，而子类自身实质上是不具有这些方法的。<br>当我们访问子类时，若其本身不具有这个属性和方法，则会根据<code>__proto__</code>向上一级去寻找，若上一级也不具有，则会依此去更上一级搜寻。<br>而prototype就是自主配置<code>__proto__</code>的入口。<br>这样就不会造成内存浪费，而对象方法也更易于被<code>继承</code>。</p>
-<h2 id="js中实现extend"><a href="#js中实现extend" class="headerlink" title="js中实现extend"></a>js中实现extend</h2><p>有时候我们想在某个类的基础上派生出一个新的类，使其具有新的属性方法，同时不影响原有类。在java中我们把这个方法叫extend。在js中，extend的实现方法如下，klass就是我们要的具有extend功能的类</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> klass = <span class="function"><span class="keyword">function</span>(<span class="params">opts</span>) </span>&#123;</div><div class="line">&#125;;</div><div class="line">klass.extend = <span class="function"><span class="keyword">function</span>(<span class="params">opt</span>) </span>&#123;</div><div class="line">	<span class="keyword">var</span> child = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;;</div><div class="line">	<span class="keyword">var</span> F = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">		<span class="keyword">this</span>.constructor = child();</div><div class="line">	&#125;;</div><div class="line">	F.prototype = <span class="keyword">this</span>.prototype;</div><div class="line">	<span class="keyword">var</span> o = <span class="keyword">new</span> F();</div><div class="line">	child.prototype = o;</div><div class="line">	<span class="comment">// 拓展新方法</span></div><div class="line">	<span class="keyword">for</span> (<span class="keyword">var</span> attr <span class="keyword">in</span> opt) &#123;</div><div class="line">		child.prototype[attr] = opt[attr];</div><div class="line">	&#125;</div><div class="line">	child.prototype.__super__ = <span class="keyword">this</span>.prototype;</div><div class="line">	<span class="keyword">return</span> child;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-]]></content>
+    <content type="html"><![CDATA[<a id="more"></a>
+<p>处理事件是web前端开发中出现最频繁的业务之一。在处理这类业务时，我们通常的思路就是基本是这样的：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$(<span class="string">'btn'</span>).on(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    a.show();</div><div class="line">    b.hide();</div><div class="line">    c.hide();</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
+<p>btn发生点击事件（事件触发）， 然后去分别执行a、b、c模块下的对应事件。这样是没有什么大问题的。<br>但设想一下下面3种情况：</p>
+<ol>
+<li>假如程序很大，很多模块，btn的这个事件要去触发100个模块下对应的不同的事件……</li>
+<li>今天btn可能只触发3个模块的方法，假如明天业务调整还要去触发d模块的功能……</li>
+<li>当btn触发时，c模块处于忙碌中不能响应，那势必btn与c模块要有业务上的交集，所以写btn的开发者可能还要去了解c模块的运行逻辑……</li>
+</ol>
+<h2 id="为什么需要发布-订阅"><a href="#为什么需要发布-订阅" class="headerlink" title="为什么需要发布/订阅"></a>为什么需要发布/订阅</h2><p>那么这个情况下就适合使用发布/订阅机制（pub/sub）进行事件管理。<br>发布/订阅也被称之为观察者模式。我要用观察者模式于事件管理中主要是为了满足以下诉求：<br>我希望模块与模块之间更加的独立。A模块不需要知道B模块中具体的执行逻辑，它只要知道我触发了btn事件，你B模块能知道我触发了并做你自己该做的事就可以了。<br>以此来首先确保我开发A模块时不需要了解我应该调用B模块的那个函数方法。另外，将来加入B模块、C模块时，A模块基本不用进行太多业务调整。</p>
+<h2 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h2><p>宏观来看，观察者模式其实有点类似于一个管理者，它手上有一份名单，知道谁谁谁订阅了事件A，当事件A发生之后只需要通知这个管理者，管理者就会杜泽去通知订阅了事件A的受众，而受众和事件的触发者之间不需要了解彼此。<br>那么我们就需要完成以下几个功能：</p>
+<ol>
+<li>存取订阅关系的数据（Data）</li>
+<li>订阅事件（sub）</li>
+<li>发布事件（pub）</li>
+<li>取消订阅（unsub）</li>
+</ol>
+<p>首先，订阅关系基本上是 ‘事件 —— 订阅者队列’ 这样的对应形式。<br>其次，在js中订阅者实际上想知道发生的某件事件，然后要去执行方法，因此事件对应的队列的存的都是要去执行function<br>因此我们可以考虑将订阅者（function）存于一个数组中，然后利用js的object的键值特性保存这些队列。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">oList = &#123;</div><div class="line">  <span class="string">'事件A'</span>: [functionA, functionB]</div><div class="line">, <span class="string">'事件B'</span>: [functionC, functionD]</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这样看来就很好理解了：</p>
+<ol>
+<li>订阅事件（sub）：将对应事件的数组中push一个要执行的function（<code>引用类型</code>，实际上是指向function的内存地址）</li>
+<li>发布事件（pub）：把对应数组中的function都执行一遍</li>
+<li>取消订阅（unsub）： 将对应的function从数组中移除</li>
+</ol>
+<h2 id="jQuery实现"><a href="#jQuery实现" class="headerlink" title="jQuery实现"></a>jQuery实现</h2><p>如果环境中有jQuery，那么实现观察者模式的方法很简单，我们可以将订阅关系数据存到$({}) 这个jQuery对象中，赋予其trigger、on、off方法。用trigger、on方法可以轻松实现上述发布和订阅的功能。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">+<span class="function"><span class="keyword">function</span>(<span class="params">$</span>) </span>&#123;</div><div class="line">  <span class="comment">// 订阅一个事件管理器对象</span></div><div class="line">  <span class="built_in">window</span>.EventCenter = &#123;</div><div class="line">    <span class="attr">o</span>: $(&#123;&#125;)</div><div class="line">  , <span class="attr">sub</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">      <span class="keyword">var</span> self = <span class="keyword">this</span>;</div><div class="line">      self.o.on.apply(self.o, <span class="built_in">arguments</span>);</div><div class="line">    &#125;</div><div class="line">  , <span class="attr">unsub</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">      <span class="keyword">var</span> self = <span class="keyword">this</span>;</div><div class="line">      self.o.off.apply(self.o, <span class="built_in">arguments</span>);</div><div class="line">    &#125;</div><div class="line">  , <span class="attr">pub</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">      <span class="keyword">var</span> self = <span class="keyword">this</span>;</div><div class="line">      self.o.trigger.apply(self.o, <span class="built_in">arguments</span>);</div><div class="line">    &#125;</div><div class="line">  &#125;;</div><div class="line">&#125;(jQuery);</div></pre></td></tr></table></figure></p>
+<h2 id="原生js实现"><a href="#原生js实现" class="headerlink" title="原生js实现"></a>原生js实现</h2><p>原生js中由于没有封装on、off这两个实用的方法，因此实现起来相对要费力一些。<br>特别在取消订阅这个功能上回发现一个历史性的深坑：<br>最早的时候我实现unsub的思路是去遍历数组，判断数组元素（function）是否与所选的function相等……<br>那么问题就来了，如何判断function相同（等）……<br>网上有大神说将function硬转成字符串判断，这种做法在一定情况下是可行的，但是并不是100%准确。<br>所以这个问题搁置了大半年。<br>直到最近我用jQuery的实现版本发现并没有出现function判断不准的问题，于是我潜心研究了一下jQuery的实现思路……<br>发现它相当聪（wei）明(suo)的引入了一个guid的概念（global unique id）,通过guid来识别方法，当一个function AAA订阅一个事件时，它会悄悄的在AAA里”种”下一个guid属性，它的值是唯一的，后期jQuery都是通过这个guid来识别方法，而不是硬转字符串的方法（stupid）<br>所以，这个问题解决了……<br><strong>所以说jQuery大法好啊！</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> EventManager = &#123;</div><div class="line">  <span class="attr">_listeners</span>: &#123;&#125;</div><div class="line">, <span class="attr">guid</span>: <span class="number">1</span></div><div class="line">, <span class="attr">sub</span>: <span class="function"><span class="keyword">function</span>(<span class="params">type, fn</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="keyword">this</span>._listeners[type] === <span class="string">"undefined"</span>) &#123;</div><div class="line">      <span class="keyword">this</span>._listeners[type] = [];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> fn === <span class="string">"function"</span>) &#123;</div><div class="line">      <span class="keyword">this</span>._listeners[type].push(fn);</div><div class="line">      fn.guid = <span class="keyword">this</span>.guid;</div><div class="line">      <span class="keyword">this</span>.guid++;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">  &#125;</div><div class="line">, <span class="attr">pub</span>: <span class="function"><span class="keyword">function</span>(<span class="params">type, data</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> arrayEvent = <span class="keyword">this</span>._listeners[type];</div><div class="line">    <span class="keyword">var</span> args = <span class="built_in">Array</span>.prototype.slice.call(<span class="built_in">arguments</span>, <span class="number">1</span>);</div><div class="line">    <span class="keyword">if</span> (arrayEvent <span class="keyword">instanceof</span> <span class="built_in">Array</span>) &#123;</div><div class="line">      <span class="keyword">for</span> (<span class="keyword">var</span> i=<span class="number">0</span>, length=arrayEvent.length; i &lt; length; i++) &#123;</div><div class="line">        <span class="keyword">if</span> (<span class="keyword">typeof</span> arrayEvent[i] === <span class="string">"function"</span>) &#123;</div><div class="line">          arrayEvent[i].apply(<span class="keyword">this</span>, args);</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">  &#125;</div><div class="line">, <span class="attr">unsub</span>: <span class="function"><span class="keyword">function</span>(<span class="params">type, fn</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> arrayEvent = <span class="keyword">this</span>._listeners[type];</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> type === <span class="string">"string"</span> &amp;&amp; arrayEvent <span class="keyword">instanceof</span> <span class="built_in">Array</span>) &#123;</div><div class="line">      <span class="keyword">if</span> (<span class="keyword">typeof</span> fn === <span class="string">"function"</span>) &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> i=<span class="number">0</span>, length=arrayEvent.length; i &lt; length; i+=<span class="number">1</span>)&#123;</div><div class="line">          <span class="keyword">if</span> (arrayEvent[i].guid === fn.guid) &#123;</div><div class="line">            <span class="comment">// 通过guid识别function</span></div><div class="line">            <span class="keyword">this</span>._listeners[type].splice(i, <span class="number">1</span>);</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">          &#125;</div><div class="line">        &#125;</div><div class="line">      &#125;<span class="keyword">else</span>&#123;</div><div class="line">        <span class="keyword">delete</span> <span class="keyword">this</span>._listeners[type];</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">  &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>]]></content>
     
     <summary type="html">
     
-      &lt;p&gt;最近参加了一个js方面的培训，讲师用两天时间给我们回顾和剖析了function的种种，的确有所收获，小记于此。&lt;/p&gt;
+      &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;处理事件是web前端开发中出现最频繁的业务之一。在处理这类业务时，我们通常的思路就是基本是这样的：&lt;br&gt;&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;
     
     </summary>
     
@@ -877,23 +919,23 @@
   </entry>
   
   <entry>
-    <title>移动端透明input光标太大的问题</title>
-    <link href="http://shiwah.me/2015/09/16/20151116_h5InputStyle/"/>
-    <id>http://shiwah.me/2015/09/16/20151116_h5InputStyle/</id>
-    <published>2015-09-15T16:00:00.000Z</published>
-    <updated>2016-09-29T01:37:20.000Z</updated>
+    <title>mysql按中文首字母进行排序</title>
+    <link href="http://shiwah.me/2015/09/10/20150910_mysqlSortName/"/>
+    <id>http://shiwah.me/2015/09/10/20150910_mysqlSortName/</id>
+    <published>2015-09-09T16:00:00.000Z</published>
+    <updated>2017-06-03T16:44:34.000Z</updated>
     
-    <content type="html"><![CDATA[<p>input的特殊之处在于它有预设的行高，背景，边框等属性。<br>当我们要做一个完全自定义背景的输入框时，我们首先要把它所有的默认背景、边框、背景都去掉，然后将背景设置成我们想要的效果。</p>
-<p>这样在chorme的模拟模式下看似乎很完美了，但在实际的移动设备上，我们会发现这样设置的input被focus时，光标非常的高，几乎沾满了一行。这显然不是我们想要的效果。</p>
-<a id="more"></a>
-<p>这时候还需要加上appearance:none这个属性，它的作用是将input默认的属性样式去掉。</p>
-<p>另外input中不需要再设置line-height了，否则会画蛇添足。</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.input-wrap</span> <span class="selector-tag">input</span> &#123;</div><div class="line">  <span class="attribute">display</span>: block;</div><div class="line">  <span class="attribute">width</span>: <span class="number">5.06rem</span>;</div><div class="line">  <span class="attribute">height</span>: .<span class="number">96rem</span>;</div><div class="line">  <span class="attribute">margin</span>: <span class="number">0</span> auto;</div><div class="line">  <span class="attribute">border</span>: none;</div><div class="line">  <span class="attribute">background</span>: none;</div><div class="line">  <span class="attribute">color</span>: <span class="number">#602f00</span>;</div><div class="line">  <span class="attribute">vertical-align</span>: middle;</div><div class="line">  <span class="attribute">font-size</span>: .<span class="number">48rem</span>;</div><div class="line">  <span class="attribute">-webkit-appearance</span>:none; <span class="comment">/* Safari 和 Chrome */</span></div><div class="line">  <span class="attribute">appearance</span>:none;</div><div class="line">&#125;</div></pre></td></tr></table></figure>]]></content>
+    <content type="html"><![CDATA[<a id="more"></a>
+<p>用gbk编码进行排序，其中name是用户中文名字段</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span> * <span class="keyword">from</span> <span class="string">`tb_member`</span> </div><div class="line"><span class="keyword">WHERE</span> <span class="number">1</span> </div><div class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="keyword">CONVERT</span>( <span class="string">`name`</span> <span class="keyword">USING</span> gbk ) </div><div class="line"><span class="keyword">COLLATE</span> gbk_chinese_ci <span class="keyword">ASC</span>;</div></pre></td></tr></table></figure>
+<p><code>written in 2014/10 本文搬运自LOFTER，让LOFTER纯粹po图！</code></p>
+]]></content>
     
     <summary type="html">
     
-      &lt;p&gt;input的特殊之处在于它有预设的行高，背景，边框等属性。&lt;br&gt;当我们要做一个完全自定义背景的输入框时，我们首先要把它所有的默认背景、边框、背景都去掉，然后将背景设置成我们想要的效果。&lt;/p&gt;
-&lt;p&gt;这样在chorme的模拟模式下看似乎很完美了，但在实际的移动设备上，我们会发现这样设置的input被focus时，光标非常的高，几乎沾满了一行。这显然不是我们想要的效果。&lt;/p&gt;
+      &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;用gbk编码进行排序，其中name是用户中文名字段&lt;/p&gt;
+&lt;figure class=&quot;highlight sql&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div
     
     </summary>
     
