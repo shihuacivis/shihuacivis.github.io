@@ -1,6 +1,6 @@
-<!DOCTYPE html><html lang=""><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 设计模式在代码中的一些运用 · wah's life</title><meta name="description" content="设计模式在代码中的一些运用 - 石华"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://shiwah.me/atom.xml" title="wah's life"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/author.jpg" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/about/" target="_self" class="nav-list-link">ABOUT</a></li><li class="nav-list-item"><a href="http://weibo.com/shihuacivis" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="http://shihuacivis.lofter.com" target="_blank" class="nav-list-link">LOFTER</a></li><li class="nav-list-item"><a href="https://github.com/shihuacivis" target="_blank" class="nav-list-link">GITHUB</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">设计模式在代码中的一些运用</h1><div class="post-info">Nov 18, 2015</div><div class="post-content"><p>最近有一张神图，大意是产品说『此处功能日后必改，不要写死』</p>
-<p>间接的吐槽了产品狗就是喜欢糊逼改需求，因此我们的代码千万不能写成hardcode。</p>
-<p>也许你曾经听过hardcode，有的人用它来形容很难懂的代码，很形象，你的代码很硬，所以不能适应变化。</p>
+<!DOCTYPE html><html lang=""><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> js代码优化的思考 · wah's life</title><meta name="description" content="js代码优化的思考 - 石华"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://shiwah.me/atom.xml" title="wah's life"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/author.jpg" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/about/" target="_self" class="nav-list-link">ABOUT</a></li><li class="nav-list-item"><a href="http://weibo.com/shihuacivis" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="http://shihuacivis.lofter.com" target="_blank" class="nav-list-link">LOFTER</a></li><li class="nav-list-item"><a href="https://github.com/shihuacivis" target="_blank" class="nav-list-link">GITHUB</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">js代码优化的思考</h1><div class="post-info">Nov 18, 2015</div><div class="post-content"><p>最近有一张神图，大意是产品说『此处功能日后必改，不要写死』</p>
+<p>间接的吐槽了产品狗就是喜欢糊逼改需求，因此我们的代码千万不能写shi。</p>
+<p>你的代码很硬，所以不能适应变化。</p>
 <p>而这里我想说的是一种编码习惯：</p>
 <p><strong>将程序体中要调用的变量直接写死代码中。</strong><br><a id="more"></a></p>
 <p>比如我们要计算一个边长是100的正方形面积：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a = <span class="number">100</span> * <span class="number">100</span>;</div></pre></td></tr></table></figure></p>
@@ -10,13 +10,13 @@
 <li>100这个数值的含义不清楚。当代码交到别人手上，或者过了一段时间后自己再回来看时，可能就不清楚这个100是什么意思了。这就变成了传说中的<code>magic number</code>；</li>
 <li>如果有一天，正方形的边长变了，是不是就要把数值改变了呢？假设这个边长在程序中多个地方进行运算，与此同时如果程序中有其它变量的值也是100，那么改起来就头疼了；</li>
 </ol>
-<p>所以一个良好的编程习惯就是少用hardcode。这会让你的代码质量（可读性、复用性等）有一个质的飞跃</p>
-<p><strong>注意，避免hardcode是一种编程的思想，而不是简单的把数值变量化</strong></p>
-<h2 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h2><p>首先要先清楚去除hardcode的目的：</p>
+<p>所以一个良好的编程习惯就是少用写死。这会让你的代码质量（可读性、复用性等）有一个质的飞跃</p>
+<p><strong>注意，避免写死是一种编程的思想，而不是简单的把数值变量化</strong></p>
+<h2 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h2><p>首先要先清楚去除写死的目的：</p>
 <blockquote>
 <ol>
 <li>让代码更加语义化。让自己/他人在阅读（审查）代码时都能很快的看懂某一个变量、方法等的意思；</li>
-<li>提高代码的复用性。在去除hardcode的过程中，其实我们已经将数值相同的变量的入口提取出来（抽取共性），这样就只需要一处修改、多处受用了。</li>
+<li>提高代码的复用性。在去除写死的过程中，其实我们已经将数值相同的变量的入口提取出来（抽取共性），这样就只需要一处修改、多处受用了。</li>
 <li>提高效率。避免在编码过程中认为输错某些字符而出错……</li>
 </ol>
 </blockquote>
@@ -52,7 +52,7 @@
 <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$(<span class="string">'#btn1'</span>).on(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  a = $(<span class="keyword">this</span>).data(<span class="string">'abc'</span>);</div><div class="line">  alert(a);</div><div class="line">&#125;);</div><div class="line"></div><div class="line">$(<span class="string">'#btn2'</span>).on(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  a = $(<span class="keyword">this</span>).data(<span class="string">'abc'</span>);</div><div class="line">  alert(a);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
 <p>刚开始往往会被匿名函数牵着鼻子走，习惯性的把逻辑代码都写在这个匿名function中。<br>而实际上，按照本文的思路，这段匿名函数其实可以抽出来写……</p>
 <h3 id="脑洞大开-CSS也行？"><a href="#脑洞大开-CSS也行？" class="headerlink" title="脑洞大开 CSS也行？"></a>脑洞大开 CSS也行？</h3><p>其实这个是胡扯啦，css这种静态的stylesheet基本上不存在变量这种说法啦~<br>基本上就是你在css里定义了多少，那么页面上就显示多少了。<br>不过直至rem的出现。<br>rem在这里就可以看成是一个预设的变量啦，它的默认值是根元素的font-size。<br>当页面加载后，你可以修个font-size的大小，这时候，所有基于rem设置大小的值都会响应啦。<br>是不是很叼？？？</p>
-</div></article></div></main><footer><div class="paginator"><a href="/2015/12/01/20151220_cocos2dGame/" class="prev">上一篇</a><a href="/2015/11/15/20151220_preload/" class="next">下一篇</a></div><div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div><script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script><script>var cloudTieConfig = {
+</div></article></div></main><footer><div class="paginator"><a href="/2015/12/29/20151229_arrayBuffer/" class="prev">PREV</a><a href="/2015/10/11/20151111_h5Timer/" class="next">NEXT</a></div><div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div><script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script><script>var cloudTieConfig = {
     url: document.location.href,
     sourceId: "",
     productKey: "73fc09c4a9074b41b145fb564eada364",
