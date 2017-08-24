@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://shiwah.me/"/>
-  <updated>2017-08-09T14:48:08.000Z</updated>
+  <updated>2017-08-24T13:57:22.000Z</updated>
   <id>http://shiwah.me/</id>
   
   <author>
@@ -14,6 +14,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>获取TouchEvent准确的Target</title>
+    <link href="http://shiwah.me/2017/08/24/20170824_eventTarget/"/>
+    <id>http://shiwah.me/2017/08/24/20170824_eventTarget/</id>
+    <published>2017-08-24T14:00:00.000Z</published>
+    <updated>2017-08-24T13:57:22.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>细心朋友可能已经发现了，我们在处理<code>touchmove</code>、<code>touchend</code>事件时，通过<code>event.target</code>属性获取的永远等于<code>touchstart</code>起始触发的元素。<br>也就是说当我们从A元素开始触屏，即使我们现在划到B元素上，<code>event.target</code>返回的还是A。<br>这个表现与<code>mousemove</code>事件的表现不一致。<br>可以通过下列方法获得事件真实的target。</p>
+<a id="more"></a>
+<h2 id="document-elementFromPoint"><a href="#document-elementFromPoint" class="headerlink" title="document.elementFromPoint"></a>document.elementFromPoint</h2><p>首先可以获取事件触发时的坐标点，通过<code>document.elementFromPoint</code>方法获取当前点对应的元素</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> params = &#123;<span class="attr">clientX</span>: <span class="number">0</span>, <span class="attr">clientX</span>: <span class="number">0</span>&#125;;</div><div class="line"><span class="keyword">let</span> clientX = e.touches[<span class="number">0</span>].clientX;</div><div class="line"><span class="keyword">let</span> clientY = e.touches[<span class="number">0</span>].clientY;</div><div class="line">params = &#123;clientX, clientY&#125;;</div><div class="line"><span class="keyword">let</span> $target = <span class="built_in">document</span>.elementFromPoint(params.clientX, params.clientY);</div></pre></td></tr></table></figure>
+<h2 id="判断元素的子孙关系（parentNode、childNodes、isEqualNode）"><a href="#判断元素的子孙关系（parentNode、childNodes、isEqualNode）" class="headerlink" title="判断元素的子孙关系（parentNode、childNodes、isEqualNode）"></a>判断元素的子孙关系（parentNode、childNodes、isEqualNode）</h2><p>上述方法获取元素会带来一个问题。<br>比如：页面元素的从属关系是A-&gt;B-&gt;C,当我们点击B元素的子元素C，我们获得的target是C。<br>那就可以遍历检测A与C的子孙关系，进一步获得我们更关心A元素和B元素的关系。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> el = <span class="string">'父元素A'</span></div><div class="line"><span class="keyword">let</span> index = <span class="number">-1</span>; <span class="comment">// B元素相对于A元素的索引</span></div><div class="line"><span class="keyword">let</span> aTargetEl = [];</div><div class="line"><span class="comment">// 遍历获取target元素在dom树中的路径</span></div><div class="line"><span class="keyword">while</span> ($target.tagName.toLowerCase() != <span class="string">'body'</span>) &#123;</div><div class="line">  aTargetEl.push($target);</div><div class="line">  $target = $target.parentNode;</div><div class="line">&#125;</div><div class="line"><span class="keyword">for</span> (<span class="keyword">let</span> idx = <span class="number">0</span>, len = el.childNodes.length; idx &lt; len; idx++) &#123;</div><div class="line">  <span class="keyword">let</span> child = el.childNodes[idx];</div><div class="line">  <span class="comment">// 遍历A的子元素判断是否处于target元素的dom树路径中</span></div><div class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>, l = aTargetEl.length; i &lt; l; i++) &#123;</div><div class="line">    <span class="keyword">let</span> oEl = aTargetEl[i];</div><div class="line">    <span class="keyword">if</span> (child.isEqualNode(oEl)) &#123;</div><div class="line">      index = idx;</div><div class="line">      <span class="keyword">break</span>;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;细心朋友可能已经发现了，我们在处理&lt;code&gt;touchmove&lt;/code&gt;、&lt;code&gt;touchend&lt;/code&gt;事件时，通过&lt;code&gt;event.target&lt;/code&gt;属性获取的永远等于&lt;code&gt;touchstart&lt;/code&gt;起始触发的元素。&lt;br&gt;也就是说当我们从A元素开始触屏，即使我们现在划到B元素上，&lt;code&gt;event.target&lt;/code&gt;返回的还是A。&lt;br&gt;这个表现与&lt;code&gt;mousemove&lt;/code&gt;事件的表现不一致。&lt;br&gt;可以通过下列方法获得事件真实的target。&lt;/p&gt;
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>MessagePack在浏览器端的应用</title>
@@ -289,14 +313,11 @@
     <link href="http://shiwah.me/2015/11/18/20150918_codeBeter/"/>
     <id>http://shiwah.me/2015/11/18/20150918_codeBeter/</id>
     <published>2015-11-17T16:00:00.000Z</published>
-    <updated>2017-08-09T14:07:00.000Z</updated>
+    <updated>2017-08-24T13:11:26.000Z</updated>
     
-    <content type="html"><![CDATA[<p>最近有一张神图，大意是产品说『此处功能日后必改，不要写死』</p>
-<p>间接的吐槽了产品狗就是喜欢糊逼改需求，因此我们的代码千万不能写shi。</p>
-<p>你的代码很硬，所以不能适应变化。</p>
-<p>而这里我想说的是一种编码习惯：</p>
-<p><strong>将程序体中要调用的变量直接写死代码中。</strong><br><a id="more"></a></p>
-<p>比如我们要计算一个边长是100的正方形面积：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a = <span class="number">100</span> * <span class="number">100</span>;</div></pre></td></tr></table></figure></p>
+    <content type="html"><![CDATA[<p>变量抽取 策略模式 相关</p>
+<a id="more"></a>
+<p>程序员经常喜欢将程序体中要调用的变量直接写死代码中。<br>比如我们要计算一个边长是100的正方形面积：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a = <span class="number">100</span> * <span class="number">100</span>;</div></pre></td></tr></table></figure></p>
 <p>因为我们会习惯性的认为100是一个确定的值，我们就直接用数字里表明，而不是一个变量。</p>
 <p>那么这个时候就会带来两个问题：</p>
 <ol>
@@ -349,11 +370,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;最近有一张神图，大意是产品说『此处功能日后必改，不要写死』&lt;/p&gt;
-&lt;p&gt;间接的吐槽了产品狗就是喜欢糊逼改需求，因此我们的代码千万不能写shi。&lt;/p&gt;
-&lt;p&gt;你的代码很硬，所以不能适应变化。&lt;/p&gt;
-&lt;p&gt;而这里我想说的是一种编码习惯：&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;将程序体中要调用的变量直接写死代码中。&lt;/strong&gt;&lt;br&gt;
+      &lt;p&gt;变量抽取 策略模式 相关&lt;/p&gt;
     
     </summary>
     

@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://shiwah.me/2017/08/24/20170824_eventTarget/</loc>
+    
+    <lastmod>2017-08-24T13:57:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://shiwah.me/2015/11/18/20150918_codeBeter/</loc>
+    
+    <lastmod>2017-08-24T13:11:26.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://shiwah.me/about/index.html</loc>
     
     <lastmod>2017-08-24T11:46:35.000Z</lastmod>
@@ -23,23 +37,9 @@
   </url>
   
   <url>
-    <loc>http://shiwah.me/2015/11/18/20150918_codeBeter/</loc>
-    
-    <lastmod>2017-08-09T14:07:00.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://shiwah.me/2017/08/09/20170809_oldthings/</loc>
     
     <lastmod>2017-08-09T14:04:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://shiwah.me/2015/10/11/20151111_h5Timer/</loc>
-    
-    <lastmod>2017-06-05T09:45:20.000Z</lastmod>
     
   </url>
   
@@ -59,6 +59,13 @@
   
   <url>
     <loc>http://shiwah.me/2016/09/29/20160929_tsSubPub/</loc>
+    
+    <lastmod>2017-06-05T09:45:20.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://shiwah.me/2015/10/11/20151111_h5Timer/</loc>
     
     <lastmod>2017-06-05T09:45:20.000Z</lastmod>
     
