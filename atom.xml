@@ -40,24 +40,22 @@
   </entry>
   
   <entry>
-    <title>MessagePack在浏览器端的应用</title>
-    <link href="http://shiwah.me/2017/08/09/20170809_msgpack/"/>
-    <id>http://shiwah.me/2017/08/09/20170809_msgpack/</id>
-    <published>2017-08-09T14:00:00.000Z</published>
-    <updated>2017-08-09T14:48:08.000Z</updated>
+    <title>使用execCommand将文字样式设置成css样式的办法</title>
+    <link href="http://shiwah.me/2017/08/24/20171129_contentEditable/"/>
+    <id>http://shiwah.me/2017/08/24/20171129_contentEditable/</id>
+    <published>2017-08-24T14:00:00.000Z</published>
+    <updated>2017-11-29T06:56:05.000Z</updated>
     
-    <content type="html"><![CDATA[<a id="more"></a>
-<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>MessagePack是一种高效的2进制序列化数据格式，你可以在不同的语言环境中使用它来进行数据通信（如PHP -&gt; js, cpp -&gt; js, lua -&gt; js 等），就像使用JSON数据格式一样，但它比同级别的json数据要小，传输和解析速度也更快。因此有很多开发者考虑用它来替代JSON作为数据传输的解决方案。<br>目前市面上绝大多数流行的开发语言都有了支持msgpack的类库。js也不例外，但是能在浏览器环境下跑的不是特别多，主要原因我觉得是：<br>1.只有大多数新的浏览器才支持对2进制数据直接进行访问控制，因此兼容性大打折扣<br>2.json数据对前端太友好了，数据无痛读取，没有兼容性问题，何苦自废武功寻求这种「另类」的解决方案。</p>
-<p>如果必须使用的话，目前官方推荐的<code>msgpack-lite</code>这个库还是能用的，其自称性能还不错。<br>git地址：<br><code>https://github.com/kawanet/msgpack-lite</code></p>
-<h2 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h2><p>用法就超级简单了，<code>msgpack.encode</code>和<code>msgpack.decode</code>一下就可以得到msgpack数据/json数据了。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">// encode from JS Object to MessagePack (Buffer)</span></div><div class="line"><span class="keyword">var</span> buffer = msgpack.encode(&#123;<span class="string">"foo"</span>: <span class="string">"bar"</span>&#125;);</div><div class="line"></div><div class="line"><span class="comment">// decode from MessagePack (Buffer) to JS Object</span></div><div class="line"><span class="keyword">var</span> data = msgpack.decode(buffer); <span class="comment">// =&gt; &#123;"foo": "bar"&#125;</span></div><div class="line"></div><div class="line"><span class="comment">// if encode/decode receives an invalid argument an error is thrown</span></div></pre></td></tr></table></figure>
-<p>因为编程语言的差异，如果遇到解析出来本来应该是字符串的字段值是一个<code>Uint8Array</code>，那么可能就需要用TextDecoder再转解析一下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">var</span> decoder = <span class="keyword">new</span> TextDecoder(<span class="string">'utf-8'</span>);</div><div class="line"></div><div class="line"><span class="comment">// bytes模拟数据表示msgpack.decode后取到的`Uint8Array`</span></div><div class="line"><span class="keyword">var</span> bytes = <span class="keyword">new</span> <span class="built_in">Uint8Array</span>([<span class="number">207</span>, <span class="number">240</span>, <span class="number">232</span>, <span class="number">226</span>, <span class="number">2</span>]);</div><div class="line"></div><div class="line"><span class="keyword">var</span> data = decoder.decode(bytes);</div></pre></td></tr></table></figure></p>
+    <content type="html"><![CDATA[<p>我们在使用<code>contenteditable</code>属性做富文本编辑器时经常会用到<code>document.execCommand</code>方法来处理文字的样式。但当我们要设置比如<code>font-size</code>，会发现这个命令只支持（1-7）这几种字体大小值，而不是我们想要的类似css样式的值<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Document/execCommand" target="_blank" rel="external">详细文档</a>。有此类问题的样式还包括行高、颜色等到。但实际上我们的需求可能是将其设置成css样式，那就可以使用下面的方法来实现。</p>
+<a id="more"></a>
+<p>以设置字体大小为例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 先将文字的样式改用CSS样式展示</span></div><div class="line"><span class="built_in">document</span>.execCommand(<span class="string">'styleWithCSS'</span>, <span class="literal">null</span>, <span class="literal">true</span>);</div><div class="line"><span class="comment">// 先将文字大小设置成1-7号中的任何一个大小</span></div><div class="line"><span class="built_in">document</span>.execCommand(<span class="string">'fontSize'</span>, <span class="literal">false</span>, <span class="number">1</span>);</div><div class="line"><span class="comment">// 这时候浏览器会默认将文字包裹一层span，然后css设置在span上,然后我们再去寻找这个span，将其css修改成我们实际想要的字体大小</span></div><div class="line"><span class="keyword">let</span> $parent = <span class="built_in">document</span>.querySelector(<span class="string">'正在编辑的元素的父容器'</span>);</div><div class="line"><span class="keyword">let</span> $spans = $parent.querySelectorAll(<span class="string">'span'</span>);</div><div class="line"><span class="keyword">let</span> value = <span class="string">'48px'</span>; <span class="comment">// 假设我们要将字体大小设置成48px</span></div><div class="line">$spans.forEach(<span class="function">(<span class="params">$span</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">let</span> fontSize = $span.style.fontSize;</div><div class="line">  <span class="keyword">if</span> (<span class="string">'x-small'</span> == fs) &#123;</div><div class="line">    $span.style.fontSize = value;</div><div class="line">  &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>其它样式调整也可以用该方法找到对应的span后修改<code>style</code>值实现，只是最后要把<code>font-size=&#39;x-small&#39;</code>的样式清空。</p>
 ]]></content>
     
     <summary type="html">
     
-      &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;MessagePack是一种高效的2进制序列化数据格式，你可以在不同的语言环境中使用它来进行数据通信（如
+      &lt;p&gt;我们在使用&lt;code&gt;contenteditable&lt;/code&gt;属性做富文本编辑器时经常会用到&lt;code&gt;document.execCommand&lt;/code&gt;方法来处理文字的样式。但当我们要设置比如&lt;code&gt;font-size&lt;/code&gt;，会发现这个命令只支持（1-7）这几种字体大小值，而不是我们想要的类似css样式的值&lt;a href=&quot;https://developer.mozilla.org/zh-CN/docs/Web/API/Document/execCommand&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;详细文档&lt;/a&gt;。有此类问题的样式还包括行高、颜色等到。但实际上我们的需求可能是将其设置成css样式，那就可以使用下面的方法来实现。&lt;/p&gt;
     
     </summary>
     
@@ -108,6 +106,31 @@
     <summary type="html">
     
       &lt;p&gt;将过去零零散散的问题收集记录于此&lt;/p&gt;
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>MessagePack在浏览器端的应用</title>
+    <link href="http://shiwah.me/2017/08/09/20170809_msgpack/"/>
+    <id>http://shiwah.me/2017/08/09/20170809_msgpack/</id>
+    <published>2017-08-09T14:00:00.000Z</published>
+    <updated>2017-08-09T14:48:08.000Z</updated>
+    
+    <content type="html"><![CDATA[<a id="more"></a>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>MessagePack是一种高效的2进制序列化数据格式，你可以在不同的语言环境中使用它来进行数据通信（如PHP -&gt; js, cpp -&gt; js, lua -&gt; js 等），就像使用JSON数据格式一样，但它比同级别的json数据要小，传输和解析速度也更快。因此有很多开发者考虑用它来替代JSON作为数据传输的解决方案。<br>目前市面上绝大多数流行的开发语言都有了支持msgpack的类库。js也不例外，但是能在浏览器环境下跑的不是特别多，主要原因我觉得是：<br>1.只有大多数新的浏览器才支持对2进制数据直接进行访问控制，因此兼容性大打折扣<br>2.json数据对前端太友好了，数据无痛读取，没有兼容性问题，何苦自废武功寻求这种「另类」的解决方案。</p>
+<p>如果必须使用的话，目前官方推荐的<code>msgpack-lite</code>这个库还是能用的，其自称性能还不错。<br>git地址：<br><code>https://github.com/kawanet/msgpack-lite</code></p>
+<h2 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h2><p>用法就超级简单了，<code>msgpack.encode</code>和<code>msgpack.decode</code>一下就可以得到msgpack数据/json数据了。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">// encode from JS Object to MessagePack (Buffer)</span></div><div class="line"><span class="keyword">var</span> buffer = msgpack.encode(&#123;<span class="string">"foo"</span>: <span class="string">"bar"</span>&#125;);</div><div class="line"></div><div class="line"><span class="comment">// decode from MessagePack (Buffer) to JS Object</span></div><div class="line"><span class="keyword">var</span> data = msgpack.decode(buffer); <span class="comment">// =&gt; &#123;"foo": "bar"&#125;</span></div><div class="line"></div><div class="line"><span class="comment">// if encode/decode receives an invalid argument an error is thrown</span></div></pre></td></tr></table></figure>
+<p>因为编程语言的差异，如果遇到解析出来本来应该是字符串的字段值是一个<code>Uint8Array</code>，那么可能就需要用TextDecoder再转解析一下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">var</span> decoder = <span class="keyword">new</span> TextDecoder(<span class="string">'utf-8'</span>);</div><div class="line"></div><div class="line"><span class="comment">// bytes模拟数据表示msgpack.decode后取到的`Uint8Array`</span></div><div class="line"><span class="keyword">var</span> bytes = <span class="keyword">new</span> <span class="built_in">Uint8Array</span>([<span class="number">207</span>, <span class="number">240</span>, <span class="number">232</span>, <span class="number">226</span>, <span class="number">2</span>]);</div><div class="line"></div><div class="line"><span class="keyword">var</span> data = decoder.decode(bytes);</div></pre></td></tr></table></figure></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;MessagePack是一种高效的2进制序列化数据格式，你可以在不同的语言环境中使用它来进行数据通信（如
     
     </summary>
     
